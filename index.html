@@ -36,76 +36,111 @@
             height: 100vh;
         }
 
+
         /* =====================================
            MAP TITLE
         ===================================== */
 
         .map-title {
+
             position: absolute;
+
             top: 10px;
             left: 50%;
+
             transform: translateX(-50%);
+
             z-index: 1000;
 
             background: rgba(255,255,255,0.96);
+
             padding: 10px 18px;
+
             border-radius: 7px;
 
             box-shadow:
                 0 2px 8px rgba(0,0,0,0.30);
 
             text-align: center;
+
             font-size: 17px;
+
             font-weight: bold;
+
             max-width: 65%;
+
             line-height: 1.25;
         }
 
+
         .map-subtitle {
+
             font-size: 14px;
+
             font-weight: normal;
         }
+
 
         /* =====================================
            LEGEND
         ===================================== */
 
         .legend {
+
             background: rgba(255,255,255,0.96);
+
             padding: 10px 12px;
+
             border-radius: 6px;
 
             box-shadow:
                 0 1px 6px rgba(0,0,0,0.35);
 
             font-size: 13px;
+
             line-height: 21px;
         }
 
+
         .legend-title {
+
             font-weight: bold;
+
             margin-bottom: 5px;
         }
 
+
         .legend-row {
+
             display: flex;
+
             align-items: center;
+
             margin-top: 3px;
         }
 
+
         .legend-color {
+
             width: 18px;
+
             height: 18px;
+
             margin-right: 8px;
-            border: 1px solid rgba(0,0,0,0.2);
+
+            border:
+                1px solid rgba(0,0,0,0.2);
         }
+
 
         /* =====================================
            REPORT BUTTON
         ===================================== */
 
         .report-control {
+
             background: #d7191c;
+
             color: white;
 
             padding: 9px 12px;
@@ -113,6 +148,7 @@
             border-radius: 5px;
 
             font-size: 13px;
+
             font-weight: bold;
 
             cursor: pointer;
@@ -123,20 +159,71 @@
             border: 2px solid white;
         }
 
+
         .report-control:hover {
+
             background: #a80000;
         }
+
+
+        /* =====================================
+           IMPORTANT REPORT MODE FIX
+
+           During report selection all vector
+           features stop intercepting mouse
+           events. This allows the user to
+           click anywhere inside the province.
+        ===================================== */
+
+        #map.report-mode {
+
+            cursor: crosshair !important;
+        }
+
+
+        #map.report-mode * {
+
+            cursor: crosshair !important;
+        }
+
+
+        #map.report-mode .leaflet-interactive {
+
+            pointer-events: none !important;
+
+            cursor: crosshair !important;
+        }
+
+
+        #map.report-mode .leaflet-marker-icon,
+        #map.report-mode .leaflet-marker-shadow {
+
+            pointer-events: none !important;
+
+            cursor: crosshair !important;
+        }
+
+
+        /* Keep controls usable */
+
+        #map.report-mode .leaflet-control {
+
+            pointer-events: auto;
+        }
+
 
         /* =====================================
            INSTRUCTION MESSAGE
         ===================================== */
 
         .instruction-box {
+
             display: none;
 
             position: absolute;
 
             top: 85px;
+
             left: 50%;
 
             transform: translateX(-50%);
@@ -154,17 +241,20 @@
             padding: 10px 14px;
 
             font-size: 14px;
+
             font-weight: bold;
 
             box-shadow:
                 0 2px 8px rgba(0,0,0,0.25);
         }
 
+
         /* =====================================
-           REPORT FORM MODAL
+           REPORT FORM
         ===================================== */
 
         .modal-overlay {
+
             display: none;
 
             position: fixed;
@@ -181,16 +271,21 @@
             z-index: 3000;
 
             justify-content: center;
+
             align-items: center;
         }
 
+
         .report-modal {
+
             background: white;
 
             width: 420px;
+
             max-width: 90%;
 
             max-height: 90vh;
+
             overflow-y: auto;
 
             border-radius: 8px;
@@ -201,28 +296,44 @@
             padding: 20px;
         }
 
+
         .report-modal h2 {
+
             margin-top: 0;
+
             margin-bottom: 5px;
+
             color: #222;
         }
 
+
         .report-modal p {
+
             font-size: 13px;
+
             color: #555;
+
             margin-top: 5px;
         }
 
+
         .form-group {
+
             margin-bottom: 13px;
         }
 
+
         .form-group label {
+
             display: block;
+
             font-weight: bold;
+
             font-size: 13px;
+
             margin-bottom: 5px;
         }
+
 
         .form-group input,
         .form-group select,
@@ -241,12 +352,17 @@
             font-size: 14px;
         }
 
+
         .form-group textarea {
+
             resize: vertical;
+
             min-height: 70px;
         }
 
+
         .coordinate-box {
+
             background: #f3f3f3;
 
             padding: 9px;
@@ -258,13 +374,19 @@
             border: 1px solid #ddd;
         }
 
+
         .form-buttons {
+
             display: flex;
+
             gap: 10px;
+
             margin-top: 18px;
         }
 
+
         .submit-button {
+
             flex: 1;
 
             border: none;
@@ -282,11 +404,15 @@
             cursor: pointer;
         }
 
+
         .submit-button:hover {
+
             background: #146c43;
         }
 
+
         .cancel-button {
+
             flex: 1;
 
             border: none;
@@ -304,17 +430,25 @@
             cursor: pointer;
         }
 
+
         .cancel-button:hover {
+
             background: #444;
         }
 
+
         .popup-title {
+
             font-weight: bold;
+
             font-size: 14px;
+
             margin-bottom: 6px;
         }
 
+
         .pending-label {
+
             display: inline-block;
 
             background: #ffc107;
@@ -330,24 +464,35 @@
             font-weight: bold;
         }
 
+
         @media (max-width: 768px) {
 
             .map-title {
+
                 font-size: 12px;
+
                 padding: 7px 9px;
+
                 max-width: 60%;
             }
 
+
             .map-subtitle {
+
                 font-size: 10px;
             }
 
+
             .legend {
+
                 font-size: 11px;
+
                 padding: 7px;
             }
 
+
             .leaflet-control-layers {
+
                 font-size: 11px;
             }
 
@@ -371,19 +516,24 @@
         <br>
 
         <span class="map-subtitle">
+
             Western Province, Sri Lanka
+
         </span>
 
     </div>
 
 
-    <!-- CLICK INSTRUCTION -->
+    <!-- REPORT INSTRUCTION -->
 
     <div
         id="instructionBox"
         class="instruction-box"
     >
-        Click a location inside Western Province to report waterlogging.
+
+        ✚ Click a location inside Western Province
+        to report waterlogging.
+
     </div>
 
 
@@ -405,9 +555,13 @@
                 Report Waterlogging
             </h2>
 
+
             <p>
-                Submit an observation about flooding or
-                waterlogging at the selected location.
+
+                Submit an observation about flooding
+                or waterlogging at the selected
+                location.
+
             </p>
 
 
@@ -420,9 +574,11 @@
                         Selected Location
                     </label>
 
+
                     <div class="coordinate-box">
 
                         Latitude:
+
                         <span id="selectedLatitude">
                             -
                         </span>
@@ -430,6 +586,7 @@
                         <br>
 
                         Longitude:
+
                         <span id="selectedLongitude">
                             -
                         </span>
@@ -442,8 +599,11 @@
                 <div class="form-group">
 
                     <label for="incidentType">
+
                         Incident Type *
+
                     </label>
+
 
                     <select
                         id="incidentType"
@@ -451,23 +611,37 @@
                     >
 
                         <option value="">
+
                             Select incident type
+
                         </option>
+
 
                         <option value="Waterlogging">
+
                             Waterlogging
+
                         </option>
+
 
                         <option value="Road Flooding">
+
                             Road Flooding
+
                         </option>
+
 
                         <option value="River Flooding">
+
                             River Flooding
+
                         </option>
 
+
                         <option value="Drain Overflow">
+
                             Drain Overflow
+
                         </option>
 
                     </select>
@@ -478,8 +652,11 @@
                 <div class="form-group">
 
                     <label for="severity">
+
                         Severity *
+
                     </label>
+
 
                     <select
                         id="severity"
@@ -487,23 +664,37 @@
                     >
 
                         <option value="">
+
                             Select severity
+
                         </option>
+
 
                         <option value="Low">
+
                             Low
+
                         </option>
+
 
                         <option value="Moderate">
+
                             Moderate
+
                         </option>
+
 
                         <option value="High">
+
                             High
+
                         </option>
 
+
                         <option value="Severe">
+
                             Severe
+
                         </option>
 
                     </select>
@@ -514,8 +705,11 @@
                 <div class="form-group">
 
                     <label for="waterDepth">
+
                         Estimated Water Depth (cm)
+
                     </label>
+
 
                     <input
                         type="number"
@@ -531,25 +725,39 @@
                 <div class="form-group">
 
                     <label for="roadStatus">
+
                         Road Status
+
                     </label>
+
 
                     <select id="roadStatus">
 
                         <option value="Unknown">
+
                             Unknown
+
                         </option>
+
 
                         <option value="Open">
+
                             Open
+
                         </option>
+
 
                         <option value="Partially Blocked">
+
                             Partially Blocked
+
                         </option>
 
+
                         <option value="Impassable">
+
                             Impassable
+
                         </option>
 
                     </select>
@@ -560,8 +768,11 @@
                 <div class="form-group">
 
                     <label for="description">
+
                         Description
+
                     </label>
+
 
                     <textarea
                         id="description"
@@ -574,20 +785,27 @@
 
                 <div class="form-buttons">
 
+
                     <button
                         type="button"
                         class="cancel-button"
                         id="cancelReportButton"
                     >
+
                         Cancel
+
                     </button>
+
 
                     <button
                         type="submit"
                         class="submit-button"
                     >
+
                         Submit Report
+
                     </button>
+
 
                 </div>
 
@@ -599,15 +817,14 @@
     </div>
 
 
-    <!-- LEAFLET JS -->
+    <!-- LEAFLET -->
 
     <script
         src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
     </script>
 
 
-    <!-- TURF JS -->
-    <!-- Used to check whether clicked points are inside Western Province -->
+    <!-- TURF.JS -->
 
     <script
         src="https://cdn.jsdelivr.net/npm/@turf/turf@7/turf.min.js">
@@ -617,9 +834,9 @@
     <script>
 
 
-        /* =========================================
+        /* =====================================
            CREATE MAP
-        ========================================= */
+        ===================================== */
 
         const map =
             L.map(
@@ -647,16 +864,18 @@
             floodBounds,
 
             {
+
                 padding:
                     [20,20]
+
             }
 
         );
 
 
-        /* =========================================
-           BASE MAP
-        ========================================= */
+        /* =====================================
+           BASEMAP
+        ===================================== */
 
         const osm =
             L.tileLayer(
@@ -676,12 +895,14 @@
             );
 
 
-        osm.addTo(map);
+        osm.addTo(
+            map
+        );
 
 
-        /* =========================================
+        /* =====================================
            LAYER GROUPS
-        ========================================= */
+        ===================================== */
 
         const districtLayer =
             L.layerGroup();
@@ -723,9 +944,9 @@
             L.layerGroup();
 
 
-        /* =========================================
+        /* =====================================
            FLOOD SUSCEPTIBILITY
-        ========================================= */
+        ===================================== */
 
         const floodLayer =
             L.imageOverlay(
@@ -747,11 +968,11 @@
             );
 
 
-        /* =========================================
+        /* =====================================
            WESTERN PROVINCE BOUNDARY
-        ========================================= */
+        ===================================== */
 
-        let westernProvinceFeature =
+        let westernProvinceData =
             null;
 
 
@@ -764,47 +985,25 @@
         )
 
         .then(
+
             response =>
                 response.json()
+
         )
 
         .then(
+
             data => {
 
 
                 /*
-                   Store the polygon so Turf.js
-                   can check whether report points
-                   are inside Western Province.
+                 Store ALL of the Western Province
+                 GeoJSON rather than only the first
+                 feature.
                 */
 
-
-                if (
-                    data.type ===
-                    "FeatureCollection"
-                ) {
-
-                    if (
-                        data.features &&
-                        data.features.length > 0
-                    ) {
-
-                        westernProvinceFeature =
-                            data.features[0];
-
-                    }
-
-                }
-
-                else if (
-                    data.type ===
-                    "Feature"
-                ) {
-
-                    westernProvinceFeature =
-                        data;
-
-                }
+                westernProvinceData =
+                    data;
 
 
                 westernProvinceLayer =
@@ -830,6 +1029,7 @@
 
                             },
 
+
                             interactive:
                                 false
 
@@ -842,6 +1042,7 @@
                     map
                 );
 
+
             }
 
         )
@@ -851,8 +1052,11 @@
             error => {
 
                 console.error(
+
                     'Western Province boundary error:',
+
                     error
+
                 );
 
             }
@@ -860,21 +1064,25 @@
         );
 
 
-        /* =========================================
+        /* =====================================
            DISTRICTS
-        ========================================= */
+        ===================================== */
 
         fetch(
             'data/districts.geojson'
         )
 
         .then(
+
             response =>
                 response.json()
+
         )
 
         .then(
+
             data => {
+
 
                 L.geoJSON(
 
@@ -897,10 +1105,12 @@
 
 
                         onEachFeature:
+
                             function(
                                 feature,
                                 layer
                             ) {
+
 
                                 const p =
                                     feature.properties || {};
@@ -924,6 +1134,7 @@
 
                                 );
 
+
                             }
 
                     }
@@ -932,26 +1143,31 @@
                     districtLayer
                 );
 
+
             }
 
         );
 
 
-        /* =========================================
+        /* =====================================
            DSD
-        ========================================= */
+        ===================================== */
 
         fetch(
             'data/dsd.geojson'
         )
 
         .then(
+
             response =>
                 response.json()
+
         )
 
         .then(
+
             data => {
+
 
                 L.geoJSON(
 
@@ -978,26 +1194,31 @@
                     dsdLayer
                 );
 
+
             }
 
         );
 
 
-        /* =========================================
+        /* =====================================
            GND
-        ========================================= */
+        ===================================== */
 
         fetch(
             'data/gnd.geojson'
         )
 
         .then(
+
             response =>
                 response.json()
+
         )
 
         .then(
+
             data => {
+
 
                 L.geoJSON(
 
@@ -1024,26 +1245,31 @@
                     gndLayer
                 );
 
+
             }
 
         );
 
 
-        /* =========================================
+        /* =====================================
            RIVERS
-        ========================================= */
+        ===================================== */
 
         fetch(
             'data/rivers.geojson'
         )
 
         .then(
+
             response =>
                 response.json()
+
         )
 
         .then(
+
             data => {
+
 
                 L.geoJSON(
 
@@ -1067,26 +1293,31 @@
                     riverLayer
                 );
 
+
             }
 
         );
 
 
-        /* =========================================
+        /* =====================================
            WATERWAYS
-        ========================================= */
+        ===================================== */
 
         fetch(
             'data/waterways.geojson'
         )
 
         .then(
+
             response =>
                 response.json()
+
         )
 
         .then(
+
             data => {
+
 
                 L.geoJSON(
 
@@ -1110,26 +1341,31 @@
                     waterwayLayer
                 );
 
+
             }
 
         );
 
 
-        /* =========================================
-           MAJOR ROADS
-        ========================================= */
+        /* =====================================
+           ROADS
+        ===================================== */
 
         fetch(
             'data/major_roads.geojson'
         )
 
         .then(
+
             response =>
                 response.json()
+
         )
 
         .then(
+
             data => {
+
 
                 L.geoJSON(
 
@@ -1153,26 +1389,31 @@
                     roadLayer
                 );
 
+
             }
 
         );
 
 
-        /* =========================================
+        /* =====================================
            HOSPITALS
-        ========================================= */
+        ===================================== */
 
         fetch(
             'data/hospitals.geojson'
         )
 
         .then(
+
             response =>
                 response.json()
+
         )
 
         .then(
+
             data => {
+
 
                 L.geoJSON(
 
@@ -1181,10 +1422,12 @@
                     {
 
                         pointToLayer:
+
                             function(
                                 feature,
                                 latlng
                             ) {
+
 
                                 return L.circleMarker(
 
@@ -1211,6 +1454,7 @@
 
                                 );
 
+
                             }
 
                     }
@@ -1219,26 +1463,31 @@
                     hospitalLayer
                 );
 
+
             }
 
         );
 
 
-        /* =========================================
+        /* =====================================
            SCHOOLS
-        ========================================= */
+        ===================================== */
 
         fetch(
             'data/schools.geojson'
         )
 
         .then(
+
             response =>
                 response.json()
+
         )
 
         .then(
+
             data => {
+
 
                 L.geoJSON(
 
@@ -1247,10 +1496,12 @@
                     {
 
                         pointToLayer:
+
                             function(
                                 feature,
                                 latlng
                             ) {
+
 
                                 return L.circleMarker(
 
@@ -1277,6 +1528,7 @@
 
                                 );
 
+
                             }
 
                     }
@@ -1285,26 +1537,31 @@
                     schoolLayer
                 );
 
+
             }
 
         );
 
 
-        /* =========================================
+        /* =====================================
            HISTORICAL HOTSPOTS
-        ========================================= */
+        ===================================== */
 
         fetch(
             'data/historical_hotspots.geojson'
         )
 
         .then(
+
             response =>
                 response.json()
+
         )
 
         .then(
+
             data => {
+
 
                 L.geoJSON(
 
@@ -1313,10 +1570,12 @@
                     {
 
                         pointToLayer:
+
                             function(
                                 feature,
                                 latlng
                             ) {
+
 
                                 return L.circleMarker(
 
@@ -1343,14 +1602,17 @@
 
                                 );
 
+
                             },
 
 
                         onEachFeature:
+
                             function(
                                 feature,
                                 layer
                             ) {
+
 
                                 const p =
                                     feature.properties || {};
@@ -1405,6 +1667,7 @@
                                     popup
                                 );
 
+
                             }
 
                     }
@@ -1413,14 +1676,15 @@
                     hotspotLayer
                 );
 
+
             }
 
         );
 
 
-        /* =========================================
+        /* =====================================
            DEFAULT LAYERS
-        ========================================= */
+        ===================================== */
 
         floodLayer.addTo(
             map
@@ -1442,9 +1706,9 @@
         );
 
 
-        /* =========================================
+        /* =====================================
            LAYER CONTROL
-        ========================================= */
+        ===================================== */
 
         const baseMaps = {
 
@@ -1513,9 +1777,9 @@
         );
 
 
-        /* =========================================
+        /* =====================================
            LEGEND
-        ========================================= */
+        ===================================== */
 
         const legend =
             L.control(
@@ -1547,7 +1811,9 @@
                 div.innerHTML = `
 
                     <div class="legend-title">
+
                         Flood Susceptibility
+
                     </div>
 
 
@@ -1623,9 +1889,9 @@
         );
 
 
-        /* =========================================
-           SCALE BAR
-        ========================================= */
+        /* =====================================
+           SCALE
+        ===================================== */
 
         L.control.scale(
 
@@ -1647,9 +1913,9 @@
         );
 
 
-        /* =========================================
+        /* =====================================
            REPORT BUTTON
-        ========================================= */
+        ===================================== */
 
         const reportControl =
             L.control(
@@ -1709,9 +1975,9 @@
         );
 
 
-        /* =========================================
+        /* =====================================
            REPORT VARIABLES
-        ========================================= */
+        ===================================== */
 
         let reportMode =
             false;
@@ -1753,24 +2019,195 @@
             );
 
 
-        /* =========================================
+        /* =====================================
+           CHECK WHETHER A POINT IS INSIDE
+           WESTERN PROVINCE
+        ===================================== */
+
+        function isPointInsideWesternProvince(
+            latitude,
+            longitude
+        ) {
+
+
+            if (
+                !westernProvinceData
+            ) {
+
+                return false;
+
+            }
+
+
+            const clickedPoint =
+                turf.point(
+
+                    [
+
+                        longitude,
+
+                        latitude
+
+                    ]
+
+                );
+
+
+            let features = [];
+
+
+            if (
+
+                westernProvinceData.type ===
+                'FeatureCollection'
+
+            ) {
+
+
+                features =
+                    westernProvinceData.features || [];
+
+
+            }
+
+
+            else if (
+
+                westernProvinceData.type ===
+                'Feature'
+
+            ) {
+
+
+                features = [
+
+                    westernProvinceData
+
+                ];
+
+
+            }
+
+
+            for (
+                const feature
+                of features
+            ) {
+
+
+                if (
+                    !feature ||
+                    !feature.geometry
+                ) {
+
+                    continue;
+
+                }
+
+
+                const geometryType =
+                    feature.geometry.type;
+
+
+                if (
+
+                    geometryType !==
+                        'Polygon' &&
+
+                    geometryType !==
+                        'MultiPolygon'
+
+                ) {
+
+                    continue;
+
+                }
+
+
+                try {
+
+
+                    const inside =
+                        turf.booleanPointInPolygon(
+
+                            clickedPoint,
+
+                            feature,
+
+                            {
+
+                                ignoreBoundary:
+                                    false
+
+                            }
+
+                        );
+
+
+                    if (
+                        inside
+                    ) {
+
+                        return true;
+
+                    }
+
+
+                }
+
+
+                catch(error) {
+
+
+                    console.error(
+
+                        'Point-in-polygon error:',
+
+                        error
+
+                    );
+
+
+                }
+
+
+            }
+
+
+            return false;
+
+        }
+
+
+        /* =====================================
            START REPORT MODE
-        ========================================= */
+        ===================================== */
 
         function startReportMode() {
 
 
             if (
-                !westernProvinceFeature
+                !westernProvinceData
             ) {
 
+
                 alert(
-                    'Western Province boundary is still loading. Please wait a moment and try again.'
+
+                    'Western Province boundary is still loading. Please wait a few seconds and try again.'
+
                 );
+
 
                 return;
 
             }
+
+
+            /*
+             Close any existing map popup.
+            */
+
+            map.closePopup();
 
 
             reportMode =
@@ -1781,15 +2218,24 @@
                 'block';
 
 
-            map.getContainer().style.cursor =
-                'crosshair';
+            /*
+             IMPORTANT:
+             Add report-mode class.
+             This forces the crosshair to
+             appear over polygons and points.
+            */
+
+            map.getContainer().classList.add(
+                'report-mode'
+            );
+
 
         }
 
 
-        /* =========================================
-           CLICK MAP TO SELECT REPORT LOCATION
-        ========================================= */
+        /* =====================================
+           MAP CLICK
+        ===================================== */
 
         map.on(
 
@@ -1807,19 +2253,6 @@
                 }
 
 
-                if (
-                    !westernProvinceFeature
-                ) {
-
-                    alert(
-                        'Western Province boundary has not loaded yet.'
-                    );
-
-                    return;
-
-                }
-
-
                 const clickedLat =
                     e.latlng.lat;
 
@@ -1828,66 +2261,19 @@
                     e.latlng.lng;
 
 
-                /*
-                   Turf uses longitude first,
-                   then latitude.
-                */
+                const insideProvince =
+                    isPointInsideWesternProvince(
 
-                const clickedPoint =
-                    turf.point(
+                        clickedLat,
 
-                        [
-
-                            clickedLng,
-
-                            clickedLat
-
-                        ]
+                        clickedLng
 
                     );
-
-
-                let insideProvince =
-                    false;
-
-
-                try {
-
-
-                    insideProvince =
-                        turf.booleanPointInPolygon(
-
-                            clickedPoint,
-
-                            westernProvinceFeature
-
-                        );
-
-
-                }
-
-                catch(error) {
-
-
-                    console.error(
-                        'Boundary checking error:',
-                        error
-                    );
-
-
-                    alert(
-                        'Unable to check the selected location. Please try again.'
-                    );
-
-
-                    return;
-
-                }
 
 
                 /*
-                   Reject locations outside
-                   Western Province.
+                 Reject points outside
+                 Western Province.
                 */
 
                 if (
@@ -1896,14 +2282,26 @@
 
 
                     alert(
+
                         'Please select a location inside the Western Province boundary.'
+
                     );
 
+
+                    /*
+                     Keep report mode active.
+                     User can immediately try
+                     clicking another location.
+                    */
 
                     return;
 
                 }
 
+
+                /*
+                 Valid point.
+                */
 
                 selectedLat =
                     clickedLat;
@@ -1913,24 +2311,23 @@
                     clickedLng;
 
 
-                /*
-                   Remove old temporary point.
-                */
-
                 if (
                     temporaryMarker
                 ) {
+
 
                     map.removeLayer(
                         temporaryMarker
                     );
 
+
                 }
 
 
                 /*
-                   Centered circle marker.
-                   This appears exactly where clicked.
+                 Small centered marker.
+                 It appears exactly at the
+                 selected coordinates.
                 */
 
                 temporaryMarker =
@@ -2004,8 +2401,13 @@
                     'none';
 
 
-                map.getContainer().style.cursor =
-                    '';
+                /*
+                 Restore normal mouse behaviour.
+                */
+
+                map.getContainer().classList.remove(
+                    'report-mode'
+                );
 
 
                 reportMode =
@@ -2015,14 +2417,15 @@
                 modalOverlay.style.display =
                     'flex';
 
+
             }
 
         );
 
 
-        /* =========================================
+        /* =====================================
            CANCEL REPORT
-        ========================================= */
+        ===================================== */
 
         cancelButton.addEventListener(
 
@@ -2052,13 +2455,15 @@
                 false;
 
 
-            map.getContainer().style.cursor =
-                '';
+            map.getContainer().classList.remove(
+                'report-mode'
+            );
 
 
             if (
                 temporaryMarker
             ) {
+
 
                 map.removeLayer(
                     temporaryMarker
@@ -2067,6 +2472,7 @@
 
                 temporaryMarker =
                     null;
+
 
             }
 
@@ -2081,12 +2487,13 @@
 
             reportForm.reset();
 
+
         }
 
 
-        /* =========================================
+        /* =====================================
            SUBMIT REPORT
-        ========================================= */
+        ===================================== */
 
         reportForm.addEventListener(
 
@@ -2099,13 +2506,20 @@
 
 
                 if (
+
                     selectedLat === null ||
+
                     selectedLng === null
+
                 ) {
 
+
                     alert(
-                        'Please select a location inside Western Province.'
+
+                        'Please select a valid location inside Western Province.'
+
                     );
+
 
                     return;
 
@@ -2145,10 +2559,6 @@
                 const reportTime =
                     new Date();
 
-
-                /*
-                   Public report marker.
-                */
 
                 const reportMarker =
                     L.circleMarker(
@@ -2282,13 +2692,10 @@
                 );
 
 
-                /*
-                   Remove temporary selected-location marker.
-                */
-
                 if (
                     temporaryMarker
                 ) {
+
 
                     map.removeLayer(
                         temporaryMarker
@@ -2297,6 +2704,7 @@
 
                     temporaryMarker =
                         null;
+
 
                 }
 
@@ -2312,7 +2720,9 @@
 
 
                 alert(
+
                     'Report submitted successfully. This test report is marked as Pending Verification.'
+
                 );
 
 
@@ -2323,14 +2733,15 @@
                 selectedLng =
                     null;
 
+
             }
 
         );
 
 
-        /* =========================================
-           PREVENT TITLE INTERACTION ISSUES
-        ========================================= */
+        /* =====================================
+           TITLE
+        ===================================== */
 
         const title =
             document.querySelector(
@@ -2344,7 +2755,9 @@
 
 
         console.log(
-            'Western Province flood map and reporting system loaded successfully.'
+
+            'Western Province flood web map loaded successfully.'
+
         );
 
 
