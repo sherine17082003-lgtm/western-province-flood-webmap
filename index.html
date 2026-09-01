@@ -36,9 +36,9 @@
             height: 100vh;
         }
 
-        /* ===============================
+        /* =====================================
            MAP TITLE
-        =============================== */
+        ===================================== */
 
         .map-title {
             position: absolute;
@@ -66,9 +66,9 @@
             font-weight: normal;
         }
 
-        /* ===============================
+        /* =====================================
            LEGEND
-        =============================== */
+        ===================================== */
 
         .legend {
             background: rgba(255,255,255,0.96);
@@ -100,9 +100,9 @@
             border: 1px solid rgba(0,0,0,0.2);
         }
 
-        /* ===============================
+        /* =====================================
            REPORT BUTTON
-        =============================== */
+        ===================================== */
 
         .report-control {
             background: #d7191c;
@@ -127,9 +127,42 @@
             background: #a80000;
         }
 
-        /* ===============================
-           REPORT MODAL
-        =============================== */
+        /* =====================================
+           INSTRUCTION MESSAGE
+        ===================================== */
+
+        .instruction-box {
+            display: none;
+
+            position: absolute;
+
+            top: 85px;
+            left: 50%;
+
+            transform: translateX(-50%);
+
+            z-index: 2000;
+
+            background: #fff3cd;
+
+            color: #664d03;
+
+            border: 1px solid #ffecb5;
+
+            border-radius: 5px;
+
+            padding: 10px 14px;
+
+            font-size: 14px;
+            font-weight: bold;
+
+            box-shadow:
+                0 2px 8px rgba(0,0,0,0.25);
+        }
+
+        /* =====================================
+           REPORT FORM MODAL
+        ===================================== */
 
         .modal-overlay {
             display: none;
@@ -275,36 +308,6 @@
             background: #444;
         }
 
-        .instruction-box {
-            display: none;
-
-            position: absolute;
-
-            top: 85px;
-            left: 50%;
-
-            transform: translateX(-50%);
-
-            z-index: 2000;
-
-            background: #fff3cd;
-
-            color: #664d03;
-
-            border: 1px solid #ffecb5;
-
-            border-radius: 5px;
-
-            padding: 10px 14px;
-
-            font-size: 14px;
-
-            font-weight: bold;
-
-            box-shadow:
-                0 2px 8px rgba(0,0,0,0.25);
-        }
-
         .popup-title {
             font-weight: bold;
             font-size: 14px;
@@ -374,13 +377,13 @@
     </div>
 
 
-    <!-- MAP CLICK INSTRUCTION -->
+    <!-- CLICK INSTRUCTION -->
 
     <div
         id="instructionBox"
         class="instruction-box"
     >
-        Click a location on the map to report waterlogging.
+        Click a location inside Western Province to report waterlogging.
     </div>
 
 
@@ -389,7 +392,7 @@
     <div id="map"></div>
 
 
-    <!-- REPORT FORM MODAL -->
+    <!-- REPORT FORM -->
 
     <div
         id="reportModalOverlay"
@@ -603,6 +606,14 @@
     </script>
 
 
+    <!-- TURF JS -->
+    <!-- Used to check whether clicked points are inside Western Province -->
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/@turf/turf@7/turf.min.js">
+    </script>
+
+
     <script>
 
 
@@ -610,9 +621,10 @@
            CREATE MAP
         ========================================= */
 
-        const map = L.map(
-            'map'
-        );
+        const map =
+            L.map(
+                'map'
+            );
 
 
         const floodBounds = [
@@ -631,10 +643,14 @@
 
 
         map.fitBounds(
+
             floodBounds,
+
             {
-                padding: [20,20]
+                padding:
+                    [20,20]
             }
+
         );
 
 
@@ -649,7 +665,8 @@
 
                 {
 
-                    maxZoom: 19,
+                    maxZoom:
+                        19,
 
                     attribution:
                         '&copy; OpenStreetMap contributors'
@@ -718,46 +735,125 @@
                 floodBounds,
 
                 {
-                    opacity: 0.65
+
+                    opacity:
+                        0.65,
+
+                    interactive:
+                        false
+
                 }
 
             );
 
 
         /* =========================================
-           WESTERN PROVINCE
+           WESTERN PROVINCE BOUNDARY
         ========================================= */
+
+        let westernProvinceFeature =
+            null;
+
+
+        let westernProvinceLayer =
+            null;
+
 
         fetch(
             'data/western_province.geojson'
         )
 
         .then(
-            response => response.json()
+            response =>
+                response.json()
         )
 
         .then(
             data => {
 
-                L.geoJSON(
 
-                    data,
+                /*
+                   Store the polygon so Turf.js
+                   can check whether report points
+                   are inside Western Province.
+                */
 
-                    {
 
-                        style: {
+                if (
+                    data.type ===
+                    "FeatureCollection"
+                ) {
 
-                            color: '#222222',
+                    if (
+                        data.features &&
+                        data.features.length > 0
+                    ) {
 
-                            weight: 3,
-
-                            fillOpacity: 0
-
-                        }
+                        westernProvinceFeature =
+                            data.features[0];
 
                     }
 
-                ).addTo(map);
+                }
+
+                else if (
+                    data.type ===
+                    "Feature"
+                ) {
+
+                    westernProvinceFeature =
+                        data;
+
+                }
+
+
+                westernProvinceLayer =
+                    L.geoJSON(
+
+                        data,
+
+                        {
+
+                            style: {
+
+                                color:
+                                    '#222222',
+
+                                weight:
+                                    3,
+
+                                opacity:
+                                    1,
+
+                                fillOpacity:
+                                    0
+
+                            },
+
+                            interactive:
+                                false
+
+                        }
+
+                    );
+
+
+                westernProvinceLayer.addTo(
+                    map
+                );
+
+            }
+
+        )
+
+        .catch(
+
+            error => {
+
+                console.error(
+                    'Western Province boundary error:',
+                    error
+                );
 
             }
 
@@ -773,7 +869,8 @@
         )
 
         .then(
-            response => response.json()
+            response =>
+                response.json()
         )
 
         .then(
@@ -787,11 +884,14 @@
 
                         style: {
 
-                            color: '#0057b8',
+                            color:
+                                '#0057b8',
 
-                            weight: 2,
+                            weight:
+                                2,
 
-                            fillOpacity: 0
+                            fillOpacity:
+                                0
 
                         },
 
@@ -846,7 +946,8 @@
         )
 
         .then(
-            response => response.json()
+            response =>
+                response.json()
         )
 
         .then(
@@ -860,11 +961,14 @@
 
                         style: {
 
-                            color: '#666666',
+                            color:
+                                '#666666',
 
-                            weight: 1.2,
+                            weight:
+                                1.2,
 
-                            fillOpacity: 0
+                            fillOpacity:
+                                0
 
                         }
 
@@ -888,7 +992,8 @@
         )
 
         .then(
-            response => response.json()
+            response =>
+                response.json()
         )
 
         .then(
@@ -902,11 +1007,14 @@
 
                         style: {
 
-                            color: '#999999',
+                            color:
+                                '#999999',
 
-                            weight: 0.6,
+                            weight:
+                                0.6,
 
-                            fillOpacity: 0
+                            fillOpacity:
+                                0
 
                         }
 
@@ -930,7 +1038,8 @@
         )
 
         .then(
-            response => response.json()
+            response =>
+                response.json()
         )
 
         .then(
@@ -944,9 +1053,11 @@
 
                         style: {
 
-                            color: '#0066cc',
+                            color:
+                                '#0066cc',
 
-                            weight: 2.5
+                            weight:
+                                2.5
 
                         }
 
@@ -970,7 +1081,8 @@
         )
 
         .then(
-            response => response.json()
+            response =>
+                response.json()
         )
 
         .then(
@@ -984,9 +1096,11 @@
 
                         style: {
 
-                            color: '#00a6ff',
+                            color:
+                                '#00a6ff',
 
-                            weight: 1.5
+                            weight:
+                                1.5
 
                         }
 
@@ -1010,7 +1124,8 @@
         )
 
         .then(
-            response => response.json()
+            response =>
+                response.json()
         )
 
         .then(
@@ -1024,9 +1139,11 @@
 
                         style: {
 
-                            color: '#555555',
+                            color:
+                                '#555555',
 
-                            weight: 1.7
+                            weight:
+                                1.7
 
                         }
 
@@ -1050,7 +1167,8 @@
         )
 
         .then(
-            response => response.json()
+            response =>
+                response.json()
         )
 
         .then(
@@ -1074,7 +1192,8 @@
 
                                     {
 
-                                        radius: 5,
+                                        radius:
+                                            5,
 
                                         fillColor:
                                             '#d7191c',
@@ -1082,7 +1201,8 @@
                                         color:
                                             '#ffffff',
 
-                                        weight: 1,
+                                        weight:
+                                            1,
 
                                         fillOpacity:
                                             0.9
@@ -1113,7 +1233,8 @@
         )
 
         .then(
-            response => response.json()
+            response =>
+                response.json()
         )
 
         .then(
@@ -1137,7 +1258,8 @@
 
                                     {
 
-                                        radius: 4,
+                                        radius:
+                                            4,
 
                                         fillColor:
                                             '#7b2cbf',
@@ -1145,7 +1267,8 @@
                                         color:
                                             '#ffffff',
 
-                                        weight: 1,
+                                        weight:
+                                            1,
 
                                         fillOpacity:
                                             0.85
@@ -1176,7 +1299,8 @@
         )
 
         .then(
-            response => response.json()
+            response =>
+                response.json()
         )
 
         .then(
@@ -1200,7 +1324,8 @@
 
                                     {
 
-                                        radius: 8,
+                                        radius:
+                                            8,
 
                                         fillColor:
                                             '#ff0000',
@@ -1208,7 +1333,8 @@
                                         color:
                                             '#7a0000',
 
-                                        weight: 2,
+                                        weight:
+                                            2,
 
                                         fillOpacity:
                                             0.9
@@ -1296,13 +1422,24 @@
            DEFAULT LAYERS
         ========================================= */
 
-        floodLayer.addTo(map);
+        floodLayer.addTo(
+            map
+        );
 
-        districtLayer.addTo(map);
 
-        hotspotLayer.addTo(map);
+        districtLayer.addTo(
+            map
+        );
 
-        publicReportLayer.addTo(map);
+
+        hotspotLayer.addTo(
+            map
+        );
+
+
+        publicReportLayer.addTo(
+            map
+        );
 
 
         /* =========================================
@@ -1363,13 +1500,17 @@
 
             {
 
-                collapsed: false,
+                collapsed:
+                    false,
 
-                position: 'topright'
+                position:
+                    'topright'
 
             }
 
-        ).addTo(map);
+        ).addTo(
+            map
+        );
 
 
         /* =========================================
@@ -1380,8 +1521,10 @@
             L.control(
 
                 {
+
                     position:
                         'bottomright'
+
                 }
 
             );
@@ -1389,6 +1532,7 @@
 
         legend.onAdd =
             function() {
+
 
                 const div =
                     L.DomUtil.create(
@@ -1406,6 +1550,7 @@
                         Flood Susceptibility
                     </div>
 
+
                     <div class="legend-row">
 
                         <span
@@ -1416,6 +1561,7 @@
                         Very Low
 
                     </div>
+
 
                     <div class="legend-row">
 
@@ -1428,6 +1574,7 @@
 
                     </div>
 
+
                     <div class="legend-row">
 
                         <span
@@ -1439,6 +1586,7 @@
 
                     </div>
 
+
                     <div class="legend-row">
 
                         <span
@@ -1449,6 +1597,7 @@
                         High
 
                     </div>
+
 
                     <div class="legend-row">
 
@@ -1469,7 +1618,9 @@
             };
 
 
-        legend.addTo(map);
+        legend.addTo(
+            map
+        );
 
 
         /* =========================================
@@ -1491,19 +1642,23 @@
 
             }
 
-        ).addTo(map);
+        ).addTo(
+            map
+        );
 
 
         /* =========================================
-           REPORT WATERLOGGING BUTTON
+           REPORT BUTTON
         ========================================= */
 
         const reportControl =
             L.control(
 
                 {
+
                     position:
                         'topleft'
+
                 }
 
             );
@@ -1511,6 +1666,7 @@
 
         reportControl.onAdd =
             function() {
+
 
                 const div =
                     L.DomUtil.create(
@@ -1548,20 +1704,29 @@
             };
 
 
-        reportControl.addTo(map);
+        reportControl.addTo(
+            map
+        );
 
 
         /* =========================================
-           REPORTING VARIABLES
+           REPORT VARIABLES
         ========================================= */
 
-        let reportMode = false;
+        let reportMode =
+            false;
 
-        let selectedLat = null;
 
-        let selectedLng = null;
+        let selectedLat =
+            null;
 
-        let temporaryMarker = null;
+
+        let selectedLng =
+            null;
+
+
+        let temporaryMarker =
+            null;
 
 
         const instructionBox =
@@ -1594,7 +1759,23 @@
 
         function startReportMode() {
 
-            reportMode = true;
+
+            if (
+                !westernProvinceFeature
+            ) {
+
+                alert(
+                    'Western Province boundary is still loading. Please wait a moment and try again.'
+                );
+
+                return;
+
+            }
+
+
+            reportMode =
+                true;
+
 
             instructionBox.style.display =
                 'block';
@@ -1607,7 +1788,7 @@
 
 
         /* =========================================
-           CLICK MAP TO SELECT LOCATION
+           CLICK MAP TO SELECT REPORT LOCATION
         ========================================= */
 
         map.on(
@@ -1616,7 +1797,108 @@
 
             function(e) {
 
-                if (!reportMode) {
+
+                if (
+                    !reportMode
+                ) {
+
+                    return;
+
+                }
+
+
+                if (
+                    !westernProvinceFeature
+                ) {
+
+                    alert(
+                        'Western Province boundary has not loaded yet.'
+                    );
+
+                    return;
+
+                }
+
+
+                const clickedLat =
+                    e.latlng.lat;
+
+
+                const clickedLng =
+                    e.latlng.lng;
+
+
+                /*
+                   Turf uses longitude first,
+                   then latitude.
+                */
+
+                const clickedPoint =
+                    turf.point(
+
+                        [
+
+                            clickedLng,
+
+                            clickedLat
+
+                        ]
+
+                    );
+
+
+                let insideProvince =
+                    false;
+
+
+                try {
+
+
+                    insideProvince =
+                        turf.booleanPointInPolygon(
+
+                            clickedPoint,
+
+                            westernProvinceFeature
+
+                        );
+
+
+                }
+
+                catch(error) {
+
+
+                    console.error(
+                        'Boundary checking error:',
+                        error
+                    );
+
+
+                    alert(
+                        'Unable to check the selected location. Please try again.'
+                    );
+
+
+                    return;
+
+                }
+
+
+                /*
+                   Reject locations outside
+                   Western Province.
+                */
+
+                if (
+                    !insideProvince
+                ) {
+
+
+                    alert(
+                        'Please select a location inside the Western Province boundary.'
+                    );
+
 
                     return;
 
@@ -1624,14 +1906,20 @@
 
 
                 selectedLat =
-                    e.latlng.lat;
+                    clickedLat;
 
 
                 selectedLng =
-                    e.latlng.lng;
+                    clickedLng;
 
 
-                if (temporaryMarker) {
+                /*
+                   Remove old temporary point.
+                */
+
+                if (
+                    temporaryMarker
+                ) {
 
                     map.removeLayer(
                         temporaryMarker
@@ -1640,29 +1928,76 @@
                 }
 
 
+                /*
+                   Centered circle marker.
+                   This appears exactly where clicked.
+                */
+
                 temporaryMarker =
-                    L.marker(
+                    L.circleMarker(
 
                         [
-                            selectedLat,
-                            selectedLng
-                        ]
 
-                    ).addTo(map);
+                            selectedLat,
+
+                            selectedLng
+
+                        ],
+
+                        {
+
+                            radius:
+                                8,
+
+                            color:
+                                '#000000',
+
+                            weight:
+                                2,
+
+                            fillColor:
+                                '#00bfff',
+
+                            fillOpacity:
+                                1
+
+                        }
+
+                    ).addTo(
+                        map
+                    );
+
+
+                temporaryMarker.bindTooltip(
+
+                    'Selected report location',
+
+                    {
+
+                        direction:
+                            'top'
+
+                    }
+
+                );
 
 
                 document.getElementById(
                     'selectedLatitude'
                 ).textContent =
 
-                    selectedLat.toFixed(6);
+                    selectedLat.toFixed(
+                        6
+                    );
 
 
                 document.getElementById(
                     'selectedLongitude'
                 ).textContent =
 
-                    selectedLng.toFixed(6);
+                    selectedLng.toFixed(
+                        6
+                    );
 
 
                 instructionBox.style.display =
@@ -1673,7 +2008,8 @@
                     '';
 
 
-                reportMode = false;
+                reportMode =
+                    false;
 
 
                 modalOverlay.style.display =
@@ -1703,6 +2039,7 @@
 
         function closeReportForm() {
 
+
             modalOverlay.style.display =
                 'none';
 
@@ -1711,22 +2048,35 @@
                 'none';
 
 
-            reportMode = false;
+            reportMode =
+                false;
 
 
             map.getContainer().style.cursor =
                 '';
 
 
-            if (temporaryMarker) {
+            if (
+                temporaryMarker
+            ) {
 
                 map.removeLayer(
                     temporaryMarker
                 );
 
-                temporaryMarker = null;
+
+                temporaryMarker =
+                    null;
 
             }
+
+
+            selectedLat =
+                null;
+
+
+            selectedLng =
+                null;
 
 
             reportForm.reset();
@@ -1744,6 +2094,7 @@
 
             function(event) {
 
+
                 event.preventDefault();
 
 
@@ -1753,7 +2104,7 @@
                 ) {
 
                     alert(
-                        'Please select a location on the map.'
+                        'Please select a location inside Western Province.'
                     );
 
                     return;
@@ -1795,17 +2146,25 @@
                     new Date();
 
 
+                /*
+                   Public report marker.
+                */
+
                 const reportMarker =
                     L.circleMarker(
 
                         [
+
                             selectedLat,
+
                             selectedLng
+
                         ],
 
                         {
 
-                            radius: 9,
+                            radius:
+                                9,
 
                             fillColor:
                                 '#0066ff',
@@ -1813,7 +2172,8 @@
                             color:
                                 '#ffffff',
 
-                            weight: 2,
+                            weight:
+                                2,
 
                             fillOpacity:
                                 0.95
@@ -1922,11 +2282,18 @@
                 );
 
 
-                if (temporaryMarker) {
+                /*
+                   Remove temporary selected-location marker.
+                */
+
+                if (
+                    temporaryMarker
+                ) {
 
                     map.removeLayer(
                         temporaryMarker
                     );
+
 
                     temporaryMarker =
                         null;
@@ -1949,9 +2316,12 @@
                 );
 
 
-                selectedLat = null;
+                selectedLat =
+                    null;
 
-                selectedLng = null;
+
+                selectedLng =
+                    null;
 
             }
 
@@ -1974,7 +2344,7 @@
 
 
         console.log(
-            'Flood web map and reporting interface loaded.'
+            'Western Province flood map and reporting system loaded successfully.'
         );
 
 
