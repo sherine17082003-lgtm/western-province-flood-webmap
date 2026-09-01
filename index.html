@@ -1,2765 +1,1139 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
-    <title>
-        Western Province Flood Web Map
-    </title>
+    <title>Western Province Flood Web Map</title>
 
     <!-- Leaflet CSS -->
     <link
         rel="stylesheet"
         href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-    >
+    />
 
     <style>
+        * {
+            box-sizing: border-box;
+        }
 
         html,
         body {
             margin: 0;
             padding: 0;
-            width: 100%;
             height: 100%;
             font-family: Arial, Helvetica, sans-serif;
+            background: #f4f7f9;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background: #0b4f6c;
+            color: white;
+            padding: 14px 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 22px;
+        }
+
+        header p {
+            margin: 5px 0 0;
+            font-size: 13px;
+            opacity: 0.9;
+        }
+
+        #main {
+            position: relative;
+            flex: 1;
+            min-height: 0;
         }
 
         #map {
             width: 100%;
-            height: 100vh;
-        }
-
-
-        /* =====================================
-           MAP TITLE
-        ===================================== */
-
-        .map-title {
-
-            position: absolute;
-
-            top: 10px;
-            left: 50%;
-
-            transform: translateX(-50%);
-
-            z-index: 1000;
-
-            background: rgba(255,255,255,0.96);
-
-            padding: 10px 18px;
-
-            border-radius: 7px;
-
-            box-shadow:
-                0 2px 8px rgba(0,0,0,0.30);
-
-            text-align: center;
-
-            font-size: 17px;
-
-            font-weight: bold;
-
-            max-width: 65%;
-
-            line-height: 1.25;
-        }
-
-
-        .map-subtitle {
-
-            font-size: 14px;
-
-            font-weight: normal;
-        }
-
-
-        /* =====================================
-           LEGEND
-        ===================================== */
-
-        .legend {
-
-            background: rgba(255,255,255,0.96);
-
-            padding: 10px 12px;
-
-            border-radius: 6px;
-
-            box-shadow:
-                0 1px 6px rgba(0,0,0,0.35);
-
-            font-size: 13px;
-
-            line-height: 21px;
-        }
-
-
-        .legend-title {
-
-            font-weight: bold;
-
-            margin-bottom: 5px;
-        }
-
-
-        .legend-row {
-
-            display: flex;
-
-            align-items: center;
-
-            margin-top: 3px;
-        }
-
-
-        .legend-color {
-
-            width: 18px;
-
-            height: 18px;
-
-            margin-right: 8px;
-
-            border:
-                1px solid rgba(0,0,0,0.2);
-        }
-
-
-        /* =====================================
-           REPORT BUTTON
-        ===================================== */
-
-        .report-control {
-
-            background: #d7191c;
-
-            color: white;
-
-            padding: 9px 12px;
-
-            border-radius: 5px;
-
-            font-size: 13px;
-
-            font-weight: bold;
-
-            cursor: pointer;
-
-            box-shadow:
-                0 1px 5px rgba(0,0,0,0.4);
-
-            border: 2px solid white;
-        }
-
-
-        .report-control:hover {
-
-            background: #a80000;
-        }
-
-
-        /* =====================================
-           REPORT CURSOR LOGIC
-        ===================================== */
-
-        #map.report-selecting {
-
-            cursor: default;
-        }
-
-
-        /*
-           Inside Western Province
-        */
-
-        #map.report-selecting.report-inside,
-        #map.report-selecting.report-inside * {
-
-            cursor: crosshair !important;
-        }
-
-
-        /*
-           Outside Western Province
-        */
-
-        #map.report-selecting.report-outside,
-        #map.report-selecting.report-outside * {
-
-            cursor: not-allowed !important;
-        }
-
-
-        /*
-           Vector layers should not block map mouse events
-           while report mode is active.
-        */
-
-        #map.report-selecting .leaflet-interactive,
-        #map.report-selecting .leaflet-marker-icon,
-        #map.report-selecting .leaflet-marker-shadow {
-
-            pointer-events: none !important;
-        }
-
-
-        /*
-           Keep Leaflet controls clickable.
-        */
-
-        #map.report-selecting .leaflet-control {
-
-            pointer-events: auto !important;
-        }
-
-
-        /* =====================================
-           INSTRUCTION MESSAGE
-        ===================================== */
-
-        .instruction-box {
-
-            display: none;
-
-            position: absolute;
-
-            top: 85px;
-
-            left: 50%;
-
-            transform: translateX(-50%);
-
-            z-index: 2000;
-
-            background: #fff3cd;
-
-            color: #664d03;
-
-            border: 1px solid #ffecb5;
-
-            border-radius: 5px;
-
-            padding: 10px 14px;
-
-            font-size: 14px;
-
-            font-weight: bold;
-
-            box-shadow:
-                0 2px 8px rgba(0,0,0,0.25);
-        }
-
-
-        /* =====================================
-           REPORT FORM
-        ===================================== */
-
-        .modal-overlay {
-
-            display: none;
-
-            position: fixed;
-
-            top: 0;
-            left: 0;
-
-            width: 100%;
             height: 100%;
-
-            background:
-                rgba(0,0,0,0.55);
-
-            z-index: 3000;
-
-            justify-content: center;
-
-            align-items: center;
         }
 
-
-        .report-modal {
-
-            background: white;
-
-            width: 420px;
-
-            max-width: 90%;
-
-            max-height: 90vh;
-
+        .panel {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 350px;
+            max-height: calc(100% - 30px);
             overflow-y: auto;
-
-            border-radius: 8px;
-
-            box-shadow:
-                0 4px 20px rgba(0,0,0,0.35);
-
-            padding: 20px;
+            background: white;
+            z-index: 1000;
+            border-radius: 10px;
+            padding: 18px;
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.25);
         }
 
-
-        .report-modal h2 {
-
-            margin-top: 0;
-
-            margin-bottom: 5px;
-
-            color: #222;
+        .panel h2 {
+            margin: 0 0 8px;
+            color: #0b4f6c;
+            font-size: 20px;
         }
 
-
-        .report-modal p {
-
-            font-size: 13px;
-
+        .instructions {
+            margin: 0 0 15px;
             color: #555;
-
-            margin-top: 5px;
+            font-size: 13px;
+            line-height: 1.5;
         }
 
+        .selected-location {
+            padding: 10px;
+            margin-bottom: 12px;
+            background: #eef7fa;
+            border-left: 4px solid #0b4f6c;
+            font-size: 13px;
+            line-height: 1.5;
+        }
 
         .form-group {
-
-            margin-bottom: 13px;
+            margin-bottom: 12px;
         }
 
-
-        .form-group label {
-
+        label {
             display: block;
-
-            font-weight: bold;
-
-            font-size: 13px;
-
             margin-bottom: 5px;
+            font-size: 13px;
+            font-weight: bold;
+            color: #333;
         }
 
-
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-
+        input,
+        select,
+        textarea {
             width: 100%;
-
-            box-sizing: border-box;
-
-            padding: 8px;
-
-            border: 1px solid #bbb;
-
-            border-radius: 4px;
-
+            padding: 9px 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
             font-size: 14px;
+            background: white;
         }
 
-
-        .form-group textarea {
-
+        textarea {
             resize: vertical;
-
             min-height: 70px;
         }
 
-
-        .coordinate-box {
-
-            background: #f3f3f3;
-
-            padding: 9px;
-
-            border-radius: 4px;
-
-            font-size: 12px;
-
-            border: 1px solid #ddd;
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #0b4f6c;
+            box-shadow: 0 0 0 2px rgba(11, 79, 108, 0.12);
         }
 
-
-        .form-buttons {
-
-            display: flex;
-
-            gap: 10px;
-
-            margin-top: 18px;
-        }
-
-
-        .submit-button {
-
-            flex: 1;
-
+        button {
             border: none;
-
-            background: #198754;
-
-            color: white;
-
-            padding: 10px;
-
-            font-weight: bold;
-
             border-radius: 5px;
-
-            cursor: pointer;
-        }
-
-
-        .submit-button:hover {
-
-            background: #146c43;
-        }
-
-
-        .cancel-button {
-
-            flex: 1;
-
-            border: none;
-
-            background: #666;
-
-            color: white;
-
-            padding: 10px;
-
-            font-weight: bold;
-
-            border-radius: 5px;
-
-            cursor: pointer;
-        }
-
-
-        .cancel-button:hover {
-
-            background: #444;
-        }
-
-
-        .popup-title {
-
-            font-weight: bold;
-
+            padding: 10px 14px;
             font-size: 14px;
-
-            margin-bottom: 6px;
+            cursor: pointer;
         }
 
-
-        .pending-label {
-
-            display: inline-block;
-
-            background: #ffc107;
-
-            color: #222;
-
-            padding: 2px 5px;
-
-            border-radius: 3px;
-
-            font-size: 11px;
-
+        #submitBtn {
+            width: 100%;
+            background: #0b4f6c;
+            color: white;
             font-weight: bold;
         }
 
+        #submitBtn:hover {
+            background: #083d54;
+        }
 
-        @media (max-width: 768px) {
+        #submitBtn:disabled {
+            background: #999;
+            cursor: not-allowed;
+        }
 
-            .map-title {
+        #locateBtn {
+            width: 100%;
+            margin-bottom: 12px;
+            background: #287271;
+            color: white;
+        }
 
-                font-size: 12px;
+        #locateBtn:hover {
+            background: #1f5b5a;
+        }
 
-                padding: 7px 9px;
+        .message {
+            display: none;
+            margin-top: 12px;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 13px;
+            line-height: 1.4;
+        }
 
-                max-width: 60%;
+        .success {
+            display: block;
+            background: #dff5e4;
+            color: #155724;
+            border: 1px solid #b7dfc0;
+        }
+
+        .error {
+            display: block;
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f1b0b7;
+        }
+
+        .loading {
+            display: block;
+            background: #e8f2fb;
+            color: #174b70;
+            border: 1px solid #b8d7ef;
+        }
+
+        .legend {
+            position: absolute;
+            left: 15px;
+            bottom: 25px;
+            background: white;
+            padding: 10px 12px;
+            z-index: 900;
+            border-radius: 6px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            font-size: 12px;
+        }
+
+        .legend h4 {
+            margin: 0 0 7px;
+        }
+
+        .legend-row {
+            display: flex;
+            align-items: center;
+            margin: 5px 0;
+        }
+
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 7px;
+        }
+
+        .green {
+            background: #28a745;
+        }
+
+        .orange {
+            background: #f39c12;
+        }
+
+        .red {
+            background: #dc3545;
+        }
+
+        .status-box {
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid #ddd;
+            font-size: 12px;
+            color: #666;
+        }
+
+        @media (max-width: 700px) {
+            header h1 {
+                font-size: 18px;
             }
 
-
-            .map-subtitle {
-
-                font-size: 10px;
+            .panel {
+                top: auto;
+                right: 10px;
+                left: 10px;
+                bottom: 10px;
+                width: auto;
+                max-height: 52%;
             }
-
 
             .legend {
-
-                font-size: 11px;
-
-                padding: 7px;
+                left: 10px;
+                bottom: calc(52% + 20px);
             }
-
-
-            .leaflet-control-layers {
-
-                font-size: 11px;
-            }
-
         }
-
     </style>
-
 </head>
-
 
 <body>
 
+<header>
+    <h1>Western Province Flood Web Map</h1>
+    <p>Community flood and waterlogging reporting system</p>
+</header>
 
-    <!-- MAP TITLE -->
-
-    <div class="map-title">
-
-        Interactive Urban Flood Vulnerability and
-        Waterlogging Hotspot Reporting Web Map
-
-        <br>
-
-        <span class="map-subtitle">
-
-            Western Province, Sri Lanka
-
-        </span>
-
-    </div>
-
-
-    <!-- REPORT INSTRUCTION -->
-
-    <div
-        id="instructionBox"
-        class="instruction-box"
-    >
-
-        ✚ Move inside Western Province and click a location to report waterlogging.
-
-    </div>
-
-
-    <!-- MAP -->
+<div id="main">
 
     <div id="map"></div>
 
+    <div class="legend">
+        <h4>Flood Severity</h4>
+
+        <div class="legend-row">
+            <span class="legend-dot green"></span>
+            Low
+        </div>
+
+        <div class="legend-row">
+            <span class="legend-dot orange"></span>
+            Medium
+        </div>
+
+        <div class="legend-row">
+            <span class="legend-dot red"></span>
+            High
+        </div>
+    </div>
+
+    <div class="panel">
+
+        <h2>Report Flooding</h2>
+
+        <p class="instructions">
+            Click the affected location on the map, or use your current
+            location, then complete the form.
+        </p>
+
+        <button id="locateBtn" type="button">
+            📍 Use My Current Location
+        </button>
+
+        <div class="selected-location">
+            <strong>Selected location</strong><br>
+            Latitude:
+            <span id="latDisplay">Not selected</span>
+            <br>
+            Longitude:
+            <span id="lngDisplay">Not selected</span>
+        </div>
+
+        <form id="reportForm">
+
+            <div class="form-group">
+                <label for="incidentType">Incident Type *</label>
+
+                <select id="incidentType" required>
+                    <option value="">Select incident type</option>
+                    <option value="Waterlogging">Waterlogging</option>
+                    <option value="Road Flooding">Road Flooding</option>
+                    <option value="River Flooding">River Flooding</option>
+                    <option value="Drain Overflow">Drain Overflow</option>
+                    <option value="Flash Flood">Flash Flood</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="severity">Severity *</label>
+
+                <select id="severity" required>
+                    <option value="">Select severity</option>
+                    <option value="Low">Low</option>
+                    <option value="Medium">Medium</option>
+                    <option value="High">High</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="waterDepth">
+                    Estimated Water Depth (cm)
+                </label>
+
+                <input
+                    type="number"
+                    id="waterDepth"
+                    min="0"
+                    step="0.1"
+                    placeholder="Example: 25"
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="roadStatus">Road Status</label>
+
+                <select id="roadStatus">
+                    <option value="">Select road status</option>
+                    <option value="Open">Open</option>
+                    <option value="Passable with caution">
+                        Passable with caution
+                    </option>
+                    <option value="Partially blocked">
+                        Partially blocked
+                    </option>
+                    <option value="Closed">Closed</option>
+                    <option value="Not applicable">
+                        Not applicable
+                    </option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="description">Description</label>
 
-    <!-- REPORT FORM -->
+                <textarea
+                    id="description"
+                    maxlength="500"
+                    placeholder="Describe the flooding situation..."
+                ></textarea>
+            </div>
 
-    <div
-        id="reportModalOverlay"
-        class="modal-overlay"
-    >
+            <button id="submitBtn" type="submit">
+                Submit Flood Report
+            </button>
 
-        <div class="report-modal">
+            <div id="message" class="message"></div>
 
-            <h2>
-                Report Waterlogging
-            </h2>
+        </form>
 
-
-            <p>
-
-                Submit an observation about flooding
-                or waterlogging at the selected location.
-
-            </p>
-
-
-            <form id="reportForm">
-
-
-                <div class="form-group">
-
-                    <label>
-                        Selected Location
-                    </label>
-
-
-                    <div class="coordinate-box">
-
-                        Latitude:
-
-                        <span id="selectedLatitude">
-                            -
-                        </span>
-
-                        <br>
-
-                        Longitude:
-
-                        <span id="selectedLongitude">
-                            -
-                        </span>
-
-                    </div>
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label for="incidentType">
-
-                        Incident Type *
-
-                    </label>
-
-
-                    <select
-                        id="incidentType"
-                        required
-                    >
-
-                        <option value="">
-                            Select incident type
-                        </option>
-
-                        <option value="Waterlogging">
-                            Waterlogging
-                        </option>
-
-                        <option value="Road Flooding">
-                            Road Flooding
-                        </option>
-
-                        <option value="River Flooding">
-                            River Flooding
-                        </option>
-
-                        <option value="Drain Overflow">
-                            Drain Overflow
-                        </option>
-
-                    </select>
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label for="severity">
-
-                        Severity *
-
-                    </label>
-
-
-                    <select
-                        id="severity"
-                        required
-                    >
-
-                        <option value="">
-                            Select severity
-                        </option>
-
-                        <option value="Low">
-                            Low
-                        </option>
-
-                        <option value="Moderate">
-                            Moderate
-                        </option>
-
-                        <option value="High">
-                            High
-                        </option>
-
-                        <option value="Severe">
-                            Severe
-                        </option>
-
-                    </select>
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label for="waterDepth">
-
-                        Estimated Water Depth (cm)
-
-                    </label>
-
-
-                    <input
-                        type="number"
-                        id="waterDepth"
-                        min="0"
-                        max="500"
-                        placeholder="Example: 30"
-                    >
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label for="roadStatus">
-
-                        Road Status
-
-                    </label>
-
-
-                    <select id="roadStatus">
-
-                        <option value="Unknown">
-                            Unknown
-                        </option>
-
-                        <option value="Open">
-                            Open
-                        </option>
-
-                        <option value="Partially Blocked">
-                            Partially Blocked
-                        </option>
-
-                        <option value="Impassable">
-                            Impassable
-                        </option>
-
-                    </select>
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label for="description">
-
-                        Description
-
-                    </label>
-
-
-                    <textarea
-                        id="description"
-                        maxlength="500"
-                        placeholder="Briefly describe the situation..."
-                    ></textarea>
-
-                </div>
-
-
-                <div class="form-buttons">
-
-
-                    <button
-                        type="button"
-                        class="cancel-button"
-                        id="cancelReportButton"
-                    >
-
-                        Cancel
-
-                    </button>
-
-
-                    <button
-                        type="submit"
-                        class="submit-button"
-                    >
-
-                        Submit Report
-
-                    </button>
-
-
-                </div>
-
-
-            </form>
-
+        <div class="status-box">
+            Public submissions are stored as
+            <strong>Pending</strong>.
+            Only verified reports are displayed publicly.
         </div>
 
     </div>
+</div>
 
+<!-- Leaflet JavaScript -->
+<script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
+</script>
 
-    <!-- LEAFLET -->
+<script>
+    /*
+     * ---------------------------------------------------------
+     * SUPABASE CONFIGURATION
+     * ---------------------------------------------------------
+     *
+     * The publishable key is intended for client-side use.
+     * Database security is enforced using your Supabase RLS
+     * policies.
+     */
 
-    <script
-        src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
-    </script>
+    const SUPABASE_URL =
+        "https://esknramtgjeuxwaupxlu.supabase.co";
 
+    const SUPABASE_KEY =
+        "sb_publishable_AfGQ5b4mzR3rVRBdOwGV-g_ESk8zeNM";
 
-    <!-- TURF.JS -->
+    const TABLE_NAME = "waterlogging_reports";
 
-    <script
-        src="https://cdn.jsdelivr.net/npm/@turf/turf@7/turf.min.js">
-    </script>
 
+    /*
+     * ---------------------------------------------------------
+     * MAP
+     * ---------------------------------------------------------
+     */
 
-    <script>
+    // Approximate centre of Western Province, Sri Lanka.
+    const map = L.map("map").setView(
+        [6.9271, 79.8612],
+        10
+    );
 
+    L.tileLayer(
+        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+        {
+            maxZoom: 19,
+            attribution:
+                '&copy; OpenStreetMap contributors'
+        }
+    ).addTo(map);
 
-        /* =====================================
-           CREATE MAP
-        ===================================== */
 
-        const map =
-            L.map(
-                'map'
-            );
+    /*
+     * ---------------------------------------------------------
+     * REPORT LOCATION
+     * ---------------------------------------------------------
+     */
 
+    let selectedLatitude = null;
+    let selectedLongitude = null;
+    let selectedMarker = null;
 
-        const floodBounds = [
 
-            [
-                6.324768420900316,
-                79.81675029847408
-            ],
+    function setSelectedLocation(latitude, longitude) {
 
-            [
-                7.330522213000532,
-                80.38107195995796
-            ]
+        selectedLatitude = Number(latitude);
+        selectedLongitude = Number(longitude);
 
-        ];
+        document.getElementById("latDisplay").textContent =
+            selectedLatitude.toFixed(6);
 
+        document.getElementById("lngDisplay").textContent =
+            selectedLongitude.toFixed(6);
 
-        map.fitBounds(
 
-            floodBounds,
-
-            {
-
-                padding:
-                    [20,20]
-
-            }
-
-        );
-
-
-        /* =====================================
-           BASEMAP
-        ===================================== */
-
-        const osm =
-            L.tileLayer(
-
-                'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-
-                {
-
-                    maxZoom:
-                        19,
-
-                    attribution:
-                        '&copy; OpenStreetMap contributors'
-
-                }
-
-            );
-
-
-        osm.addTo(
-            map
-        );
-
-
-        /* =====================================
-           LAYER GROUPS
-        ===================================== */
-
-        const districtLayer =
-            L.layerGroup();
-
-
-        const dsdLayer =
-            L.layerGroup();
-
-
-        const gndLayer =
-            L.layerGroup();
-
-
-        const riverLayer =
-            L.layerGroup();
-
-
-        const waterwayLayer =
-            L.layerGroup();
-
-
-        const roadLayer =
-            L.layerGroup();
-
-
-        const hospitalLayer =
-            L.layerGroup();
-
-
-        const schoolLayer =
-            L.layerGroup();
-
-
-        const hotspotLayer =
-            L.layerGroup();
-
-
-        const publicReportLayer =
-            L.layerGroup();
-
-
-        /* =====================================
-           FLOOD SUSCEPTIBILITY
-        ===================================== */
-
-        const floodLayer =
-            L.imageOverlay(
-
-                'data/flood_susceptibility.png',
-
-                floodBounds,
-
-                {
-
-                    opacity:
-                        0.65,
-
-                    interactive:
-                        false
-
-                }
-
-            );
-
-
-        /* =====================================
-           WESTERN PROVINCE
-        ===================================== */
-
-        let westernProvinceData =
-            null;
-
-
-        fetch(
-            'data/western_province.geojson'
-        )
-
-        .then(
-            response =>
-                response.json()
-        )
-
-        .then(
-            data => {
-
-
-                westernProvinceData =
-                    data;
-
-
-                L.geoJSON(
-
-                    data,
-
-                    {
-
-                        style: {
-
-                            color:
-                                '#222222',
-
-                            weight:
-                                3,
-
-                            opacity:
-                                1,
-
-                            fillOpacity:
-                                0
-
-                        },
-
-
-                        interactive:
-                            false
-
-                    }
-
-                ).addTo(
-                    map
-                );
-
-
-            }
-
-        )
-
-        .catch(
-
-            error => {
-
-                console.error(
-
-                    'Western Province loading error:',
-
-                    error
-
-                );
-
-            }
-
-        );
-
-
-        /* =====================================
-           DISTRICTS
-        ===================================== */
-
-        fetch(
-            'data/districts.geojson'
-        )
-
-        .then(
-            response =>
-                response.json()
-        )
-
-        .then(
-            data => {
-
-
-                L.geoJSON(
-
-                    data,
-
-                    {
-
-                        style: {
-
-                            color:
-                                '#0057b8',
-
-                            weight:
-                                2,
-
-                            fillOpacity:
-                                0
-
-                        },
-
-
-                        onEachFeature:
-                            function(
-                                feature,
-                                layer
-                            ) {
-
-
-                                const p =
-                                    feature.properties || {};
-
-
-                                const name =
-
-                                    p.ADM2_EN ||
-
-                                    p.name ||
-
-                                    p.NAME ||
-
-                                    "District";
-
-
-                                layer.bindPopup(
-
-                                    "<b>District:</b> "
-                                    + name
-
-                                );
-
-
-                            }
-
-                    }
-
-                ).addTo(
-                    districtLayer
-                );
-
-
-            }
-
-        );
-
-
-        /* =====================================
-           DSD
-        ===================================== */
-
-        fetch(
-            'data/dsd.geojson'
-        )
-
-        .then(
-            response =>
-                response.json()
-        )
-
-        .then(
-            data => {
-
-
-                L.geoJSON(
-
-                    data,
-
-                    {
-
-                        style: {
-
-                            color:
-                                '#666666',
-
-                            weight:
-                                1.2,
-
-                            fillOpacity:
-                                0
-
-                        }
-
-                    }
-
-                ).addTo(
-                    dsdLayer
-                );
-
-
-            }
-
-        );
-
-
-        /* =====================================
-           GND
-        ===================================== */
-
-        fetch(
-            'data/gnd.geojson'
-        )
-
-        .then(
-            response =>
-                response.json()
-        )
-
-        .then(
-            data => {
-
-
-                L.geoJSON(
-
-                    data,
-
-                    {
-
-                        style: {
-
-                            color:
-                                '#999999',
-
-                            weight:
-                                0.6,
-
-                            fillOpacity:
-                                0
-
-                        }
-
-                    }
-
-                ).addTo(
-                    gndLayer
-                );
-
-
-            }
-
-        );
-
-
-        /* =====================================
-           RIVERS
-        ===================================== */
-
-        fetch(
-            'data/rivers.geojson'
-        )
-
-        .then(
-            response =>
-                response.json()
-        )
-
-        .then(
-            data => {
-
-
-                L.geoJSON(
-
-                    data,
-
-                    {
-
-                        style: {
-
-                            color:
-                                '#0066cc',
-
-                            weight:
-                                2.5
-
-                        }
-
-                    }
-
-                ).addTo(
-                    riverLayer
-                );
-
-
-            }
-
-        );
-
-
-        /* =====================================
-           WATERWAYS
-        ===================================== */
-
-        fetch(
-            'data/waterways.geojson'
-        )
-
-        .then(
-            response =>
-                response.json()
-        )
-
-        .then(
-            data => {
-
-
-                L.geoJSON(
-
-                    data,
-
-                    {
-
-                        style: {
-
-                            color:
-                                '#00a6ff',
-
-                            weight:
-                                1.5
-
-                        }
-
-                    }
-
-                ).addTo(
-                    waterwayLayer
-                );
-
-
-            }
-
-        );
-
-
-        /* =====================================
-           MAJOR ROADS
-        ===================================== */
-
-        fetch(
-            'data/major_roads.geojson'
-        )
-
-        .then(
-            response =>
-                response.json()
-        )
-
-        .then(
-            data => {
-
-
-                L.geoJSON(
-
-                    data,
-
-                    {
-
-                        style: {
-
-                            color:
-                                '#555555',
-
-                            weight:
-                                1.7
-
-                        }
-
-                    }
-
-                ).addTo(
-                    roadLayer
-                );
-
-
-            }
-
-        );
-
-
-        /* =====================================
-           HOSPITALS
-        ===================================== */
-
-        fetch(
-            'data/hospitals.geojson'
-        )
-
-        .then(
-            response =>
-                response.json()
-        )
-
-        .then(
-            data => {
-
-
-                L.geoJSON(
-
-                    data,
-
-                    {
-
-                        pointToLayer:
-                            function(
-                                feature,
-                                latlng
-                            ) {
-
-
-                                return L.circleMarker(
-
-                                    latlng,
-
-                                    {
-
-                                        radius:
-                                            5,
-
-                                        fillColor:
-                                            '#d7191c',
-
-                                        color:
-                                            '#ffffff',
-
-                                        weight:
-                                            1,
-
-                                        fillOpacity:
-                                            0.9
-
-                                    }
-
-                                );
-
-
-                            }
-
-                    }
-
-                ).addTo(
-                    hospitalLayer
-                );
-
-
-            }
-
-        );
-
-
-        /* =====================================
-           SCHOOLS
-        ===================================== */
-
-        fetch(
-            'data/schools.geojson'
-        )
-
-        .then(
-            response =>
-                response.json()
-        )
-
-        .then(
-            data => {
-
-
-                L.geoJSON(
-
-                    data,
-
-                    {
-
-                        pointToLayer:
-                            function(
-                                feature,
-                                latlng
-                            ) {
-
-
-                                return L.circleMarker(
-
-                                    latlng,
-
-                                    {
-
-                                        radius:
-                                            4,
-
-                                        fillColor:
-                                            '#7b2cbf',
-
-                                        color:
-                                            '#ffffff',
-
-                                        weight:
-                                            1,
-
-                                        fillOpacity:
-                                            0.85
-
-                                    }
-
-                                );
-
-
-                            }
-
-                    }
-
-                ).addTo(
-                    schoolLayer
-                );
-
-
-            }
-
-        );
-
-
-        /* =====================================
-           HISTORICAL HOTSPOTS
-        ===================================== */
-
-        fetch(
-            'data/historical_hotspots.geojson'
-        )
-
-        .then(
-            response =>
-                response.json()
-        )
-
-        .then(
-            data => {
-
-
-                L.geoJSON(
-
-                    data,
-
-                    {
-
-                        pointToLayer:
-                            function(
-                                feature,
-                                latlng
-                            ) {
-
-
-                                return L.circleMarker(
-
-                                    latlng,
-
-                                    {
-
-                                        radius:
-                                            8,
-
-                                        fillColor:
-                                            '#ff0000',
-
-                                        color:
-                                            '#7a0000',
-
-                                        weight:
-                                            2,
-
-                                        fillOpacity:
-                                            0.9
-
-                                    }
-
-                                );
-
-
-                            },
-
-
-                        onEachFeature:
-                            function(
-                                feature,
-                                layer
-                            ) {
-
-
-                                const p =
-                                    feature.properties || {};
-
-
-                                const popup = `
-
-                                    <div class="popup-title">
-
-                                        Historical Waterlogging Hotspot
-
-                                    </div>
-
-
-                                    <b>Location:</b>
-
-                                    ${p.location || "Unknown"}
-
-                                    <br>
-
-
-                                    <b>District:</b>
-
-                                    ${p.district || "Unknown"}
-
-                                    <br>
-
-
-                                    <b>Severity:</b>
-
-                                    ${p.severity || "Unknown"}
-
-                                    <br>
-
-
-                                    <b>Context:</b>
-
-                                    ${p.context || "Not available"}
-
-                                    <br>
-
-
-                                    <b>Evidence Grade:</b>
-
-                                    ${p.ev_grade || "Unknown"}
-
-                                `;
-
-
-                                layer.bindPopup(
-                                    popup
-                                );
-
-
-                            }
-
-                    }
-
-                ).addTo(
-                    hotspotLayer
-                );
-
-
-            }
-
-        );
-
-
-        /* =====================================
-           DEFAULT LAYERS
-        ===================================== */
-
-        floodLayer.addTo(
-            map
-        );
-
-
-        districtLayer.addTo(
-            map
-        );
-
-
-        hotspotLayer.addTo(
-            map
-        );
-
-
-        publicReportLayer.addTo(
-            map
-        );
-
-
-        /* =====================================
-           LAYER CONTROL
-        ===================================== */
-
-        const baseMaps = {
-
-            "OpenStreetMap":
-                osm
-
-        };
-
-
-        const overlays = {
-
-            "Flood Susceptibility":
-                floodLayer,
-
-            "District Boundaries":
-                districtLayer,
-
-            "Historical Hotspots":
-                hotspotLayer,
-
-            "Current Session Reports":
-                publicReportLayer,
-
-            "DSD Boundaries":
-                dsdLayer,
-
-            "GND Boundaries":
-                gndLayer,
-
-            "Rivers":
-                riverLayer,
-
-            "Waterways":
-                waterwayLayer,
-
-            "Major Roads":
-                roadLayer,
-
-            "Hospitals":
-                hospitalLayer,
-
-            "Schools":
-                schoolLayer
-
-        };
-
-
-        L.control.layers(
-
-            baseMaps,
-
-            overlays,
-
-            {
-
-                collapsed:
-                    false,
-
-                position:
-                    'topright'
-
-            }
-
-        ).addTo(
-            map
-        );
-
-
-        /* =====================================
-           LEGEND
-        ===================================== */
-
-        const legend =
-            L.control(
-
-                {
-
-                    position:
-                        'bottomright'
-
-                }
-
-            );
-
-
-        legend.onAdd =
-            function() {
-
-
-                const div =
-                    L.DomUtil.create(
-
-                        'div',
-
-                        'legend'
-
-                    );
-
-
-                div.innerHTML = `
-
-                    <div class="legend-title">
-
-                        Flood Susceptibility
-
-                    </div>
-
-
-                    <div class="legend-row">
-
-                        <span
-                            class="legend-color"
-                            style="background:#008000">
-                        </span>
-
-                        Very Low
-
-                    </div>
-
-
-                    <div class="legend-row">
-
-                        <span
-                            class="legend-color"
-                            style="background:#adff2f">
-                        </span>
-
-                        Low
-
-                    </div>
-
-
-                    <div class="legend-row">
-
-                        <span
-                            class="legend-color"
-                            style="background:#ffff00">
-                        </span>
-
-                        Moderate
-
-                    </div>
-
-
-                    <div class="legend-row">
-
-                        <span
-                            class="legend-color"
-                            style="background:#ffa500">
-                        </span>
-
-                        High
-
-                    </div>
-
-
-                    <div class="legend-row">
-
-                        <span
-                            class="legend-color"
-                            style="background:#ff0000">
-                        </span>
-
-                        Very High
-
-                    </div>
-
-                `;
-
-
-                return div;
-
-            };
-
-
-        legend.addTo(
-            map
-        );
-
-
-        /* =====================================
-           SCALE BAR
-        ===================================== */
-
-        L.control.scale(
-
-            {
-
-                position:
-                    'bottomleft',
-
-                metric:
-                    true,
-
-                imperial:
-                    false
-
-            }
-
-        ).addTo(
-            map
-        );
-
-
-        /* =====================================
-           REPORT BUTTON
-        ===================================== */
-
-        const reportControl =
-            L.control(
-
-                {
-
-                    position:
-                        'topleft'
-
-                }
-
-            );
-
-
-        reportControl.onAdd =
-            function() {
-
-
-                const div =
-                    L.DomUtil.create(
-
-                        'div',
-
-                        'report-control'
-
-                    );
-
-
-                div.innerHTML =
-                    '⚠ Report Waterlogging';
-
-
-                div.title =
-                    'Submit a new waterlogging report';
-
-
-                L.DomEvent.disableClickPropagation(
-                    div
-                );
-
-
-                div.onclick =
-                    function() {
-
-                        startReportMode();
-
-                    };
-
-
-                return div;
-
-            };
-
-
-        reportControl.addTo(
-            map
-        );
-
-
-        /* =====================================
-           REPORT VARIABLES
-        ===================================== */
-
-        let reportMode =
-            false;
-
-
-        let selectedLat =
-            null;
-
-
-        let selectedLng =
-            null;
-
-
-        let temporaryMarker =
-            null;
-
-
-        const instructionBox =
-            document.getElementById(
-                'instructionBox'
-            );
-
-
-        const modalOverlay =
-            document.getElementById(
-                'reportModalOverlay'
-            );
-
-
-        const reportForm =
-            document.getElementById(
-                'reportForm'
-            );
-
-
-        const cancelButton =
-            document.getElementById(
-                'cancelReportButton'
-            );
-
-
-        /* =====================================
-           CHECK WHETHER POINT IS INSIDE
-           WESTERN PROVINCE
-        ===================================== */
-
-        function isPointInsideWesternProvince(
-            latitude,
-            longitude
-        ) {
-
-
-            if (
-                !westernProvinceData
-            ) {
-
-                return false;
-
-            }
-
-
-            const point =
-                turf.point(
-
-                    [
-
-                        longitude,
-
-                        latitude
-
-                    ]
-
-                );
-
-
-            let features =
-                [];
-
-
-            if (
-
-                westernProvinceData.type ===
-                'FeatureCollection'
-
-            ) {
-
-
-                features =
-                    westernProvinceData.features || [];
-
-
-            }
-
-
-            else if (
-
-                westernProvinceData.type ===
-                'Feature'
-
-            ) {
-
-
-                features =
-                    [
-
-                        westernProvinceData
-
-                    ];
-
-
-            }
-
-
-            for (
-                const feature
-                of features
-            ) {
-
-
-                if (
-                    !feature ||
-                    !feature.geometry
-                ) {
-
-                    continue;
-
-                }
-
-
-                const type =
-                    feature.geometry.type;
-
-
-                if (
-
-                    type !== 'Polygon' &&
-
-                    type !== 'MultiPolygon'
-
-                ) {
-
-                    continue;
-
-                }
-
-
-                try {
-
-
-                    const inside =
-                        turf.booleanPointInPolygon(
-
-                            point,
-
-                            feature,
-
-                            {
-
-                                ignoreBoundary:
-                                    false
-
-                            }
-
-                        );
-
-
-                    if (
-                        inside
-                    ) {
-
-                        return true;
-
-                    }
-
-
-                }
-
-
-                catch(error) {
-
-
-                    console.error(
-
-                        'Boundary checking error:',
-
-                        error
-
-                    );
-
-
-                }
-
-
-            }
-
-
-            return false;
-
+        if (selectedMarker) {
+            map.removeLayer(selectedMarker);
         }
 
 
-        /* =====================================
-           START REPORT MODE
-        ===================================== */
+        selectedMarker = L.marker([
+            selectedLatitude,
+            selectedLongitude
+        ])
+        .addTo(map)
+        .bindPopup(
+            "<strong>Report location</strong><br>" +
+            "Complete the form and submit your report."
+        )
+        .openPopup();
+    }
 
-        function startReportMode() {
+
+    map.on("click", function (event) {
+
+        setSelectedLocation(
+            event.latlng.lat,
+            event.latlng.lng
+        );
+
+    });
 
 
-            if (
-                !westernProvinceData
-            ) {
+    /*
+     * ---------------------------------------------------------
+     * GEOLOCATION
+     * ---------------------------------------------------------
+     */
 
+    document
+        .getElementById("locateBtn")
+        .addEventListener("click", function () {
 
-                alert(
+            if (!navigator.geolocation) {
 
-                    'Western Province boundary is still loading. Please wait a few seconds and try again.'
-
+                showMessage(
+                    "Geolocation is not supported by this browser.",
+                    "error"
                 );
-
 
                 return;
-
             }
 
 
-            map.closePopup();
-
-
-            reportMode =
-                true;
-
-
-            instructionBox.style.display =
-                'block';
-
-
-            const container =
-                map.getContainer();
-
-
-            container.classList.add(
-                'report-selecting'
+            showMessage(
+                "Finding your current location...",
+                "loading"
             );
 
 
-            container.classList.remove(
-                'report-inside'
-            );
+            navigator.geolocation.getCurrentPosition(
+
+                function (position) {
+
+                    const latitude =
+                        position.coords.latitude;
+
+                    const longitude =
+                        position.coords.longitude;
 
 
-            container.classList.add(
-                'report-outside'
-            );
-
-
-        }
-
-
-        /* =====================================
-           CHANGE CURSOR WHEN MOUSE MOVES
-        ===================================== */
-
-        map.on(
-
-            'mousemove',
-
-            function(e) {
-
-
-                if (
-                    !reportMode
-                ) {
-
-                    return;
-
-                }
-
-
-                const container =
-                    map.getContainer();
-
-
-                const inside =
-                    isPointInsideWesternProvince(
-
-                        e.latlng.lat,
-
-                        e.latlng.lng
-
+                    setSelectedLocation(
+                        latitude,
+                        longitude
                     );
 
 
-                if (
-                    inside
-                ) {
-
-
-                    /*
-                       Valid reporting location.
-                       Show + crosshair.
-                    */
-
-                    container.classList.add(
-                        'report-inside'
+                    map.setView(
+                        [latitude, longitude],
+                        15
                     );
 
 
-                    container.classList.remove(
-                        'report-outside'
-                    );
+                    hideMessage();
+                },
 
+                function (error) {
 
-                }
+                    let errorMessage =
+                        "Unable to obtain your location.";
 
 
-                else {
-
-
-                    /*
-                       Outside Western Province.
-                       Show not-allowed cursor.
-                    */
-
-                    container.classList.add(
-                        'report-outside'
-                    );
-
-
-                    container.classList.remove(
-                        'report-inside'
-                    );
-
-
-                }
-
-
-            }
-
-        );
-
-
-        /* =====================================
-           CLICK MAP
-        ===================================== */
-
-        map.on(
-
-            'click',
-
-            function(e) {
-
-
-                if (
-                    !reportMode
-                ) {
-
-                    return;
-
-                }
-
-
-                const clickedLat =
-                    e.latlng.lat;
-
-
-                const clickedLng =
-                    e.latlng.lng;
-
-
-                const inside =
-                    isPointInsideWesternProvince(
-
-                        clickedLat,
-
-                        clickedLng
-
-                    );
-
-
-                /* OUTSIDE */
-
-                if (
-                    !inside
-                ) {
-
-
-                    alert(
-
-                        'Please select a location inside the Western Province boundary.'
-
-                    );
-
-
-                    /*
-                       Stay in report mode.
-                    */
-
-                    return;
-
-                }
-
-
-                /* VALID LOCATION */
-
-                selectedLat =
-                    clickedLat;
-
-
-                selectedLng =
-                    clickedLng;
-
-
-                if (
-                    temporaryMarker
-                ) {
-
-
-                    map.removeLayer(
-                        temporaryMarker
-                    );
-
-
-                }
-
-
-                temporaryMarker =
-                    L.circleMarker(
-
-                        [
-
-                            selectedLat,
-
-                            selectedLng
-
-                        ],
-
-                        {
-
-                            radius:
-                                8,
-
-                            color:
-                                '#000000',
-
-                            weight:
-                                2,
-
-                            fillColor:
-                                '#00bfff',
-
-                            fillOpacity:
-                                1
-
-                        }
-
-                    ).addTo(
-                        map
-                    );
-
-
-                temporaryMarker.bindTooltip(
-
-                    'Selected report location',
-
-                    {
-
-                        direction:
-                            'top'
-
+                    if (error.code === 1) {
+                        errorMessage =
+                            "Location permission was denied.";
                     }
 
-                );
+                    else if (error.code === 2) {
+                        errorMessage =
+                            "Your current location is unavailable.";
+                    }
+
+                    else if (error.code === 3) {
+                        errorMessage =
+                            "Location request timed out.";
+                    }
 
 
-                document.getElementById(
-                    'selectedLatitude'
-                ).textContent =
-
-                    selectedLat.toFixed(
-                        6
+                    showMessage(
+                        errorMessage +
+                        " You can still click the map manually.",
+                        "error"
                     );
+                },
 
-
-                document.getElementById(
-                    'selectedLongitude'
-                ).textContent =
-
-                    selectedLng.toFixed(
-                        6
-                    );
-
-
-                instructionBox.style.display =
-                    'none';
-
-
-                /*
-                   Turn off report cursor mode.
-                */
-
-                map.getContainer().classList.remove(
-
-                    'report-selecting',
-
-                    'report-inside',
-
-                    'report-outside'
-
-                );
-
-
-                reportMode =
-                    false;
-
-
-                modalOverlay.style.display =
-                    'flex';
-
-
-            }
-
-        );
-
-
-        /* =====================================
-           CANCEL REPORT
-        ===================================== */
-
-        cancelButton.addEventListener(
-
-            'click',
-
-            function() {
-
-                closeReportForm();
-
-            }
-
-        );
-
-
-        function closeReportForm() {
-
-
-            modalOverlay.style.display =
-                'none';
-
-
-            instructionBox.style.display =
-                'none';
-
-
-            reportMode =
-                false;
-
-
-            map.getContainer().classList.remove(
-
-                'report-selecting',
-
-                'report-inside',
-
-                'report-outside'
+                {
+                    enableHighAccuracy: true,
+                    timeout: 10000,
+                    maximumAge: 30000
+                }
 
             );
 
-
-            if (
-                temporaryMarker
-            ) {
+        });
 
 
-                map.removeLayer(
-                    temporaryMarker
-                );
+    /*
+     * ---------------------------------------------------------
+     * MESSAGE HELPERS
+     * ---------------------------------------------------------
+     */
+
+    function showMessage(text, type) {
+
+        const message =
+            document.getElementById("message");
+
+        message.textContent = text;
+
+        message.className =
+            "message " + type;
+
+    }
 
 
-                temporaryMarker =
-                    null;
+    function hideMessage() {
+
+        const message =
+            document.getElementById("message");
+
+        message.textContent = "";
+        message.className = "message";
+
+    }
 
 
+    /*
+     * ---------------------------------------------------------
+     * HTML ESCAPING
+     * ---------------------------------------------------------
+     */
+
+    function escapeHtml(value) {
+
+        if (value === null || value === undefined) {
+            return "";
+        }
+
+        return String(value)
+            .replaceAll("&", "&amp;")
+            .replaceAll("<", "&lt;")
+            .replaceAll(">", "&gt;")
+            .replaceAll('"', "&quot;")
+            .replaceAll("'", "&#039;");
+    }
+
+
+    /*
+     * ---------------------------------------------------------
+     * REPORT MARKER COLOUR
+     * ---------------------------------------------------------
+     */
+
+    function getSeverityColor(severity) {
+
+        const value =
+            String(severity || "").toLowerCase();
+
+        if (value === "high") {
+            return "#dc3545";
+        }
+
+        if (value === "medium") {
+            return "#f39c12";
+        }
+
+        return "#28a745";
+    }
+
+
+    /*
+     * ---------------------------------------------------------
+     * VERIFIED REPORT LAYER
+     * ---------------------------------------------------------
+     */
+
+    const verifiedReportsLayer =
+        L.layerGroup().addTo(map);
+
+
+    function addVerifiedMarker(report) {
+
+        const latitude =
+            Number(report.latitude);
+
+        const longitude =
+            Number(report.longitude);
+
+
+        if (
+            !Number.isFinite(latitude) ||
+            !Number.isFinite(longitude)
+        ) {
+            return;
+        }
+
+
+        const colour =
+            getSeverityColor(report.severity);
+
+
+        const marker = L.circleMarker(
+            [latitude, longitude],
+            {
+                radius: 8,
+                color: colour,
+                fillColor: colour,
+                fillOpacity: 0.8,
+                weight: 2
             }
+        );
 
 
-            selectedLat =
-                null;
+        let popup =
+            "<strong>" +
+            escapeHtml(
+                report.incident_type ||
+                "Flood Report"
+            ) +
+            "</strong>";
 
 
-            selectedLng =
-                null;
+        if (report.severity) {
 
-
-            reportForm.reset();
-
+            popup +=
+                "<br><strong>Severity:</strong> " +
+                escapeHtml(report.severity);
 
         }
 
 
-        /* =====================================
-           SUBMIT REPORT
-        ===================================== */
+        if (
+            report.water_depth_cm !== null &&
+            report.water_depth_cm !== undefined
+        ) {
 
-        reportForm.addEventListener(
+            popup +=
+                "<br><strong>Water depth:</strong> " +
+                escapeHtml(report.water_depth_cm) +
+                " cm";
 
-            'submit',
+        }
 
-            function(event) {
 
+        if (report.road_status) {
+
+            popup +=
+                "<br><strong>Road status:</strong> " +
+                escapeHtml(report.road_status);
+
+        }
+
+
+        if (report.description) {
+
+            popup +=
+                "<br><strong>Description:</strong> " +
+                escapeHtml(report.description);
+
+        }
+
+
+        marker
+            .bindPopup(popup)
+            .addTo(verifiedReportsLayer);
+
+    }
+
+
+    /*
+     * ---------------------------------------------------------
+     * LOAD VERIFIED REPORTS FROM SUPABASE
+     * ---------------------------------------------------------
+     */
+
+    async function loadVerifiedReports() {
+
+        try {
+
+            const endpoint =
+                SUPABASE_URL +
+                "/rest/v1/" +
+                TABLE_NAME +
+                "?select=id,created_at,latitude,longitude," +
+                "incident_type,severity,water_depth_cm," +
+                "road_status,description,status" +
+                "&status=eq.Verified" +
+                "&order=created_at.desc";
+
+
+            const response = await fetch(
+                endpoint,
+                {
+                    method: "GET",
+
+                    headers: {
+                        "apikey": SUPABASE_KEY,
+                        "Authorization":
+                            "Bearer " + SUPABASE_KEY
+                    }
+                }
+            );
+
+
+            if (!response.ok) {
+
+                const errorText =
+                    await response.text();
+
+                throw new Error(
+                    "Could not load reports. " +
+                    response.status +
+                    " " +
+                    errorText
+                );
+            }
+
+
+            const reports =
+                await response.json();
+
+
+            verifiedReportsLayer.clearLayers();
+
+
+            reports.forEach(function (report) {
+
+                addVerifiedMarker(report);
+
+            });
+
+
+            console.log(
+                "Verified reports loaded:",
+                reports.length
+            );
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "Error loading verified reports:",
+                error
+            );
+
+        }
+
+    }
+
+
+    /*
+     * ---------------------------------------------------------
+     * SUBMIT REPORT
+     * ---------------------------------------------------------
+     */
+
+    document
+        .getElementById("reportForm")
+        .addEventListener(
+            "submit",
+            async function (event) {
 
                 event.preventDefault();
 
 
                 if (
-
-                    selectedLat === null ||
-
-                    selectedLng === null
-
+                    selectedLatitude === null ||
+                    selectedLongitude === null
                 ) {
 
-
-                    alert(
-
-                        'Please select a valid location inside Western Province.'
-
+                    showMessage(
+                        "Please select the flood location on the map first.",
+                        "error"
                     );
 
-
                     return;
-
                 }
 
 
                 const incidentType =
-                    document.getElementById(
-                        'incidentType'
-                    ).value;
+                    document
+                        .getElementById("incidentType")
+                        .value;
 
 
                 const severity =
-                    document.getElementById(
-                        'severity'
-                    ).value;
+                    document
+                        .getElementById("severity")
+                        .value;
 
 
-                const waterDepth =
-                    document.getElementById(
-                        'waterDepth'
-                    ).value;
+                const waterDepthValue =
+                    document
+                        .getElementById("waterDepth")
+                        .value;
 
 
                 const roadStatus =
-                    document.getElementById(
-                        'roadStatus'
-                    ).value;
+                    document
+                        .getElementById("roadStatus")
+                        .value;
 
 
                 const description =
-                    document.getElementById(
-                        'description'
-                    ).value;
+                    document
+                        .getElementById("description")
+                        .value
+                        .trim();
 
 
-                const reportTime =
-                    new Date();
+                if (!incidentType) {
 
-
-                const reportMarker =
-                    L.circleMarker(
-
-                        [
-
-                            selectedLat,
-
-                            selectedLng
-
-                        ],
-
-                        {
-
-                            radius:
-                                9,
-
-                            fillColor:
-                                '#0066ff',
-
-                            color:
-                                '#ffffff',
-
-                            weight:
-                                2,
-
-                            fillOpacity:
-                                0.95
-
-                        }
-
+                    showMessage(
+                        "Please select an incident type.",
+                        "error"
                     );
 
-
-                const popup = `
-
-                    <div class="popup-title">
-
-                        Public Waterlogging Report
-
-                    </div>
+                    return;
+                }
 
 
-                    <span class="pending-label">
+                if (!severity) {
 
-                        Pending Verification
+                    showMessage(
+                        "Please select the severity.",
+                        "error"
+                    );
 
-                    </span>
-
-
-                    <br><br>
-
-
-                    <b>Incident Type:</b>
-
-                    ${incidentType}
-
-                    <br>
+                    return;
+                }
 
 
-                    <b>Severity:</b>
-
-                    ${severity}
-
-                    <br>
-
-
-                    <b>Water Depth:</b>
-
-                    ${
-                        waterDepth
-                        ? waterDepth + " cm"
-                        : "Not provided"
-                    }
-
-                    <br>
-
-
-                    <b>Road Status:</b>
-
-                    ${roadStatus}
-
-                    <br>
-
-
-                    <b>Description:</b>
-
-                    ${
-                        description ||
-                        "Not provided"
-                    }
-
-                    <br>
-
-
-                    <b>Latitude:</b>
-
-                    ${selectedLat.toFixed(6)}
-
-                    <br>
-
-
-                    <b>Longitude:</b>
-
-                    ${selectedLng.toFixed(6)}
-
-                    <br>
-
-
-                    <b>Report Time:</b>
-
-                    ${reportTime.toLocaleString()}
-
-                `;
-
-
-                reportMarker.bindPopup(
-                    popup
-                );
-
-
-                reportMarker.addTo(
-                    publicReportLayer
-                );
+                const waterDepth =
+                    waterDepthValue === ""
+                        ? null
+                        : Number(waterDepthValue);
 
 
                 if (
-                    temporaryMarker
+                    waterDepth !== null &&
+                    (
+                        !Number.isFinite(waterDepth) ||
+                        waterDepth < 0
+                    )
                 ) {
 
+                    showMessage(
+                        "Please enter a valid water depth.",
+                        "error"
+                    );
 
-                    map.removeLayer(
-                        temporaryMarker
+                    return;
+                }
+
+
+                /*
+                 * IMPORTANT:
+                 *
+                 * status is deliberately fixed to Pending.
+                 * Users cannot choose Verified themselves.
+                 */
+
+                const report = {
+
+                    latitude:
+                        selectedLatitude,
+
+                    longitude:
+                        selectedLongitude,
+
+                    incident_type:
+                        incidentType,
+
+                    severity:
+                        severity,
+
+                    water_depth_cm:
+                        waterDepth,
+
+                    road_status:
+                        roadStatus || null,
+
+                    description:
+                        description || null,
+
+                    status:
+                        "Pending"
+                };
+
+
+                const submitButton =
+                    document
+                        .getElementById("submitBtn");
+
+
+                submitButton.disabled = true;
+                submitButton.textContent =
+                    "Submitting...";
+
+
+                showMessage(
+                    "Submitting your flood report...",
+                    "loading"
+                );
+
+
+                try {
+
+                    const response =
+                        await fetch(
+                            SUPABASE_URL +
+                            "/rest/v1/" +
+                            TABLE_NAME,
+                            {
+                                method: "POST",
+
+                                headers: {
+
+                                    "apikey":
+                                        SUPABASE_KEY,
+
+                                    "Authorization":
+                                        "Bearer " +
+                                        SUPABASE_KEY,
+
+                                    "Content-Type":
+                                        "application/json",
+
+                                    "Prefer":
+                                        "return=minimal"
+                                },
+
+                                body:
+                                    JSON.stringify(report)
+                            }
+                        );
+
+
+                    if (!response.ok) {
+
+                        const errorText =
+                            await response.text();
+
+                        throw new Error(
+                            "Supabase returned " +
+                            response.status +
+                            ": " +
+                            errorText
+                        );
+                    }
+
+
+                    showMessage(
+                        "Report submitted successfully. " +
+                        "It is now pending verification.",
+                        "success"
                     );
 
 
-                    temporaryMarker =
-                        null;
+                    document
+                        .getElementById("reportForm")
+                        .reset();
+
+
+                    if (selectedMarker) {
+
+                        map.removeLayer(
+                            selectedMarker
+                        );
+
+                        selectedMarker = null;
+                    }
+
+
+                    selectedLatitude = null;
+                    selectedLongitude = null;
+
+
+                    document
+                        .getElementById("latDisplay")
+                        .textContent =
+                        "Not selected";
+
+
+                    document
+                        .getElementById("lngDisplay")
+                        .textContent =
+                        "Not selected";
 
 
                 }
 
+                catch (error) {
 
-                modalOverlay.style.display =
-                    'none';
-
-
-                reportForm.reset();
-
-
-                reportMarker.openPopup();
+                    console.error(
+                        "Submission error:",
+                        error
+                    );
 
 
-                alert(
+                    showMessage(
+                        "Report could not be submitted. " +
+                        error.message,
+                        "error"
+                    );
 
-                    'Report submitted successfully. This test report is marked as Pending Verification.'
+                }
 
-                );
+                finally {
 
+                    submitButton.disabled = false;
 
-                selectedLat =
-                    null;
+                    submitButton.textContent =
+                        "Submit Flood Report";
 
-
-                selectedLng =
-                    null;
-
+                }
 
             }
-
         );
 
 
-        /* =====================================
-           TITLE
-        ===================================== */
+    /*
+     * ---------------------------------------------------------
+     * INITIAL DATABASE LOAD
+     * ---------------------------------------------------------
+     */
 
-        const title =
-            document.querySelector(
-                '.map-title'
-            );
+    loadVerifiedReports();
 
-
-        L.DomEvent.disableClickPropagation(
-            title
-        );
-
-
-        console.log(
-
-            'Western Province flood web map loaded successfully.'
-
-        );
-
-
-    </script>
-
+</script>
 
 </body>
-
 </html>
