@@ -11,7 +11,7 @@
 
     <title>Western Province Flood Information & Reporting System</title>
 
-    <!-- Leaflet -->
+    <!-- Leaflet CSS -->
     <link
         rel="stylesheet"
         href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
@@ -59,7 +59,7 @@
         .header-title p {
             margin: 5px 0 0;
             font-size: 12px;
-            opacity: 0.85;
+            opacity: 0.86;
         }
 
         .header-badge {
@@ -72,7 +72,7 @@
 
 
         /* =====================================================
-           APP LAYOUT
+           MAIN LAYOUT
         ===================================================== */
 
         #app {
@@ -84,7 +84,7 @@
 
 
         /* =====================================================
-           LEFT SIDEBAR
+           LEFT PANEL
         ===================================================== */
 
         .sidebar-left {
@@ -116,21 +116,6 @@
         button {
             font-family: inherit;
             cursor: pointer;
-        }
-
-        .primary-button {
-            width: 100%;
-            border: 0;
-            padding: 11px;
-            border-radius: 7px;
-            font-weight: bold;
-            background: #118ab2;
-            color: white;
-            margin-bottom: 9px;
-        }
-
-        .primary-button:hover {
-            background: #0c7193;
         }
 
         .location-button {
@@ -184,12 +169,11 @@
 
 
         /* =====================================================
-           MAP MODE BUTTONS
+           MAP MODES
         ===================================================== */
 
         .mode-grid {
             display: grid;
-            grid-template-columns: 1fr;
             gap: 7px;
         }
 
@@ -212,7 +196,7 @@
 
 
         /* =====================================================
-           LAYER CHECKBOXES
+           LAYERS
         ===================================================== */
 
         .layer-option {
@@ -226,6 +210,32 @@
 
         .layer-option input {
             width: auto;
+        }
+
+        .more-layers-button {
+            width: 100%;
+            border: 1px solid #ccd7dc;
+            background: #f6f9fa;
+            border-radius: 7px;
+            padding: 9px;
+            font-size: 12px;
+            text-align: left;
+            color: #27434f;
+            font-weight: bold;
+            margin-top: 8px;
+        }
+
+        .more-layers-button:hover {
+            background: #edf4f6;
+        }
+
+        #moreLayersPanel {
+            display: none;
+            margin-top: 12px;
+            padding: 10px;
+            background: #f8fafb;
+            border: 1px solid #e0e6e9;
+            border-radius: 7px;
         }
 
 
@@ -264,8 +274,9 @@
             background: #dfe8eb;
         }
 
-        #map.report-mode {
-            cursor: crosshair;
+        #map.report-mode,
+        #map.report-mode .leaflet-container {
+            cursor: crosshair !important;
         }
 
 
@@ -293,7 +304,7 @@
 
 
         /* =====================================================
-           RIGHT SIDEBAR
+           RIGHT PANEL
         ===================================================== */
 
         .sidebar-right {
@@ -343,6 +354,21 @@
             line-height: 1.45;
         }
 
+        .info-card {
+            margin-top: 12px;
+            background: #f4f8fa;
+            border: 1px solid #dce6eb;
+            border-radius: 7px;
+            padding: 11px;
+            font-size: 12px;
+            line-height: 1.5;
+            color: #47555c;
+        }
+
+        .info-card strong {
+            color: #073b4c;
+        }
+
 
         /* =====================================================
            LEGEND
@@ -358,6 +384,7 @@
             border-radius: 7px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.2);
             font-size: 11px;
+            min-width: 135px;
         }
 
         .legend-title {
@@ -378,9 +405,17 @@
             border: 1px solid rgba(0,0,0,0.18);
         }
 
+        .legend-circle {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+            border: 1px solid rgba(0,0,0,0.25);
+        }
+
 
         /* =====================================================
-           REPORT MODAL
+           MODAL
         ===================================================== */
 
         .modal-overlay {
@@ -538,6 +573,7 @@
             }
         }
 
+
         @media (max-width: 700px) {
 
             header {
@@ -547,6 +583,10 @@
 
             .header-title h1 {
                 font-size: 16px;
+            }
+
+            .header-title p {
+                display: none;
             }
 
             .header-badge {
@@ -575,7 +615,6 @@
         }
 
     </style>
-
 </head>
 
 
@@ -591,7 +630,7 @@
         </h1>
 
         <p>
-            Explore flood susceptibility, historical hotspots and verified community reports
+            Flood susceptibility • historical hotspots • verified community reports
         </p>
 
     </div>
@@ -619,8 +658,8 @@
         </h2>
 
         <p class="sidebar-subtitle">
-            Explore flood-related information or select a location
-            to submit a community report.
+            Explore flood susceptibility, historical flood evidence,
+            verified community reports and supporting infrastructure.
         </p>
 
 
@@ -645,6 +684,7 @@
                 <button
                     class="mode-button active"
                     id="riskModeBtn"
+                    type="button"
                 >
                     🌧 Flood Risk
                 </button>
@@ -653,6 +693,7 @@
                 <button
                     class="mode-button"
                     id="reportModeBtn"
+                    type="button"
                 >
                     📍 Verified Reports
                 </button>
@@ -661,6 +702,7 @@
                 <button
                     class="mode-button"
                     id="boundaryModeBtn"
+                    type="button"
                 >
                     🗺 Province Boundary
                 </button>
@@ -673,34 +715,101 @@
         <div class="section">
 
             <div class="section-title">
-                Map Layers
+                Main Layers
             </div>
 
 
             <label class="layer-option">
+                <input
+                    type="checkbox"
+                    id="floodToggle"
+                    checked
+                >
+                Flood Susceptibility
+            </label>
 
+
+            <label class="layer-option">
+                <input
+                    type="checkbox"
+                    id="hotspotToggle"
+                    checked
+                >
+                Historical Hotspots
+            </label>
+
+
+            <label class="layer-option">
                 <input
                     type="checkbox"
                     id="boundaryToggle"
                     checked
                 >
-
                 Western Province Boundary
-
             </label>
 
 
             <label class="layer-option">
-
                 <input
                     type="checkbox"
                     id="reportsToggle"
-                    checked
                 >
-
                 Verified Public Reports
-
             </label>
+
+
+            <button
+                id="moreLayersBtn"
+                class="more-layers-button"
+                type="button"
+            >
+                ▶ More Layers
+            </button>
+
+
+            <div id="moreLayersPanel">
+
+                <label class="layer-option">
+                    <input type="checkbox" id="districtToggle">
+                    District Boundaries
+                </label>
+
+                <label class="layer-option">
+                    <input type="checkbox" id="dsdToggle">
+                    DSD Boundaries
+                </label>
+
+                <label class="layer-option">
+                    <input type="checkbox" id="gndToggle">
+                    GND Boundaries
+                </label>
+
+                <label class="layer-option">
+                    <input type="checkbox" id="riverToggle">
+                    Rivers
+                </label>
+
+                <label class="layer-option">
+                    <input type="checkbox" id="waterwayToggle">
+                    Waterways
+                </label>
+
+                <label class="layer-option">
+                    <input type="checkbox" id="roadToggle">
+                    Major Roads
+                </label>
+
+                <label class="layer-option">
+                    <input type="checkbox" id="hospitalToggle">
+                    Hospitals
+                </label>
+
+                <label class="layer-option">
+                    <input type="checkbox" id="schoolToggle">
+                    Schools
+                </label>
+
+            </div>
 
         </div>
 
@@ -710,7 +819,7 @@
             class="selection-card"
         >
 
-            <strong>Selected Location</strong>
+            <strong>Selected Report Location</strong>
 
             <br>
 
@@ -747,9 +856,8 @@
 
     <main id="map-wrapper">
 
-        <div
-            id="reportInstruction"
-        >
+
+        <div id="reportInstruction">
             ✚ Click a location inside Western Province to report flooding
         </div>
 
@@ -757,49 +865,10 @@
         <div id="map"></div>
 
 
-        <div class="legend">
-
-            <div class="legend-title">
-                Report Severity
-            </div>
-
-
-            <div class="legend-row">
-
-                <span
-                    class="legend-color"
-                    style="background:#28a745"
-                ></span>
-
-                Low
-
-            </div>
-
-
-            <div class="legend-row">
-
-                <span
-                    class="legend-color"
-                    style="background:#f39c12"
-                ></span>
-
-                Medium
-
-            </div>
-
-
-            <div class="legend-row">
-
-                <span
-                    class="legend-color"
-                    style="background:#dc3545"
-                ></span>
-
-                High
-
-            </div>
-
-        </div>
+        <div
+            id="mapLegend"
+            class="legend"
+        ></div>
 
     </main>
 
@@ -871,6 +940,25 @@
             Loading Western Province boundary...
         </div>
 
+
+        <div class="info-card">
+
+            <strong>How to use this map</strong>
+
+            <br><br>
+
+            🌧 <b>Flood Risk</b> shows susceptibility and historical flood hotspots.
+
+            <br><br>
+
+            📍 <b>Verified Reports</b> shows community observations approved by the administrator.
+
+            <br><br>
+
+            ⚠ Use <b>Report Flooding</b> to submit a new observation.
+
+        </div>
+
     </aside>
 
 
@@ -879,7 +967,7 @@
 
 
 <!-- =====================================================
-     REPORT MODAL
+     REPORT FORM
 ====================================================== -->
 
 <div
@@ -1099,17 +1187,16 @@
 
 
 <!-- Leaflet -->
-
 <script
     src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
 ></script>
 
 
-<!-- Turf -->
-
+<!-- Turf.js -->
 <script
     src="https://cdn.jsdelivr.net/npm/@turf/turf@7/turf.min.js"
 ></script>
+
 
 
 <script>
@@ -1164,6 +1251,85 @@ const osm =
 
 
 /* ============================================================
+   FLOOD SUSCEPTIBILITY RASTER
+============================================================ */
+
+const floodBounds = [
+
+    [
+        6.324768420900316,
+        79.81675029847408
+    ],
+
+    [
+        7.330522213000532,
+        80.38107195995796
+    ]
+
+];
+
+
+const floodSusceptibilityLayer =
+    L.imageOverlay(
+        "data/flood_susceptibility.png",
+        floodBounds,
+        {
+            opacity: 0.62,
+            interactive: false
+        }
+    );
+
+
+floodSusceptibilityLayer.addTo(map);
+
+
+
+/* ============================================================
+   LAYER GROUPS
+============================================================ */
+
+const historicalHotspotLayer =
+    L.layerGroup().addTo(map);
+
+
+const verifiedReportsLayer =
+    L.layerGroup();
+
+
+const districtLayer =
+    L.layerGroup();
+
+
+const dsdLayer =
+    L.layerGroup();
+
+
+const gndLayer =
+    L.layerGroup();
+
+
+const riverLayer =
+    L.layerGroup();
+
+
+const waterwayLayer =
+    L.layerGroup();
+
+
+const roadLayer =
+    L.layerGroup();
+
+
+const hospitalLayer =
+    L.layerGroup();
+
+
+const schoolLayer =
+    L.layerGroup();
+
+
+
+/* ============================================================
    VARIABLES
 ============================================================ */
 
@@ -1189,10 +1355,6 @@ let selectedMarker =
 
 let reportingMode =
     false;
-
-
-const verifiedReportsLayer =
-    L.layerGroup().addTo(map);
 
 
 
@@ -1224,15 +1386,36 @@ const globalMessage =
     );
 
 
+const mapLegend =
+    document.getElementById(
+        "mapLegend"
+    );
+
+
 
 /* ============================================================
    MESSAGE
 ============================================================ */
 
+let messageTimer =
+    null;
+
+
 function showMessage(
     text,
     type = "info"
 ) {
+
+    if (
+        messageTimer
+    ) {
+
+        clearTimeout(
+            messageTimer
+        );
+
+    }
+
 
     globalMessage.textContent =
         text;
@@ -1240,6 +1423,10 @@ function showMessage(
 
     globalMessage.className =
         "";
+
+
+    globalMessage.style.display =
+        "block";
 
 
     if (
@@ -1271,22 +1458,23 @@ function showMessage(
     }
 
 
-    setTimeout(
-        function() {
+    messageTimer =
+        setTimeout(
+            function() {
 
-            globalMessage.style.display =
-                "none";
+                globalMessage.style.display =
+                    "none";
 
-        },
-        4500
-    );
+            },
+            4500
+        );
 
 }
 
 
 
 /* ============================================================
-   HTML ESCAPE
+   ESCAPE HTML
 ============================================================ */
 
 function escapeHtml(value) {
@@ -1303,32 +1491,143 @@ function escapeHtml(value) {
 
     return String(value)
 
-        .replaceAll(
-            "&",
-            "&amp;"
-        )
-
-        .replaceAll(
-            "<",
-            "&lt;"
-        )
-
-        .replaceAll(
-            ">",
-            "&gt;"
-        )
-
-        .replaceAll(
-            '"',
-            "&quot;"
-        )
-
-        .replaceAll(
-            "'",
-            "&#039;"
-        );
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
 
 }
+
+
+
+/* ============================================================
+   LEGENDS
+============================================================ */
+
+function showFloodLegend() {
+
+    mapLegend.innerHTML = `
+
+        <div class="legend-title">
+            Flood Susceptibility
+        </div>
+
+        <div class="legend-row">
+            <span
+                class="legend-color"
+                style="background:#008000"
+            ></span>
+            Very Low
+        </div>
+
+        <div class="legend-row">
+            <span
+                class="legend-color"
+                style="background:#9cff30"
+            ></span>
+            Low
+        </div>
+
+        <div class="legend-row">
+            <span
+                class="legend-color"
+                style="background:#ffff00"
+            ></span>
+            Moderate
+        </div>
+
+        <div class="legend-row">
+            <span
+                class="legend-color"
+                style="background:#ff9d00"
+            ></span>
+            High
+        </div>
+
+        <div class="legend-row">
+            <span
+                class="legend-color"
+                style="background:#ff1a1a"
+            ></span>
+            Very High
+        </div>
+
+        <div class="legend-row">
+            <span
+                class="legend-circle"
+                style="background:#e63946"
+            ></span>
+            Historical Hotspot
+        </div>
+
+    `;
+
+}
+
+
+function showReportLegend() {
+
+    mapLegend.innerHTML = `
+
+        <div class="legend-title">
+            Verified Report Severity
+        </div>
+
+        <div class="legend-row">
+            <span
+                class="legend-circle"
+                style="background:#28a745"
+            ></span>
+            Low
+        </div>
+
+        <div class="legend-row">
+            <span
+                class="legend-circle"
+                style="background:#f39c12"
+            ></span>
+            Medium
+        </div>
+
+        <div class="legend-row">
+            <span
+                class="legend-circle"
+                style="background:#dc3545"
+            ></span>
+            High
+        </div>
+
+    `;
+
+}
+
+
+function showBoundaryLegend() {
+
+    mapLegend.innerHTML = `
+
+        <div class="legend-title">
+            Administrative Area
+        </div>
+
+        <div class="legend-row">
+            <span
+                class="legend-color"
+                style="
+                    background:rgba(77,166,255,0.15);
+                    border:2px solid #0a4d8c;
+                "
+            ></span>
+            Western Province
+        </div>
+
+    `;
+
+}
+
+
+showFloodLegend();
 
 
 
@@ -1370,16 +1669,28 @@ fetch(
                 data,
                 {
                     style: {
-                        color: "#0a4d8c",
-                        weight: 3,
-                        fillColor: "#4da6ff",
-                        fillOpacity: 0.06
+                        color:
+                            "#0a4d8c",
+
+                        weight:
+                            3,
+
+                        fillColor:
+                            "#4da6ff",
+
+                        fillOpacity:
+                            0.04
                     },
 
                     interactive:
                         false
                 }
-            ).addTo(map);
+            );
+
+
+        westernProvinceLayer.addTo(
+            map
+        );
 
 
         const bounds =
@@ -1436,7 +1747,7 @@ fetch(
 
 
 /* ============================================================
-   POINT INSIDE PROVINCE
+   POINT INSIDE WESTERN PROVINCE
 ============================================================ */
 
 function isInsideWesternProvince(
@@ -1556,6 +1867,7 @@ function isInsideWesternProvince(
         catch(error) {
 
             console.error(
+                "Point-in-polygon error:",
                 error
             );
 
@@ -1571,10 +1883,668 @@ function isInsideWesternProvince(
 
 
 /* ============================================================
-   LOCATION SELECTION
+   HISTORICAL HOTSPOTS
 ============================================================ */
 
-function selectLocation(
+fetch(
+    "data/historical_hotspots.geojson"
+)
+
+.then(
+    response => {
+
+        if (
+            !response.ok
+        ) {
+
+            throw new Error(
+                "Historical hotspots could not be loaded."
+            );
+
+        }
+
+        return response.json();
+
+    }
+)
+
+.then(
+    data => {
+
+        L.geoJSON(
+            data,
+            {
+                pointToLayer:
+                    function(
+                        feature,
+                        latlng
+                    ) {
+
+                        return L.circleMarker(
+                            latlng,
+                            {
+                                radius:
+                                    7,
+
+                                color:
+                                    "#7a0010",
+
+                                weight:
+                                    2,
+
+                                fillColor:
+                                    "#e63946",
+
+                                fillOpacity:
+                                    0.9
+                            }
+                        );
+
+                    },
+
+
+                onEachFeature:
+                    function(
+                        feature,
+                        layer
+                    ) {
+
+                        const p =
+                            feature.properties || {};
+
+
+                        layer.bindPopup(`
+
+                            <strong>
+                                Historical Flood / Waterlogging Hotspot
+                            </strong>
+
+                            <br><br>
+
+                            <b>Location:</b>
+                            ${escapeHtml(
+                                p.location ||
+                                p.name ||
+                                "Unknown"
+                            )}
+
+                            <br>
+
+                            <b>District:</b>
+                            ${escapeHtml(
+                                p.district ||
+                                "Unknown"
+                            )}
+
+                            <br>
+
+                            <b>Severity:</b>
+                            ${escapeHtml(
+                                p.severity ||
+                                "Unknown"
+                            )}
+
+                            <br>
+
+                            <b>Context:</b>
+                            ${escapeHtml(
+                                p.context ||
+                                "Not available"
+                            )}
+
+                            <br>
+
+                            <b>Evidence Grade:</b>
+                            ${escapeHtml(
+                                p.ev_grade ||
+                                p.evidence ||
+                                "Unknown"
+                            )}
+
+                        `);
+
+                    }
+            }
+        ).addTo(
+            historicalHotspotLayer
+        );
+
+    }
+)
+
+.catch(
+    error => {
+
+        console.error(
+            "Historical hotspots error:",
+            error
+        );
+
+    }
+);
+
+
+
+/* ============================================================
+   DISTRICTS
+============================================================ */
+
+fetch(
+    "data/districts.geojson"
+)
+
+.then(
+    response =>
+        response.json()
+)
+
+.then(
+    data => {
+
+        L.geoJSON(
+            data,
+            {
+                style: {
+                    color:
+                        "#0066cc",
+
+                    weight:
+                        2,
+
+                    fillOpacity:
+                        0
+                },
+
+                onEachFeature:
+                    function(
+                        feature,
+                        layer
+                    ) {
+
+                        const p =
+                            feature.properties || {};
+
+
+                        const name =
+                            p.ADM2_EN ||
+                            p.name ||
+                            p.NAME ||
+                            "District";
+
+
+                        layer.bindPopup(
+                            "<strong>District:</strong> " +
+                            escapeHtml(name)
+                        );
+
+                    }
+            }
+        ).addTo(
+            districtLayer
+        );
+
+    }
+)
+
+.catch(
+    error =>
+        console.error(
+            "District layer error:",
+            error
+        )
+);
+
+
+
+/* ============================================================
+   DSD
+============================================================ */
+
+fetch(
+    "data/dsd.geojson"
+)
+
+.then(
+    response =>
+        response.json()
+)
+
+.then(
+    data => {
+
+        L.geoJSON(
+            data,
+            {
+                style: {
+                    color:
+                        "#666666",
+
+                    weight:
+                        1.2,
+
+                    fillOpacity:
+                        0
+                }
+            }
+        ).addTo(
+            dsdLayer
+        );
+
+    }
+)
+
+.catch(
+    error =>
+        console.error(
+            "DSD layer error:",
+            error
+        )
+);
+
+
+
+/* ============================================================
+   GND
+============================================================ */
+
+fetch(
+    "data/gnd.geojson"
+)
+
+.then(
+    response =>
+        response.json()
+)
+
+.then(
+    data => {
+
+        L.geoJSON(
+            data,
+            {
+                style: {
+                    color:
+                        "#999999",
+
+                    weight:
+                        0.7,
+
+                    fillOpacity:
+                        0
+                }
+            }
+        ).addTo(
+            gndLayer
+        );
+
+    }
+)
+
+.catch(
+    error =>
+        console.error(
+            "GND layer error:",
+            error
+        )
+);
+
+
+
+/* ============================================================
+   RIVERS
+============================================================ */
+
+fetch(
+    "data/rivers.geojson"
+)
+
+.then(
+    response =>
+        response.json()
+)
+
+.then(
+    data => {
+
+        L.geoJSON(
+            data,
+            {
+                style: {
+                    color:
+                        "#0066ff",
+
+                    weight:
+                        2.5
+                }
+            }
+        ).addTo(
+            riverLayer
+        );
+
+    }
+)
+
+.catch(
+    error =>
+        console.error(
+            "River layer error:",
+            error
+        )
+);
+
+
+
+/* ============================================================
+   WATERWAYS
+============================================================ */
+
+fetch(
+    "data/waterways.geojson"
+)
+
+.then(
+    response =>
+        response.json()
+)
+
+.then(
+    data => {
+
+        L.geoJSON(
+            data,
+            {
+                style: {
+                    color:
+                        "#00a6ff",
+
+                    weight:
+                        1.5
+                }
+            }
+        ).addTo(
+            waterwayLayer
+        );
+
+    }
+)
+
+.catch(
+    error =>
+        console.error(
+            "Waterway layer error:",
+            error
+        )
+);
+
+
+
+/* ============================================================
+   MAJOR ROADS
+============================================================ */
+
+fetch(
+    "data/major_roads.geojson"
+)
+
+.then(
+    response =>
+        response.json()
+)
+
+.then(
+    data => {
+
+        L.geoJSON(
+            data,
+            {
+                style: {
+                    color:
+                        "#7b4f26",
+
+                    weight:
+                        2
+                }
+            }
+        ).addTo(
+            roadLayer
+        );
+
+    }
+)
+
+.catch(
+    error =>
+        console.error(
+            "Road layer error:",
+            error
+        )
+);
+
+
+
+/* ============================================================
+   HOSPITALS
+============================================================ */
+
+fetch(
+    "data/hospitals.geojson"
+)
+
+.then(
+    response =>
+        response.json()
+)
+
+.then(
+    data => {
+
+        L.geoJSON(
+            data,
+            {
+                pointToLayer:
+                    function(
+                        feature,
+                        latlng
+                    ) {
+
+                        return L.circleMarker(
+                            latlng,
+                            {
+                                radius:
+                                    5,
+
+                                color:
+                                    "#ffffff",
+
+                                weight:
+                                    1,
+
+                                fillColor:
+                                    "#d7191c",
+
+                                fillOpacity:
+                                    0.95
+                            }
+                        );
+
+                    },
+
+                onEachFeature:
+                    function(
+                        feature,
+                        layer
+                    ) {
+
+                        const p =
+                            feature.properties || {};
+
+
+                        layer.bindPopup(
+                            "<strong>Hospital</strong><br>" +
+                            escapeHtml(
+                                p.name ||
+                                p.NAME ||
+                                p.Name ||
+                                "Health Facility"
+                            )
+                        );
+
+                    }
+            }
+        ).addTo(
+            hospitalLayer
+        );
+
+    }
+)
+
+.catch(
+    error =>
+        console.error(
+            "Hospital layer error:",
+            error
+        )
+);
+
+
+
+/* ============================================================
+   SCHOOLS
+============================================================ */
+
+fetch(
+    "data/schools.geojson"
+)
+
+.then(
+    response =>
+        response.json()
+)
+
+.then(
+    data => {
+
+        L.geoJSON(
+            data,
+            {
+                pointToLayer:
+                    function(
+                        feature,
+                        latlng
+                    ) {
+
+                        return L.circleMarker(
+                            latlng,
+                            {
+                                radius:
+                                    4,
+
+                                color:
+                                    "#ffffff",
+
+                                weight:
+                                    1,
+
+                                fillColor:
+                                    "#7b2cbf",
+
+                                fillOpacity:
+                                    0.9
+                            }
+                        );
+
+                    },
+
+                onEachFeature:
+                    function(
+                        feature,
+                        layer
+                    ) {
+
+                        const p =
+                            feature.properties || {};
+
+
+                        layer.bindPopup(
+                            "<strong>School</strong><br>" +
+                            escapeHtml(
+                                p.name ||
+                                p.NAME ||
+                                p.Name ||
+                                "School"
+                            )
+                        );
+
+                    }
+            }
+        ).addTo(
+            schoolLayer
+        );
+
+    }
+)
+
+.catch(
+    error =>
+        console.error(
+            "School layer error:",
+            error
+        )
+);
+
+
+
+/* ============================================================
+   REPORT LOCATION
+============================================================ */
+
+function clearSelectedLocation() {
+
+    selectedLatitude =
+        null;
+
+
+    selectedLongitude =
+        null;
+
+
+    document.getElementById(
+        "selectedLatText"
+    ).textContent =
+        "-";
+
+
+    document.getElementById(
+        "selectedLngText"
+    ).textContent =
+        "-";
+
+
+    document.getElementById(
+        "selectionCard"
+    ).style.display =
+        "none";
+
+
+    if (
+        selectedMarker
+    ) {
+
+        map.removeLayer(
+            selectedMarker
+        );
+
+
+        selectedMarker =
+            null;
+
+    }
+
+}
+
+
+
+function selectReportLocation(
     latitude,
     longitude
 ) {
@@ -1593,6 +2563,21 @@ function selectLocation(
 
         showMessage(
             "Please wait for the Western Province boundary to load.",
+            "error"
+        );
+
+        return false;
+
+    }
+
+
+    if (
+        !Number.isFinite(lat) ||
+        !Number.isFinite(lng)
+    ) {
+
+        showMessage(
+            "Invalid map location.",
             "error"
         );
 
@@ -1644,16 +2629,25 @@ function selectLocation(
                 lng
             ],
             {
-                radius: 8,
-                color: "#073b4c",
-                weight: 2,
-                fillColor: "#06d6a0",
-                fillOpacity: 1
+                radius:
+                    8,
+
+                color:
+                    "#073b4c",
+
+                weight:
+                    2,
+
+                fillColor:
+                    "#06d6a0",
+
+                fillOpacity:
+                    1
             }
         )
         .addTo(map)
         .bindPopup(
-            "<strong>Selected location</strong><br>Inside Western Province"
+            "<strong>Selected report location</strong><br>Inside Western Province"
         );
 
 
@@ -1682,21 +2676,23 @@ function selectLocation(
 
 
 /* ============================================================
-   NORMAL MAP CLICK / REPORT CLICK
+   MAP CLICK
 ============================================================ */
 
 map.on(
     "click",
     function(event) {
 
+        /*
+         Ordinary clicks do nothing.
+
+         This prevents normal exploration from accidentally
+         selecting a reporting location.
+        */
+
         if (
             !reportingMode
         ) {
-
-            selectLocation(
-                event.latlng.lat,
-                event.latlng.lng
-            );
 
             return;
 
@@ -1704,7 +2700,7 @@ map.on(
 
 
         const accepted =
-            selectLocation(
+            selectReportLocation(
                 event.latlng.lat,
                 event.latlng.lng
             );
@@ -1783,6 +2779,9 @@ document.getElementById(
             true;
 
 
+        map.closePopup();
+
+
         reportInstruction.style.display =
             "block";
 
@@ -1830,7 +2829,7 @@ document.getElementById(
 
 
         showMessage(
-            "Finding your location...",
+            "Finding your current location...",
             "info"
         );
 
@@ -1845,6 +2844,20 @@ document.getElementById(
 
                 const lng =
                     position.coords.longitude;
+
+
+                if (
+                    !westernProvinceData
+                ) {
+
+                    showMessage(
+                        "Western Province boundary is still loading.",
+                        "error"
+                    );
+
+                    return;
+
+                }
 
 
                 if (
@@ -1864,18 +2877,47 @@ document.getElementById(
                 }
 
 
-                selectLocation(
-                    lat,
-                    lng
-                );
-
-
                 map.setView(
                     [
                         lat,
                         lng
                     ],
                     15
+                );
+
+
+                L.circleMarker(
+                    [
+                        lat,
+                        lng
+                    ],
+                    {
+                        radius:
+                            8,
+
+                        color:
+                            "#0057b8",
+
+                        weight:
+                            2,
+
+                        fillColor:
+                            "#00bfff",
+
+                        fillOpacity:
+                            0.9
+                    }
+                )
+                .addTo(map)
+                .bindPopup(
+                    "<strong>Your current location</strong>"
+                )
+                .openPopup();
+
+
+                showMessage(
+                    "Current location found inside Western Province.",
+                    "success"
                 );
 
             },
@@ -1896,7 +2938,10 @@ document.getElementById(
                     true,
 
                 timeout:
-                    10000
+                    10000,
+
+                maximumAge:
+                    30000
             }
 
         );
@@ -1926,13 +2971,16 @@ document.getElementById(
             "reportForm"
         ).reset();
 
+
+        clearSelectedLocation();
+
     }
 );
 
 
 
 /* ============================================================
-   VERIFIED REPORTS
+   REPORT SEVERITY
 ============================================================ */
 
 function severityColor(
@@ -1946,7 +2994,8 @@ function severityColor(
 
 
     if (
-        value === "high"
+        value ===
+        "high"
     ) {
 
         return "#dc3545";
@@ -1955,8 +3004,10 @@ function severityColor(
 
 
     if (
-        value === "medium" ||
-        value === "moderate"
+        value ===
+        "medium" ||
+        value ===
+        "moderate"
     ) {
 
         return "#f39c12";
@@ -1969,6 +3020,10 @@ function severityColor(
 }
 
 
+
+/* ============================================================
+   VERIFIED REPORTS
+============================================================ */
 
 async function loadVerifiedReports() {
 
@@ -2025,11 +3080,15 @@ async function loadVerifiedReports() {
             .clearLayers();
 
 
-        let high =
+        let validCount =
             0;
 
 
-        let recent =
+        let highCount =
+            0;
+
+
+        let recentCount =
             0;
 
 
@@ -2074,14 +3133,18 @@ async function loadVerifiedReports() {
                 }
 
 
+                validCount++;
+
+
                 if (
                     String(
-                        report.severity
+                        report.severity ||
+                        ""
                     ).toLowerCase() ===
                     "high"
                 ) {
 
-                    high++;
+                    highCount++;
 
                 }
 
@@ -2090,19 +3153,24 @@ async function loadVerifiedReports() {
                     report.created_at
                 ) {
 
-                    const age =
-                        now -
+                    const reportDate =
                         new Date(
                             report.created_at
-                        ).getTime();
+                        );
+
+
+                    const age =
+                        now -
+                        reportDate.getTime();
 
 
                     if (
+                        age >= 0 &&
                         age <=
                         24 * 60 * 60 * 1000
                     ) {
 
-                        recent++;
+                        recentCount++;
 
                     }
 
@@ -2116,7 +3184,9 @@ async function loadVerifiedReports() {
                             lng
                         ],
                         {
-                            radius: 8,
+                            radius:
+                                8,
+
                             color:
                                 "#ffffff",
 
@@ -2137,7 +3207,7 @@ async function loadVerifiedReports() {
                 marker.bindPopup(`
 
                     <strong>
-                        Verified Flood Report
+                        Verified Community Flood Report
                     </strong>
 
                     <br><br>
@@ -2160,8 +3230,8 @@ async function loadVerifiedReports() {
 
                     <b>Water depth:</b>
                     ${
-                        report.water_depth_cm !==
-                        null
+                        report.water_depth_cm !== null &&
+                        report.water_depth_cm !== undefined
 
                         ? escapeHtml(
                             report.water_depth_cm
@@ -2186,6 +3256,17 @@ async function loadVerifiedReports() {
                         "Not provided"
                     )}
 
+                    ${
+                        report.created_at
+                        ? "<br><b>Reported:</b> " +
+                          escapeHtml(
+                              new Date(
+                                  report.created_at
+                              ).toLocaleString()
+                          )
+                        : ""
+                    }
+
                 `);
 
 
@@ -2200,19 +3281,19 @@ async function loadVerifiedReports() {
         document.getElementById(
             "verifiedCount"
         ).textContent =
-            reports.length;
+            validCount;
 
 
         document.getElementById(
             "highCount"
         ).textContent =
-            high;
+            highCount;
 
 
         document.getElementById(
             "recentCount"
         ).textContent =
-            recent;
+            recentCount;
 
     }
 
@@ -2230,7 +3311,7 @@ async function loadVerifiedReports() {
 
 
 /* ============================================================
-   SUBMIT TO SUPABASE
+   SUBMIT REPORT
 ============================================================ */
 
 document.getElementById(
@@ -2250,7 +3331,7 @@ document.getElementById(
         ) {
 
             showMessage(
-                "No valid location is selected.",
+                "No valid report location is selected.",
                 "error"
             );
 
@@ -2306,6 +3387,34 @@ document.getElementById(
             ).value.trim();
 
 
+        if (
+            !incidentType
+        ) {
+
+            showMessage(
+                "Please select an incident type.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        if (
+            !severity
+        ) {
+
+            showMessage(
+                "Please select a severity.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
         const waterDepth =
             depthText === ""
 
@@ -2314,6 +3423,29 @@ document.getElementById(
             : Number(
                 depthText
             );
+
+
+        if (
+            waterDepth !== null &&
+            (
+                !Number.isFinite(
+                    waterDepth
+                ) ||
+
+                waterDepth < 0 ||
+
+                waterDepth > 500
+            )
+        ) {
+
+            showMessage(
+                "Water depth must be between 0 and 500 cm.",
+                "error"
+            );
+
+            return;
+
+        }
 
 
         const report = {
@@ -2386,7 +3518,6 @@ document.getElementById(
 
                             Prefer:
                                 "return=minimal"
-
                         },
 
                         body:
@@ -2418,8 +3549,11 @@ document.getElementById(
             ).reset();
 
 
+            clearSelectedLocation();
+
+
             showMessage(
-                "Report submitted successfully. It is Pending Verification.",
+                "Report submitted successfully. It is now Pending Verification.",
                 "success"
             );
 
@@ -2428,6 +3562,7 @@ document.getElementById(
         catch(error) {
 
             console.error(
+                "Submission error:",
                 error
             );
 
@@ -2457,8 +3592,164 @@ document.getElementById(
 
 
 /* ============================================================
-   LAYER TOGGLES
+   MORE LAYERS PANEL
 ============================================================ */
+
+document.getElementById(
+    "moreLayersBtn"
+)
+
+.addEventListener(
+    "click",
+    function() {
+
+        const panel =
+            document.getElementById(
+                "moreLayersPanel"
+            );
+
+
+        const opening =
+            panel.style.display !==
+            "block";
+
+
+        panel.style.display =
+            opening
+            ? "block"
+            : "none";
+
+
+        this.textContent =
+            opening
+            ? "▼ More Layers"
+            : "▶ More Layers";
+
+    }
+);
+
+
+
+/* ============================================================
+   GENERIC CHECKBOX LAYER TOGGLE
+============================================================ */
+
+function connectLayerToggle(
+    checkboxId,
+    layer
+) {
+
+    document.getElementById(
+        checkboxId
+    )
+
+    .addEventListener(
+        "change",
+        function() {
+
+            if (
+                this.checked
+            ) {
+
+                if (
+                    !map.hasLayer(layer)
+                ) {
+
+                    map.addLayer(
+                        layer
+                    );
+
+                }
+
+            }
+
+            else {
+
+                if (
+                    map.hasLayer(layer)
+                ) {
+
+                    map.removeLayer(
+                        layer
+                    );
+
+                }
+
+            }
+
+        }
+    );
+
+}
+
+
+
+connectLayerToggle(
+    "floodToggle",
+    floodSusceptibilityLayer
+);
+
+
+connectLayerToggle(
+    "hotspotToggle",
+    historicalHotspotLayer
+);
+
+
+connectLayerToggle(
+    "reportsToggle",
+    verifiedReportsLayer
+);
+
+
+connectLayerToggle(
+    "districtToggle",
+    districtLayer
+);
+
+
+connectLayerToggle(
+    "dsdToggle",
+    dsdLayer
+);
+
+
+connectLayerToggle(
+    "gndToggle",
+    gndLayer
+);
+
+
+connectLayerToggle(
+    "riverToggle",
+    riverLayer
+);
+
+
+connectLayerToggle(
+    "waterwayToggle",
+    waterwayLayer
+);
+
+
+connectLayerToggle(
+    "roadToggle",
+    roadLayer
+);
+
+
+connectLayerToggle(
+    "hospitalToggle",
+    hospitalLayer
+);
+
+
+connectLayerToggle(
+    "schoolToggle",
+    schoolLayer
+);
+
+
 
 document.getElementById(
     "boundaryToggle"
@@ -2491,37 +3782,6 @@ document.getElementById(
 
             map.removeLayer(
                 westernProvinceLayer
-            );
-
-        }
-
-    }
-);
-
-
-
-document.getElementById(
-    "reportsToggle"
-)
-
-.addEventListener(
-    "change",
-    function() {
-
-        if (
-            this.checked
-        ) {
-
-            map.addLayer(
-                verifiedReportsLayer
-            );
-
-        }
-
-        else {
-
-            map.removeLayer(
-                verifiedReportsLayer
             );
 
         }
@@ -2564,6 +3824,10 @@ function activateModeButton(
 
 
 
+/* ============================================================
+   FLOOD RISK MODE
+============================================================ */
+
 document.getElementById(
     "riskModeBtn"
 )
@@ -2577,8 +3841,41 @@ document.getElementById(
         );
 
 
+        /*
+         Main flood-risk layers.
+        */
+
         if (
-            westernProvinceLayer
+            !map.hasLayer(
+                floodSusceptibilityLayer
+            )
+        ) {
+
+            map.addLayer(
+                floodSusceptibilityLayer
+            );
+
+        }
+
+
+        if (
+            !map.hasLayer(
+                historicalHotspotLayer
+            )
+        ) {
+
+            map.addLayer(
+                historicalHotspotLayer
+            );
+
+        }
+
+
+        if (
+            westernProvinceLayer &&
+            !map.hasLayer(
+                westernProvinceLayer
+            )
         ) {
 
             map.addLayer(
@@ -2588,14 +3885,76 @@ document.getElementById(
         }
 
 
-        map.addLayer(
-            verifiedReportsLayer
-        );
+        /*
+         Hide verified reports for a cleaner risk view.
+        */
+
+        if (
+            map.hasLayer(
+                verifiedReportsLayer
+            )
+        ) {
+
+            map.removeLayer(
+                verifiedReportsLayer
+            );
+
+        }
+
+
+        document.getElementById(
+            "floodToggle"
+        ).checked =
+            true;
+
+
+        document.getElementById(
+            "hotspotToggle"
+        ).checked =
+            true;
+
+
+        document.getElementById(
+            "boundaryToggle"
+        ).checked =
+            true;
+
+
+        document.getElementById(
+            "reportsToggle"
+        ).checked =
+            false;
+
+
+        showFloodLegend();
+
+
+        if (
+            westernProvinceLayer
+        ) {
+
+            map.fitBounds(
+                westernProvinceLayer
+                    .getBounds(),
+                {
+                    padding:
+                        [
+                            20,
+                            20
+                        ]
+                }
+            );
+
+        }
 
     }
 );
 
 
+
+/* ============================================================
+   VERIFIED REPORTS MODE
+============================================================ */
 
 document.getElementById(
     "reportModeBtn"
@@ -2610,31 +3969,147 @@ document.getElementById(
         );
 
 
-        map.addLayer(
-            verifiedReportsLayer
-        );
+        /*
+         Hide flood raster and hotspots so current reports
+         are visually clearer.
+        */
+
+        if (
+            map.hasLayer(
+                floodSusceptibilityLayer
+            )
+        ) {
+
+            map.removeLayer(
+                floodSusceptibilityLayer
+            );
+
+        }
 
 
         if (
-            verifiedReportsLayer.getLayers().length >
-            0
+            map.hasLayer(
+                historicalHotspotLayer
+            )
+        ) {
+
+            map.removeLayer(
+                historicalHotspotLayer
+            );
+
+        }
+
+
+        if (
+            !map.hasLayer(
+                verifiedReportsLayer
+            )
+        ) {
+
+            map.addLayer(
+                verifiedReportsLayer
+            );
+
+        }
+
+
+        if (
+            westernProvinceLayer &&
+            !map.hasLayer(
+                westernProvinceLayer
+            )
+        ) {
+
+            map.addLayer(
+                westernProvinceLayer
+            );
+
+        }
+
+
+        document.getElementById(
+            "floodToggle"
+        ).checked =
+            false;
+
+
+        document.getElementById(
+            "hotspotToggle"
+        ).checked =
+            false;
+
+
+        document.getElementById(
+            "reportsToggle"
+        ).checked =
+            true;
+
+
+        document.getElementById(
+            "boundaryToggle"
+        ).checked =
+            true;
+
+
+        showReportLegend();
+
+
+        if (
+            verifiedReportsLayer
+                .getLayers()
+                .length > 0
         ) {
 
             const group =
                 L.featureGroup(
-                    verifiedReportsLayer.getLayers()
+                    verifiedReportsLayer
+                        .getLayers()
                 );
 
 
+            const bounds =
+                group.getBounds();
+
+
+            if (
+                bounds.isValid()
+            ) {
+
+                map.fitBounds(
+                    bounds,
+                    {
+                        padding:
+                            [
+                                35,
+                                35
+                            ]
+                    }
+                );
+
+            }
+
+        }
+
+        else if (
+            westernProvinceLayer
+        ) {
+
             map.fitBounds(
-                group.getBounds(),
+                westernProvinceLayer
+                    .getBounds(),
                 {
                     padding:
                         [
-                            30,
-                            30
+                            20,
+                            20
                         ]
                 }
+            );
+
+
+            showMessage(
+                "There are currently no verified community reports.",
+                "info"
             );
 
         }
@@ -2643,6 +4118,10 @@ document.getElementById(
 );
 
 
+
+/* ============================================================
+   BOUNDARY MODE
+============================================================ */
 
 document.getElementById(
     "boundaryModeBtn"
@@ -2658,12 +4137,59 @@ document.getElementById(
 
 
         if (
+            map.hasLayer(
+                floodSusceptibilityLayer
+            )
+        ) {
+
+            map.removeLayer(
+                floodSusceptibilityLayer
+            );
+
+        }
+
+
+        if (
+            map.hasLayer(
+                historicalHotspotLayer
+            )
+        ) {
+
+            map.removeLayer(
+                historicalHotspotLayer
+            );
+
+        }
+
+
+        if (
+            map.hasLayer(
+                verifiedReportsLayer
+            )
+        ) {
+
+            map.removeLayer(
+                verifiedReportsLayer
+            );
+
+        }
+
+
+        if (
             westernProvinceLayer
         ) {
 
-            map.addLayer(
-                westernProvinceLayer
-            );
+            if (
+                !map.hasLayer(
+                    westernProvinceLayer
+                )
+            ) {
+
+                map.addLayer(
+                    westernProvinceLayer
+                );
+
+            }
 
 
             map.fitBounds(
@@ -2680,7 +4206,63 @@ document.getElementById(
 
         }
 
+
+        document.getElementById(
+            "floodToggle"
+        ).checked =
+            false;
+
+
+        document.getElementById(
+            "hotspotToggle"
+        ).checked =
+            false;
+
+
+        document.getElementById(
+            "reportsToggle"
+        ).checked =
+            false;
+
+
+        document.getElementById(
+            "boundaryToggle"
+        ).checked =
+            true;
+
+
+        showBoundaryLegend();
+
     }
+);
+
+
+
+/* ============================================================
+   SCALE
+============================================================ */
+
+L.control.scale(
+    {
+        metric:
+            true,
+
+        imperial:
+            false,
+
+        position:
+            "bottomleft"
+    }
+).addTo(map);
+
+
+
+/* ============================================================
+   INITIAL STATUS
+============================================================ */
+
+console.log(
+    "Western Province Flood Information & Reporting System loaded."
 );
 
 
