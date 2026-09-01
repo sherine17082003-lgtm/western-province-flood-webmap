@@ -167,48 +167,57 @@
 
 
         /* =====================================
-           IMPORTANT REPORT MODE FIX
-
-           During report selection all vector
-           features stop intercepting mouse
-           events. This allows the user to
-           click anywhere inside the province.
+           REPORT CURSOR LOGIC
         ===================================== */
 
-        #map.report-mode {
+        #map.report-selecting {
+
+            cursor: default;
+        }
+
+
+        /*
+           Inside Western Province
+        */
+
+        #map.report-selecting.report-inside,
+        #map.report-selecting.report-inside * {
 
             cursor: crosshair !important;
         }
 
 
-        #map.report-mode * {
+        /*
+           Outside Western Province
+        */
 
-            cursor: crosshair !important;
+        #map.report-selecting.report-outside,
+        #map.report-selecting.report-outside * {
+
+            cursor: not-allowed !important;
         }
 
 
-        #map.report-mode .leaflet-interactive {
+        /*
+           Vector layers should not block map mouse events
+           while report mode is active.
+        */
+
+        #map.report-selecting .leaflet-interactive,
+        #map.report-selecting .leaflet-marker-icon,
+        #map.report-selecting .leaflet-marker-shadow {
 
             pointer-events: none !important;
-
-            cursor: crosshair !important;
         }
 
 
-        #map.report-mode .leaflet-marker-icon,
-        #map.report-mode .leaflet-marker-shadow {
+        /*
+           Keep Leaflet controls clickable.
+        */
 
-            pointer-events: none !important;
+        #map.report-selecting .leaflet-control {
 
-            cursor: crosshair !important;
-        }
-
-
-        /* Keep controls usable */
-
-        #map.report-mode .leaflet-control {
-
-            pointer-events: auto;
+            pointer-events: auto !important;
         }
 
 
@@ -531,8 +540,7 @@
         class="instruction-box"
     >
 
-        ✚ Click a location inside Western Province
-        to report waterlogging.
+        ✚ Move inside Western Province and click a location to report waterlogging.
 
     </div>
 
@@ -559,8 +567,7 @@
             <p>
 
                 Submit an observation about flooding
-                or waterlogging at the selected
-                location.
+                or waterlogging at the selected location.
 
             </p>
 
@@ -611,37 +618,23 @@
                     >
 
                         <option value="">
-
                             Select incident type
-
                         </option>
-
 
                         <option value="Waterlogging">
-
                             Waterlogging
-
                         </option>
-
 
                         <option value="Road Flooding">
-
                             Road Flooding
-
                         </option>
-
 
                         <option value="River Flooding">
-
                             River Flooding
-
                         </option>
 
-
                         <option value="Drain Overflow">
-
                             Drain Overflow
-
                         </option>
 
                     </select>
@@ -664,37 +657,23 @@
                     >
 
                         <option value="">
-
                             Select severity
-
                         </option>
-
 
                         <option value="Low">
-
                             Low
-
                         </option>
-
 
                         <option value="Moderate">
-
                             Moderate
-
                         </option>
-
 
                         <option value="High">
-
                             High
-
                         </option>
 
-
                         <option value="Severe">
-
                             Severe
-
                         </option>
 
                     </select>
@@ -734,30 +713,19 @@
                     <select id="roadStatus">
 
                         <option value="Unknown">
-
                             Unknown
-
                         </option>
-
 
                         <option value="Open">
-
                             Open
-
                         </option>
-
 
                         <option value="Partially Blocked">
-
                             Partially Blocked
-
                         </option>
 
-
                         <option value="Impassable">
-
                             Impassable
-
                         </option>
 
                     </select>
@@ -969,14 +937,10 @@
 
 
         /* =====================================
-           WESTERN PROVINCE BOUNDARY
+           WESTERN PROVINCE
         ===================================== */
 
         let westernProvinceData =
-            null;
-
-
-        let westernProvinceLayer =
             null;
 
 
@@ -985,60 +949,47 @@
         )
 
         .then(
-
             response =>
                 response.json()
-
         )
 
         .then(
-
             data => {
 
-
-                /*
-                 Store ALL of the Western Province
-                 GeoJSON rather than only the first
-                 feature.
-                */
 
                 westernProvinceData =
                     data;
 
 
-                westernProvinceLayer =
-                    L.geoJSON(
+                L.geoJSON(
 
-                        data,
+                    data,
 
-                        {
+                    {
 
-                            style: {
+                        style: {
 
-                                color:
-                                    '#222222',
+                            color:
+                                '#222222',
 
-                                weight:
-                                    3,
+                            weight:
+                                3,
 
-                                opacity:
-                                    1,
+                            opacity:
+                                1,
 
-                                fillOpacity:
-                                    0
+                            fillOpacity:
+                                0
 
-                            },
-
-
-                            interactive:
-                                false
-
-                        }
-
-                    );
+                        },
 
 
-                westernProvinceLayer.addTo(
+                        interactive:
+                            false
+
+                    }
+
+                ).addTo(
                     map
                 );
 
@@ -1053,7 +1004,7 @@
 
                 console.error(
 
-                    'Western Province boundary error:',
+                    'Western Province loading error:',
 
                     error
 
@@ -1073,14 +1024,11 @@
         )
 
         .then(
-
             response =>
                 response.json()
-
         )
 
         .then(
-
             data => {
 
 
@@ -1105,7 +1053,6 @@
 
 
                         onEachFeature:
-
                             function(
                                 feature,
                                 layer
@@ -1158,14 +1105,11 @@
         )
 
         .then(
-
             response =>
                 response.json()
-
         )
 
         .then(
-
             data => {
 
 
@@ -1209,14 +1153,11 @@
         )
 
         .then(
-
             response =>
                 response.json()
-
         )
 
         .then(
-
             data => {
 
 
@@ -1260,14 +1201,11 @@
         )
 
         .then(
-
             response =>
                 response.json()
-
         )
 
         .then(
-
             data => {
 
 
@@ -1308,14 +1246,11 @@
         )
 
         .then(
-
             response =>
                 response.json()
-
         )
 
         .then(
-
             data => {
 
 
@@ -1348,7 +1283,7 @@
 
 
         /* =====================================
-           ROADS
+           MAJOR ROADS
         ===================================== */
 
         fetch(
@@ -1356,14 +1291,11 @@
         )
 
         .then(
-
             response =>
                 response.json()
-
         )
 
         .then(
-
             data => {
 
 
@@ -1404,14 +1336,11 @@
         )
 
         .then(
-
             response =>
                 response.json()
-
         )
 
         .then(
-
             data => {
 
 
@@ -1422,7 +1351,6 @@
                     {
 
                         pointToLayer:
-
                             function(
                                 feature,
                                 latlng
@@ -1478,14 +1406,11 @@
         )
 
         .then(
-
             response =>
                 response.json()
-
         )
 
         .then(
-
             data => {
 
 
@@ -1496,7 +1421,6 @@
                     {
 
                         pointToLayer:
-
                             function(
                                 feature,
                                 latlng
@@ -1552,14 +1476,11 @@
         )
 
         .then(
-
             response =>
                 response.json()
-
         )
 
         .then(
-
             data => {
 
 
@@ -1570,7 +1491,6 @@
                     {
 
                         pointToLayer:
-
                             function(
                                 feature,
                                 latlng
@@ -1607,7 +1527,6 @@
 
 
                         onEachFeature:
-
                             function(
                                 feature,
                                 layer
@@ -1622,8 +1541,7 @@
 
                                     <div class="popup-title">
 
-                                        Historical
-                                        Waterlogging Hotspot
+                                        Historical Waterlogging Hotspot
 
                                     </div>
 
@@ -1890,7 +1808,7 @@
 
 
         /* =====================================
-           SCALE
+           SCALE BAR
         ===================================== */
 
         L.control.scale(
@@ -2020,7 +1938,7 @@
 
 
         /* =====================================
-           CHECK WHETHER A POINT IS INSIDE
+           CHECK WHETHER POINT IS INSIDE
            WESTERN PROVINCE
         ===================================== */
 
@@ -2039,7 +1957,7 @@
             }
 
 
-            const clickedPoint =
+            const point =
                 turf.point(
 
                     [
@@ -2053,7 +1971,8 @@
                 );
 
 
-            let features = [];
+            let features =
+                [];
 
 
             if (
@@ -2079,11 +1998,12 @@
             ) {
 
 
-                features = [
+                features =
+                    [
 
-                    westernProvinceData
+                        westernProvinceData
 
-                ];
+                    ];
 
 
             }
@@ -2105,17 +2025,15 @@
                 }
 
 
-                const geometryType =
+                const type =
                     feature.geometry.type;
 
 
                 if (
 
-                    geometryType !==
-                        'Polygon' &&
+                    type !== 'Polygon' &&
 
-                    geometryType !==
-                        'MultiPolygon'
+                    type !== 'MultiPolygon'
 
                 ) {
 
@@ -2130,7 +2048,7 @@
                     const inside =
                         turf.booleanPointInPolygon(
 
-                            clickedPoint,
+                            point,
 
                             feature,
 
@@ -2161,7 +2079,7 @@
 
                     console.error(
 
-                        'Point-in-polygon error:',
+                        'Boundary checking error:',
 
                         error
 
@@ -2203,10 +2121,6 @@
             }
 
 
-            /*
-             Close any existing map popup.
-            */
-
             map.closePopup();
 
 
@@ -2218,15 +2132,22 @@
                 'block';
 
 
-            /*
-             IMPORTANT:
-             Add report-mode class.
-             This forces the crosshair to
-             appear over polygons and points.
-            */
+            const container =
+                map.getContainer();
 
-            map.getContainer().classList.add(
-                'report-mode'
+
+            container.classList.add(
+                'report-selecting'
+            );
+
+
+            container.classList.remove(
+                'report-inside'
+            );
+
+
+            container.classList.add(
+                'report-outside'
             );
 
 
@@ -2234,7 +2155,90 @@
 
 
         /* =====================================
-           MAP CLICK
+           CHANGE CURSOR WHEN MOUSE MOVES
+        ===================================== */
+
+        map.on(
+
+            'mousemove',
+
+            function(e) {
+
+
+                if (
+                    !reportMode
+                ) {
+
+                    return;
+
+                }
+
+
+                const container =
+                    map.getContainer();
+
+
+                const inside =
+                    isPointInsideWesternProvince(
+
+                        e.latlng.lat,
+
+                        e.latlng.lng
+
+                    );
+
+
+                if (
+                    inside
+                ) {
+
+
+                    /*
+                       Valid reporting location.
+                       Show + crosshair.
+                    */
+
+                    container.classList.add(
+                        'report-inside'
+                    );
+
+
+                    container.classList.remove(
+                        'report-outside'
+                    );
+
+
+                }
+
+
+                else {
+
+
+                    /*
+                       Outside Western Province.
+                       Show not-allowed cursor.
+                    */
+
+                    container.classList.add(
+                        'report-outside'
+                    );
+
+
+                    container.classList.remove(
+                        'report-inside'
+                    );
+
+
+                }
+
+
+            }
+
+        );
+
+
+        /* =====================================
+           CLICK MAP
         ===================================== */
 
         map.on(
@@ -2261,7 +2265,7 @@
                     e.latlng.lng;
 
 
-                const insideProvince =
+                const inside =
                     isPointInsideWesternProvince(
 
                         clickedLat,
@@ -2271,13 +2275,10 @@
                     );
 
 
-                /*
-                 Reject points outside
-                 Western Province.
-                */
+                /* OUTSIDE */
 
                 if (
-                    !insideProvince
+                    !inside
                 ) {
 
 
@@ -2289,9 +2290,7 @@
 
 
                     /*
-                     Keep report mode active.
-                     User can immediately try
-                     clicking another location.
+                       Stay in report mode.
                     */
 
                     return;
@@ -2299,9 +2298,7 @@
                 }
 
 
-                /*
-                 Valid point.
-                */
+                /* VALID LOCATION */
 
                 selectedLat =
                     clickedLat;
@@ -2323,12 +2320,6 @@
 
                 }
 
-
-                /*
-                 Small centered marker.
-                 It appears exactly at the
-                 selected coordinates.
-                */
 
                 temporaryMarker =
                     L.circleMarker(
@@ -2402,11 +2393,17 @@
 
 
                 /*
-                 Restore normal mouse behaviour.
+                   Turn off report cursor mode.
                 */
 
                 map.getContainer().classList.remove(
-                    'report-mode'
+
+                    'report-selecting',
+
+                    'report-inside',
+
+                    'report-outside'
+
                 );
 
 
@@ -2456,7 +2453,13 @@
 
 
             map.getContainer().classList.remove(
-                'report-mode'
+
+                'report-selecting',
+
+                'report-inside',
+
+                'report-outside'
+
             );
 
 
@@ -2616,14 +2619,12 @@
 
                     ${incidentType}
 
-
                     <br>
 
 
                     <b>Severity:</b>
 
                     ${severity}
-
 
                     <br>
 
@@ -2636,14 +2637,12 @@
                         : "Not provided"
                     }
 
-
                     <br>
 
 
                     <b>Road Status:</b>
 
                     ${roadStatus}
-
 
                     <br>
 
@@ -2655,7 +2654,6 @@
                         "Not provided"
                     }
 
-
                     <br>
 
 
@@ -2663,14 +2661,12 @@
 
                     ${selectedLat.toFixed(6)}
 
-
                     <br>
 
 
                     <b>Longitude:</b>
 
                     ${selectedLng.toFixed(6)}
-
 
                     <br>
 
