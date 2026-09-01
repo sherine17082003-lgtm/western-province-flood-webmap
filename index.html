@@ -1,493 +1,1763 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
 
-  <title>Western Province Flood Web Map</title>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-  <link
-    rel="stylesheet"
-    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-  />
+    <title>
+        Western Province Flood Web Map
+    </title>
 
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      font-family: Arial, sans-serif;
-    }
 
-    #map {
-      width: 100%;
-      height: 100vh;
-    }
+    <!-- Leaflet CSS -->
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    >
 
-    .map-title {
-      position: absolute;
-      top: 10px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 1000;
-      background: rgba(255, 255, 255, 0.95);
-      padding: 10px 16px;
-      border-radius: 6px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.25);
-      text-align: center;
-      font-weight: bold;
-      max-width: 70%;
-    }
 
-    .legend {
-      background: white;
-      padding: 10px;
-      line-height: 20px;
-      border-radius: 5px;
-      box-shadow: 0 1px 5px rgba(0,0,0,0.4);
-    }
+    <style>
 
-    .legend i {
-      width: 18px;
-      height: 18px;
-      float: left;
-      margin-right: 8px;
-      opacity: 0.8;
-    }
-  </style>
+        /* ==================================================
+           GENERAL PAGE
+        ================================================== */
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+
+        #map {
+            width: 100%;
+            height: 100vh;
+        }
+
+
+        /* ==================================================
+           MAP TITLE
+        ================================================== */
+
+        .map-title {
+            position: absolute;
+
+            top: 10px;
+            left: 50%;
+
+            transform: translateX(-50%);
+
+            z-index: 1000;
+
+            background: rgba(255,255,255,0.95);
+
+            padding: 10px 18px;
+
+            border-radius: 7px;
+
+            box-shadow:
+                0 2px 8px rgba(0,0,0,0.30);
+
+            text-align: center;
+
+            font-size: 17px;
+
+            font-weight: bold;
+
+            max-width: 65%;
+
+            line-height: 1.25;
+        }
+
+
+        .map-subtitle {
+            font-size: 14px;
+            font-weight: normal;
+        }
+
+
+        /* ==================================================
+           LEGEND
+        ================================================== */
+
+        .legend {
+            background: rgba(255,255,255,0.96);
+
+            padding: 10px 12px;
+
+            border-radius: 6px;
+
+            box-shadow:
+                0 1px 6px rgba(0,0,0,0.35);
+
+            line-height: 21px;
+
+            font-size: 13px;
+        }
+
+
+        .legend-title {
+            font-weight: bold;
+
+            margin-bottom: 5px;
+        }
+
+
+        .legend-row {
+            display: flex;
+
+            align-items: center;
+
+            margin-top: 3px;
+        }
+
+
+        .legend-color {
+            width: 18px;
+
+            height: 18px;
+
+            margin-right: 8px;
+
+            border: 1px solid rgba(0,0,0,0.2);
+        }
+
+
+        /* ==================================================
+           LEAFLET LAYER CONTROL
+        ================================================== */
+
+        .leaflet-control-layers {
+            font-size: 13px;
+
+            border-radius: 6px;
+        }
+
+
+        /* ==================================================
+           POPUPS
+        ================================================== */
+
+        .popup-title {
+            font-weight: bold;
+
+            font-size: 14px;
+
+            margin-bottom: 5px;
+        }
+
+
+        /* ==================================================
+           MOBILE RESPONSIVE DESIGN
+        ================================================== */
+
+        @media (max-width: 768px) {
+
+            .map-title {
+                font-size: 13px;
+
+                padding: 7px 10px;
+
+                max-width: 65%;
+            }
+
+
+            .map-subtitle {
+                font-size: 11px;
+            }
+
+
+            .legend {
+                font-size: 11px;
+
+                padding: 7px;
+            }
+
+
+            .legend-color {
+                width: 14px;
+
+                height: 14px;
+            }
+
+
+            .leaflet-control-layers {
+                font-size: 11px;
+            }
+        }
+
+    </style>
+
 </head>
+
+
 
 <body>
 
-  <div class="map-title">
-    Interactive Urban Flood Vulnerability and Waterlogging Hotspot Reporting Web Map
-    <br>
-    Western Province, Sri Lanka
-  </div>
 
-  <div id="map"></div>
+    <!-- ==================================================
+         MAP TITLE
+    =================================================== -->
 
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <div class="map-title">
 
-  <script>
+        Interactive Urban Flood Vulnerability and
+        Waterlogging Hotspot Reporting Web Map
 
-    // CREATE MAP
-    const map = L.map('map').setView([6.9, 79.95], 9);
-
-
-    // BASE MAP
-    const osm = L.tileLayer(
-      'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-      {
-        maxZoom: 19,
-        attribution: '&copy; OpenStreetMap contributors'
-      }
-    );
-
-    osm.addTo(map);
-
-
-    // WESTERN PROVINCE BOUNDARY
-    fetch('data/western_province.geojson')
-      .then(response => response.json())
-      .then(data => {
-
-        const provinceLayer = L.geoJSON(data, {
-          style: {
-            color: '#222222',
-            weight: 3,
-            fillOpacity: 0
-          }
-        }).addTo(map);
-
-        map.fitBounds(provinceLayer.getBounds());
-      });
-
-
-    // DISTRICTS
-    const districtLayer = L.layerGroup();
-
-    fetch('data/districts.geojson')
-      .then(response => response.json())
-      .then(data => {
-
-        L.geoJSON(data, {
-          style: {
-            color: '#555555',
-            weight: 2,
-            fillOpacity: 0
-          },
-
-          onEachFeature: function(feature, layer) {
-            const name =
-              feature.properties.ADM2_EN ||
-              feature.properties.name ||
-              "District";
-
-            layer.bindPopup(
-              "<b>District:</b> " + name
-            );
-          }
-        }).addTo(districtLayer);
-
-      });
-
-
-    // DSD
-    const dsdLayer = L.layerGroup();
-
-    fetch('data/dsd.geojson')
-      .then(response => response.json())
-      .then(data => {
-
-        L.geoJSON(data, {
-          style: {
-            color: '#777777',
-            weight: 1,
-            fillOpacity: 0
-          },
-
-          onEachFeature: function(feature, layer) {
-            const name =
-              feature.properties.ADM3_EN ||
-              feature.properties.name ||
-              "DSD";
-
-            layer.bindPopup(
-              "<b>DSD:</b> " + name
-            );
-          }
-        }).addTo(dsdLayer);
-
-      });
-
-
-    // GND
-    const gndLayer = L.layerGroup();
-
-    fetch('data/gnd.geojson')
-      .then(response => response.json())
-      .then(data => {
-
-        L.geoJSON(data, {
-          style: {
-            color: '#aaaaaa',
-            weight: 0.6,
-            fillOpacity: 0
-          }
-        }).addTo(gndLayer);
-
-      });
-
-
-    // RIVERS
-    const riverLayer = L.layerGroup();
-
-    fetch('data/rivers.geojson')
-      .then(response => response.json())
-      .then(data => {
-
-        L.geoJSON(data, {
-          style: {
-            color: '#0066cc',
-            weight: 2
-          },
-
-          onEachFeature: function(feature, layer) {
-            const name =
-              feature.properties.NAME ||
-              feature.properties.name ||
-              "River";
-
-            layer.bindPopup(
-              "<b>River:</b> " + name
-            );
-          }
-        }).addTo(riverLayer);
-
-      });
-
-
-    // WATERWAYS
-    const waterwayLayer = L.layerGroup();
-
-    fetch('data/waterways.geojson')
-      .then(response => response.json())
-      .then(data => {
-
-        L.geoJSON(data, {
-          style: {
-            color: '#33aaff',
-            weight: 1.5
-          },
-
-          onEachFeature: function(feature, layer) {
-            const name =
-              feature.properties.name ||
-              "Waterway";
-
-            layer.bindPopup(
-              "<b>Waterway:</b> " + name
-            );
-          }
-        }).addTo(waterwayLayer);
-
-      });
-
-
-    // MAJOR ROADS
-    const roadLayer = L.layerGroup();
-
-    fetch('data/major_roads.geojson')
-      .then(response => response.json())
-      .then(data => {
-
-        L.geoJSON(data, {
-          style: {
-            color: '#555555',
-            weight: 1.5
-          },
-
-          onEachFeature: function(feature, layer) {
-            const name =
-              feature.properties.name ||
-              feature.properties.ref ||
-              "Major Road";
-
-            layer.bindPopup(
-              "<b>Road:</b> " + name
-            );
-          }
-        }).addTo(roadLayer);
-
-      });
-
-
-    // HOSPITALS
-    const hospitalLayer = L.layerGroup();
-
-    fetch('data/hospitals.geojson')
-      .then(response => response.json())
-      .then(data => {
-
-        L.geoJSON(data, {
-
-          pointToLayer: function(feature, latlng) {
-            return L.circleMarker(latlng, {
-              radius: 5,
-              fillColor: '#cc0000',
-              color: '#ffffff',
-              weight: 1,
-              fillOpacity: 0.9
-            });
-          },
-
-          onEachFeature: function(feature, layer) {
-            const p = feature.properties;
-
-            const name =
-              p.hospital_n ||
-              p.name ||
-              p.NAME ||
-              "Hospital";
-
-            layer.bindPopup(
-              "<b>Hospital</b><br>" + name
-            );
-          }
-
-        }).addTo(hospitalLayer);
-
-      });
-
-
-    // SCHOOLS
-    const schoolLayer = L.layerGroup();
-
-    fetch('data/schools.geojson')
-      .then(response => response.json())
-      .then(data => {
-
-        L.geoJSON(data, {
-
-          pointToLayer: function(feature, latlng) {
-            return L.circleMarker(latlng, {
-              radius: 4,
-              fillColor: '#8a2be2',
-              color: '#ffffff',
-              weight: 1,
-              fillOpacity: 0.9
-            });
-          },
-
-          onEachFeature: function(feature, layer) {
-            const p = feature.properties;
-
-            const name =
-              p.school_nam ||
-              p.name ||
-              p.NAME ||
-              "School";
-
-            layer.bindPopup(
-              "<b>School</b><br>" + name
-            );
-          }
-
-        }).addTo(schoolLayer);
-
-      });
-
-
-    // HISTORICAL WATERLOGGING HOTSPOTS
-    const hotspotLayer = L.layerGroup();
-
-    fetch('data/historical_hotspots.geojson')
-      .then(response => response.json())
-      .then(data => {
-
-        L.geoJSON(data, {
-
-          pointToLayer: function(feature, latlng) {
-            return L.circleMarker(latlng, {
-              radius: 7,
-              fillColor: '#ff0000',
-              color: '#660000',
-              weight: 2,
-              fillOpacity: 0.9
-            });
-          },
-
-          onEachFeature: function(feature, layer) {
-
-            const p = feature.properties;
-
-            const popup = `
-              <b>Historical Waterlogging Hotspot</b>
-              <br><br>
-
-              <b>Location:</b>
-              ${p.location || "Unknown"}
-
-              <br>
-
-              <b>District:</b>
-              ${p.district || "Unknown"}
-
-              <br>
-
-              <b>Severity:</b>
-              ${p.severity || "Unknown"}
-
-              <br>
-
-              <b>Context:</b>
-              ${p.context || "Not available"}
-
-              <br>
-
-              <b>Evidence Grade:</b>
-              ${p.ev_grade || "Unknown"}
-            `;
-
-            layer.bindPopup(popup);
-          }
-
-        }).addTo(hotspotLayer);
-
-      });
-
-
-    // FLOOD SUSCEPTIBILITY IMAGE
-    const floodBounds = [
-      [6.324768420900316, 79.81675029847408],
-      [7.330522213000532, 80.38107195995796]
-    ];
-
-    const floodLayer = L.imageOverlay(
-      'data/flood_susceptibility.png',
-      floodBounds,
-      {
-        opacity: 0.65
-      }
-    );
-
-
-    // DEFAULT LAYERS
-    floodLayer.addTo(map);
-    districtLayer.addTo(map);
-    hotspotLayer.addTo(map);
-
-
-    // LAYER CONTROL
-    const baseMaps = {
-      "OpenStreetMap": osm
-    };
-
-    const overlays = {
-      "Flood Susceptibility": floodLayer,
-      "District Boundaries": districtLayer,
-      "DSD Boundaries": dsdLayer,
-      "GND Boundaries": gndLayer,
-      "Rivers": riverLayer,
-      "Waterways": waterwayLayer,
-      "Major Roads": roadLayer,
-      "Hospitals": hospitalLayer,
-      "Schools": schoolLayer,
-      "Historical Hotspots": hotspotLayer
-    };
-
-    L.control.layers(
-      baseMaps,
-      overlays,
-      {
-        collapsed: false
-      }
-    ).addTo(map);
-
-
-    // LEGEND
-    const legend = L.control({
-      position: 'bottomright'
-    });
-
-    legend.onAdd = function() {
-
-      const div = L.DomUtil.create(
-        'div',
-        'legend'
-      );
-
-      div.innerHTML = `
-        <b>Flood Susceptibility</b>
         <br>
 
-        <i style="background:#008000"></i>
-        Very Low
-        <br>
+        <span class="map-subtitle">
+            Western Province, Sri Lanka
+        </span>
 
-        <i style="background:#adff2f"></i>
-        Low
-        <br>
+    </div>
 
-        <i style="background:#ffff00"></i>
-        Moderate
-        <br>
 
-        <i style="background:#ffa500"></i>
-        High
-        <br>
 
-        <i style="background:#ff0000"></i>
-        Very High
-      `;
+    <!-- ==================================================
+         MAP CONTAINER
+    =================================================== -->
 
-      return div;
-    };
+    <div id="map"></div>
 
-    legend.addTo(map);
 
-  </script>
+
+    <!-- ==================================================
+         LEAFLET JAVASCRIPT
+    =================================================== -->
+
+    <script
+        src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
+    </script>
+
+
+
+    <script>
+
+
+        /* ==================================================
+           1. CREATE MAP
+        ================================================== */
+
+        const map = L.map(
+            'map',
+            {
+                zoomControl: true
+            }
+        ).setView(
+            [6.90, 79.95],
+            9
+        );
+
+
+
+        /* ==================================================
+           2. BASE MAP
+        ================================================== */
+
+        const osm = L.tileLayer(
+
+            'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+
+            {
+                maxZoom: 19,
+
+                attribution:
+                    '&copy; OpenStreetMap contributors'
+            }
+
+        );
+
+
+        osm.addTo(map);
+
+
+
+        /* ==================================================
+           3. CREATE EMPTY LAYER GROUPS
+        ================================================== */
+
+        const districtLayer =
+            L.layerGroup();
+
+
+        const dsdLayer =
+            L.layerGroup();
+
+
+        const gndLayer =
+            L.layerGroup();
+
+
+        const riverLayer =
+            L.layerGroup();
+
+
+        const waterwayLayer =
+            L.layerGroup();
+
+
+        const roadLayer =
+            L.layerGroup();
+
+
+        const hospitalLayer =
+            L.layerGroup();
+
+
+        const schoolLayer =
+            L.layerGroup();
+
+
+        const hotspotLayer =
+            L.layerGroup();
+
+
+
+        /* ==================================================
+           4. FLOOD SUSCEPTIBILITY IMAGE
+        ================================================== */
+
+        const floodBounds = [
+
+            [
+                6.324768420900316,
+                79.81675029847408
+            ],
+
+            [
+                7.330522213000532,
+                80.38107195995796
+            ]
+
+        ];
+
+
+        const floodLayer =
+            L.imageOverlay(
+
+                'data/flood_susceptibility.png',
+
+                floodBounds,
+
+                {
+                    opacity: 0.65,
+
+                    interactive: false
+                }
+
+            );
+
+
+
+        /* ==================================================
+           5. WESTERN PROVINCE BOUNDARY
+        ================================================== */
+
+        let provinceLayer;
+
+
+        fetch(
+            'data/western_province.geojson'
+        )
+
+        .then(
+            response => response.json()
+        )
+
+        .then(
+            data => {
+
+                provinceLayer =
+                    L.geoJSON(
+
+                        data,
+
+                        {
+                            style: {
+
+                                color:
+                                    '#222222',
+
+                                weight:
+                                    3,
+
+                                opacity:
+                                    1,
+
+                                fillOpacity:
+                                    0
+                            }
+                        }
+
+                    );
+
+
+                provinceLayer.addTo(map);
+
+
+                map.fitBounds(
+                    provinceLayer.getBounds(),
+                    {
+                        padding:
+                            [20,20]
+                    }
+                );
+
+            }
+
+        )
+
+        .catch(
+            error =>
+                console.error(
+                    'Province layer error:',
+                    error
+                )
+        );
+
+
+
+        /* ==================================================
+           6. DISTRICT BOUNDARIES
+        ================================================== */
+
+        fetch(
+            'data/districts.geojson'
+        )
+
+        .then(
+            response => response.json()
+        )
+
+        .then(
+            data => {
+
+                const geojson =
+                    L.geoJSON(
+
+                        data,
+
+                        {
+
+                            style: {
+
+                                color:
+                                    '#0057b8',
+
+                                weight:
+                                    2,
+
+                                opacity:
+                                    1,
+
+                                fillOpacity:
+                                    0
+
+                            },
+
+
+                            onEachFeature:
+                                function(
+                                    feature,
+                                    layer
+                                ) {
+
+                                    const p =
+                                        feature.properties || {};
+
+
+                                    const name =
+
+                                        p.ADM2_EN ||
+
+                                        p.name ||
+
+                                        p.NAME ||
+
+                                        "District";
+
+
+                                    layer.bindPopup(
+
+                                        `<div class="popup-title">
+                                            District
+                                        </div>
+
+                                        ${name}`
+
+                                    );
+
+                                }
+
+                        }
+
+                    );
+
+
+                geojson.addTo(
+                    districtLayer
+                );
+
+            }
+
+        )
+
+        .catch(
+            error =>
+                console.error(
+                    'District layer error:',
+                    error
+                )
+        );
+
+
+
+        /* ==================================================
+           7. DSD BOUNDARIES
+        ================================================== */
+
+        fetch(
+            'data/dsd.geojson'
+        )
+
+        .then(
+            response => response.json()
+        )
+
+        .then(
+            data => {
+
+                const geojson =
+                    L.geoJSON(
+
+                        data,
+
+                        {
+
+                            style: {
+
+                                color:
+                                    '#666666',
+
+                                weight:
+                                    1.2,
+
+                                opacity:
+                                    0.9,
+
+                                fillOpacity:
+                                    0
+
+                            },
+
+
+                            onEachFeature:
+                                function(
+                                    feature,
+                                    layer
+                                ) {
+
+                                    const p =
+                                        feature.properties || {};
+
+
+                                    const name =
+
+                                        p.ADM3_EN ||
+
+                                        p.name ||
+
+                                        p.NAME ||
+
+                                        "DSD";
+
+
+                                    layer.bindPopup(
+
+                                        `<div class="popup-title">
+                                            Divisional Secretariat Division
+                                        </div>
+
+                                        ${name}`
+
+                                    );
+
+                                }
+
+                        }
+
+                    );
+
+
+                geojson.addTo(
+                    dsdLayer
+                );
+
+            }
+
+        )
+
+        .catch(
+            error =>
+                console.error(
+                    'DSD layer error:',
+                    error
+                )
+        );
+
+
+
+        /* ==================================================
+           8. GND BOUNDARIES
+        ================================================== */
+
+        fetch(
+            'data/gnd.geojson'
+        )
+
+        .then(
+            response => response.json()
+        )
+
+        .then(
+            data => {
+
+                const geojson =
+                    L.geoJSON(
+
+                        data,
+
+                        {
+
+                            style: {
+
+                                color:
+                                    '#999999',
+
+                                weight:
+                                    0.6,
+
+                                opacity:
+                                    0.7,
+
+                                fillOpacity:
+                                    0
+
+                            },
+
+
+                            onEachFeature:
+                                function(
+                                    feature,
+                                    layer
+                                ) {
+
+                                    const p =
+                                        feature.properties || {};
+
+
+                                    const name =
+
+                                        p.ADM4_EN ||
+
+                                        p.name ||
+
+                                        p.NAME ||
+
+                                        "Grama Niladhari Division";
+
+
+                                    layer.bindPopup(
+
+                                        `<div class="popup-title">
+                                            GND
+                                        </div>
+
+                                        ${name}`
+
+                                    );
+
+                                }
+
+                        }
+
+                    );
+
+
+                geojson.addTo(
+                    gndLayer
+                );
+
+            }
+
+        )
+
+        .catch(
+            error =>
+                console.error(
+                    'GND layer error:',
+                    error
+                )
+        );
+
+
+
+        /* ==================================================
+           9. RIVERS
+        ================================================== */
+
+        fetch(
+            'data/rivers.geojson'
+        )
+
+        .then(
+            response => response.json()
+        )
+
+        .then(
+            data => {
+
+                const geojson =
+                    L.geoJSON(
+
+                        data,
+
+                        {
+
+                            style: {
+
+                                color:
+                                    '#0066cc',
+
+                                weight:
+                                    2.5,
+
+                                opacity:
+                                    0.9
+
+                            },
+
+
+                            onEachFeature:
+                                function(
+                                    feature,
+                                    layer
+                                ) {
+
+                                    const p =
+                                        feature.properties || {};
+
+
+                                    const name =
+
+                                        p.NAME ||
+
+                                        p.name ||
+
+                                        "River";
+
+
+                                    layer.bindPopup(
+
+                                        `<div class="popup-title">
+                                            River
+                                        </div>
+
+                                        ${name}`
+
+                                    );
+
+                                }
+
+                        }
+
+                    );
+
+
+                geojson.addTo(
+                    riverLayer
+                );
+
+            }
+
+        )
+
+        .catch(
+            error =>
+                console.error(
+                    'River layer error:',
+                    error
+                )
+        );
+
+
+
+        /* ==================================================
+           10. WATERWAYS
+        ================================================== */
+
+        fetch(
+            'data/waterways.geojson'
+        )
+
+        .then(
+            response => response.json()
+        )
+
+        .then(
+            data => {
+
+                const geojson =
+                    L.geoJSON(
+
+                        data,
+
+                        {
+
+                            style: {
+
+                                color:
+                                    '#00a6ff',
+
+                                weight:
+                                    1.5,
+
+                                opacity:
+                                    0.85
+
+                            },
+
+
+                            onEachFeature:
+                                function(
+                                    feature,
+                                    layer
+                                ) {
+
+                                    const p =
+                                        feature.properties || {};
+
+
+                                    const name =
+
+                                        p.name ||
+
+                                        p.NAME ||
+
+                                        "Waterway";
+
+
+                                    layer.bindPopup(
+
+                                        `<div class="popup-title">
+                                            Waterway
+                                        </div>
+
+                                        ${name}`
+
+                                    );
+
+                                }
+
+                        }
+
+                    );
+
+
+                geojson.addTo(
+                    waterwayLayer
+                );
+
+            }
+
+        )
+
+        .catch(
+            error =>
+                console.error(
+                    'Waterway layer error:',
+                    error
+                )
+        );
+
+
+
+        /* ==================================================
+           11. MAJOR ROADS
+        ================================================== */
+
+        fetch(
+            'data/major_roads.geojson'
+        )
+
+        .then(
+            response => response.json()
+        )
+
+        .then(
+            data => {
+
+                const geojson =
+                    L.geoJSON(
+
+                        data,
+
+                        {
+
+                            style:
+                                function(feature) {
+
+                                    const highway =
+                                        feature.properties
+                                        ?.highway;
+
+
+                                    let width = 1.5;
+
+
+                                    if (
+                                        highway ===
+                                        'motorway'
+                                    ) {
+
+                                        width = 3;
+
+                                    }
+
+
+                                    else if (
+                                        highway ===
+                                        'trunk'
+                                    ) {
+
+                                        width = 2.7;
+
+                                    }
+
+
+                                    else if (
+                                        highway ===
+                                        'primary'
+                                    ) {
+
+                                        width = 2.4;
+
+                                    }
+
+
+                                    else if (
+                                        highway ===
+                                        'secondary'
+                                    ) {
+
+                                        width = 2;
+
+                                    }
+
+
+                                    return {
+
+                                        color:
+                                            '#555555',
+
+                                        weight:
+                                            width,
+
+                                        opacity:
+                                            0.85
+                                    };
+
+                                },
+
+
+                            onEachFeature:
+                                function(
+                                    feature,
+                                    layer
+                                ) {
+
+                                    const p =
+                                        feature.properties || {};
+
+
+                                    const name =
+
+                                        p.name ||
+
+                                        p.ref ||
+
+                                        "Major Road";
+
+
+                                    const type =
+
+                                        p.highway ||
+
+                                        "Unknown";
+
+
+                                    layer.bindPopup(
+
+                                        `<div class="popup-title">
+                                            Major Road
+                                        </div>
+
+                                        <b>Name:</b>
+                                        ${name}
+
+                                        <br>
+
+                                        <b>Road type:</b>
+                                        ${type}`
+
+                                    );
+
+                                }
+
+                        }
+
+                    );
+
+
+                geojson.addTo(
+                    roadLayer
+                );
+
+            }
+
+        )
+
+        .catch(
+            error =>
+                console.error(
+                    'Road layer error:',
+                    error
+                )
+        );
+
+
+
+        /* ==================================================
+           12. HOSPITALS
+        ================================================== */
+
+        fetch(
+            'data/hospitals.geojson'
+        )
+
+        .then(
+            response => response.json()
+        )
+
+        .then(
+            data => {
+
+                const geojson =
+                    L.geoJSON(
+
+                        data,
+
+                        {
+
+                            pointToLayer:
+                                function(
+                                    feature,
+                                    latlng
+                                ) {
+
+                                    return L.circleMarker(
+
+                                        latlng,
+
+                                        {
+
+                                            radius:
+                                                5,
+
+                                            fillColor:
+                                                '#d7191c',
+
+                                            color:
+                                                '#ffffff',
+
+                                            weight:
+                                                1,
+
+                                            opacity:
+                                                1,
+
+                                            fillOpacity:
+                                                0.90
+
+                                        }
+
+                                    );
+
+                                },
+
+
+                            onEachFeature:
+                                function(
+                                    feature,
+                                    layer
+                                ) {
+
+                                    const p =
+                                        feature.properties || {};
+
+
+                                    const name =
+
+                                        p.hospital_n ||
+
+                                        p.name ||
+
+                                        p.NAME ||
+
+                                        "Hospital";
+
+
+                                    layer.bindPopup(
+
+                                        `<div class="popup-title">
+                                            Hospital
+                                        </div>
+
+                                        ${name}`
+
+                                    );
+
+                                }
+
+                        }
+
+                    );
+
+
+                geojson.addTo(
+                    hospitalLayer
+                );
+
+            }
+
+        )
+
+        .catch(
+            error =>
+                console.error(
+                    'Hospital layer error:',
+                    error
+                )
+        );
+
+
+
+        /* ==================================================
+           13. SCHOOLS
+        ================================================== */
+
+        fetch(
+            'data/schools.geojson'
+        )
+
+        .then(
+            response => response.json()
+        )
+
+        .then(
+            data => {
+
+                const geojson =
+                    L.geoJSON(
+
+                        data,
+
+                        {
+
+                            pointToLayer:
+                                function(
+                                    feature,
+                                    latlng
+                                ) {
+
+                                    return L.circleMarker(
+
+                                        latlng,
+
+                                        {
+
+                                            radius:
+                                                4,
+
+                                            fillColor:
+                                                '#7b2cbf',
+
+                                            color:
+                                                '#ffffff',
+
+                                            weight:
+                                                1,
+
+                                            opacity:
+                                                1,
+
+                                            fillOpacity:
+                                                0.85
+
+                                        }
+
+                                    );
+
+                                },
+
+
+                            onEachFeature:
+                                function(
+                                    feature,
+                                    layer
+                                ) {
+
+                                    const p =
+                                        feature.properties || {};
+
+
+                                    const name =
+
+                                        p.school_nam ||
+
+                                        p.name ||
+
+                                        p.NAME ||
+
+                                        "School";
+
+
+                                    layer.bindPopup(
+
+                                        `<div class="popup-title">
+                                            School
+                                        </div>
+
+                                        ${name}`
+
+                                    );
+
+                                }
+
+                        }
+
+                    );
+
+
+                geojson.addTo(
+                    schoolLayer
+                );
+
+            }
+
+        )
+
+        .catch(
+            error =>
+                console.error(
+                    'School layer error:',
+                    error
+                )
+        );
+
+
+
+        /* ==================================================
+           14. HISTORICAL WATERLOGGING HOTSPOTS
+        ================================================== */
+
+        fetch(
+            'data/historical_hotspots.geojson'
+        )
+
+        .then(
+            response => response.json()
+        )
+
+        .then(
+            data => {
+
+                const geojson =
+                    L.geoJSON(
+
+                        data,
+
+                        {
+
+                            pointToLayer:
+                                function(
+                                    feature,
+                                    latlng
+                                ) {
+
+                                    return L.circleMarker(
+
+                                        latlng,
+
+                                        {
+
+                                            radius:
+                                                8,
+
+                                            fillColor:
+                                                '#ff0000',
+
+                                            color:
+                                                '#7a0000',
+
+                                            weight:
+                                                2,
+
+                                            opacity:
+                                                1,
+
+                                            fillOpacity:
+                                                0.90
+
+                                        }
+
+                                    );
+
+                                },
+
+
+                            onEachFeature:
+                                function(
+                                    feature,
+                                    layer
+                                ) {
+
+                                    const p =
+                                        feature.properties || {};
+
+
+                                    const location =
+
+                                        p.location ||
+
+                                        "Unknown";
+
+
+                                    const district =
+
+                                        p.district ||
+
+                                        "Unknown";
+
+
+                                    const severity =
+
+                                        p.severity ||
+
+                                        "Unknown";
+
+
+                                    const context =
+
+                                        p.context ||
+
+                                        "Not available";
+
+
+                                    const evidence =
+
+                                        p.ev_grade ||
+
+                                        "Unknown";
+
+
+                                    const source =
+
+                                        p.source ||
+
+                                        "Not available";
+
+
+                                    const popup = `
+
+                                        <div class="popup-title">
+
+                                            Historical
+                                            Waterlogging Hotspot
+
+                                        </div>
+
+
+                                        <b>Location:</b>
+
+                                        ${location}
+
+                                        <br>
+
+
+                                        <b>District:</b>
+
+                                        ${district}
+
+                                        <br>
+
+
+                                        <b>Severity:</b>
+
+                                        ${severity}
+
+                                        <br>
+
+
+                                        <b>Context:</b>
+
+                                        ${context}
+
+                                        <br>
+
+
+                                        <b>Evidence grade:</b>
+
+                                        ${evidence}
+
+                                        <br>
+
+
+                                        <b>Source:</b>
+
+                                        ${source}
+
+                                    `;
+
+
+                                    layer.bindPopup(
+                                        popup
+                                    );
+
+                                }
+
+                        }
+
+                    );
+
+
+                geojson.addTo(
+                    hotspotLayer
+                );
+
+            }
+
+        )
+
+        .catch(
+            error =>
+                console.error(
+                    'Historical hotspot error:',
+                    error
+                )
+        );
+
+
+
+        /* ==================================================
+           15. DEFAULT MAP LAYERS
+           
+           ONLY THESE LAYERS ARE ON
+           WHEN WEBSITE FIRST OPENS
+        ================================================== */
+
+
+        floodLayer.addTo(map);
+
+
+        districtLayer.addTo(map);
+
+
+        hotspotLayer.addTo(map);
+
+
+
+        /*
+        IMPORTANT:
+
+        These layers are deliberately NOT
+        added to the map by default:
+
+        DSD
+        GND
+        Rivers
+        Waterways
+        Roads
+        Hospitals
+        Schools
+
+        Users can switch them on using
+        the layer control.
+        */
+
+
+
+        /* ==================================================
+           16. LAYER CONTROL
+        ================================================== */
+
+        const baseMaps = {
+
+            "OpenStreetMap":
+                osm
+
+        };
+
+
+        const overlays = {
+
+            "Flood Susceptibility":
+                floodLayer,
+
+
+            "District Boundaries":
+                districtLayer,
+
+
+            "Historical Hotspots":
+                hotspotLayer,
+
+
+            "DSD Boundaries":
+                dsdLayer,
+
+
+            "GND Boundaries":
+                gndLayer,
+
+
+            "Rivers":
+                riverLayer,
+
+
+            "Waterways":
+                waterwayLayer,
+
+
+            "Major Roads":
+                roadLayer,
+
+
+            "Hospitals":
+                hospitalLayer,
+
+
+            "Schools":
+                schoolLayer
+
+        };
+
+
+        const layerControl =
+            L.control.layers(
+
+                baseMaps,
+
+                overlays,
+
+                {
+
+                    collapsed:
+                        false,
+
+                    position:
+                        'topright'
+
+                }
+
+            );
+
+
+        layerControl.addTo(map);
+
+
+
+        /* ==================================================
+           17. FLOOD SUSCEPTIBILITY LEGEND
+        ================================================== */
+
+        const legend =
+            L.control(
+
+                {
+                    position:
+                        'bottomright'
+                }
+
+            );
+
+
+        legend.onAdd =
+            function() {
+
+
+                const div =
+                    L.DomUtil.create(
+
+                        'div',
+
+                        'legend'
+
+                    );
+
+
+                div.innerHTML = `
+
+                    <div class="legend-title">
+                        Flood Susceptibility
+                    </div>
+
+
+                    <div class="legend-row">
+
+                        <span
+                            class="legend-color"
+                            style="
+                                background:#008000;
+                            ">
+                        </span>
+
+                        Very Low
+
+                    </div>
+
+
+                    <div class="legend-row">
+
+                        <span
+                            class="legend-color"
+                            style="
+                                background:#adff2f;
+                            ">
+                        </span>
+
+                        Low
+
+                    </div>
+
+
+                    <div class="legend-row">
+
+                        <span
+                            class="legend-color"
+                            style="
+                                background:#ffff00;
+                            ">
+                        </span>
+
+                        Moderate
+
+                    </div>
+
+
+                    <div class="legend-row">
+
+                        <span
+                            class="legend-color"
+                            style="
+                                background:#ffa500;
+                            ">
+                        </span>
+
+                        High
+
+                    </div>
+
+
+                    <div class="legend-row">
+
+                        <span
+                            class="legend-color"
+                            style="
+                                background:#ff0000;
+                            ">
+                        </span>
+
+                        Very High
+
+                    </div>
+
+                `;
+
+
+                return div;
+
+            };
+
+
+        legend.addTo(map);
+
+
+
+        /* ==================================================
+           18. SCALE BAR
+        ================================================== */
+
+        L.control.scale(
+
+            {
+
+                position:
+                    'bottomleft',
+
+                metric:
+                    true,
+
+                imperial:
+                    false,
+
+                maxWidth:
+                    150
+
+            }
+
+        ).addTo(map);
+
+
+
+        /* ==================================================
+           19. PREVENT MAP TITLE FROM
+               BLOCKING MAP INTERACTION
+        ================================================== */
+
+        const title =
+            document.querySelector(
+                '.map-title'
+            );
+
+
+        L.DomEvent.disableClickPropagation(
+            title
+        );
+
+
+
+        /* ==================================================
+           20. DEBUG MESSAGE
+        ================================================== */
+
+        console.log(
+            'Western Province Flood Web Map loaded successfully.'
+        );
+
+
+    </script>
+
 
 </body>
+
 </html>
