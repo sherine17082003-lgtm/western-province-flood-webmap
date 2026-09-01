@@ -1,8 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>Western Province Flood Web Map</title>
 
@@ -10,7 +15,7 @@
     <link
         rel="stylesheet"
         href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-    />
+    >
 
     <style>
         * {
@@ -86,6 +91,22 @@
             color: #555;
             font-size: 13px;
             line-height: 1.5;
+        }
+
+        .boundary-status {
+            margin-bottom: 12px;
+            padding: 8px 10px;
+            border-radius: 5px;
+            background: #fff3cd;
+            border: 1px solid #ffecb5;
+            color: #664d03;
+            font-size: 12px;
+        }
+
+        .boundary-ready {
+            background: #dff5e4;
+            border-color: #b7dfc0;
+            color: #155724;
         }
 
         .selected-location {
@@ -273,14 +294,20 @@
 
 <header>
     <h1>Western Province Flood Web Map</h1>
-    <p>Community flood and waterlogging reporting system</p>
+
+    <p>
+        Community flood and waterlogging reporting system
+    </p>
 </header>
+
 
 <div id="main">
 
     <div id="map"></div>
 
+
     <div class="legend">
+
         <h4>Flood Severity</h4>
 
         <div class="legend-row">
@@ -297,58 +324,138 @@
             <span class="legend-dot red"></span>
             High
         </div>
+
     </div>
+
 
     <div class="panel">
 
         <h2>Report Flooding</h2>
 
         <p class="instructions">
-            Click the affected location on the map, or use your current
-            location, then complete the form.
+            Click an affected location inside Western Province,
+            or use your current location, then complete the form.
         </p>
 
-        <button id="locateBtn" type="button">
+
+        <div
+            id="boundaryStatus"
+            class="boundary-status"
+        >
+            Loading Western Province boundary...
+        </div>
+
+
+        <button
+            id="locateBtn"
+            type="button"
+        >
             📍 Use My Current Location
         </button>
 
+
         <div class="selected-location">
-            <strong>Selected location</strong><br>
-            Latitude:
-            <span id="latDisplay">Not selected</span>
+
+            <strong>Selected location</strong>
+
             <br>
+
+            Latitude:
+            <span id="latDisplay">
+                Not selected
+            </span>
+
+            <br>
+
             Longitude:
-            <span id="lngDisplay">Not selected</span>
+            <span id="lngDisplay">
+                Not selected
+            </span>
+
         </div>
+
 
         <form id="reportForm">
 
-            <div class="form-group">
-                <label for="incidentType">Incident Type *</label>
 
-                <select id="incidentType" required>
-                    <option value="">Select incident type</option>
-                    <option value="Waterlogging">Waterlogging</option>
-                    <option value="Road Flooding">Road Flooding</option>
-                    <option value="River Flooding">River Flooding</option>
-                    <option value="Drain Overflow">Drain Overflow</option>
-                    <option value="Flash Flood">Flash Flood</option>
-                    <option value="Other">Other</option>
+            <div class="form-group">
+
+                <label for="incidentType">
+                    Incident Type *
+                </label>
+
+                <select
+                    id="incidentType"
+                    required
+                >
+
+                    <option value="">
+                        Select incident type
+                    </option>
+
+                    <option value="Waterlogging">
+                        Waterlogging
+                    </option>
+
+                    <option value="Road Flooding">
+                        Road Flooding
+                    </option>
+
+                    <option value="River Flooding">
+                        River Flooding
+                    </option>
+
+                    <option value="Drain Overflow">
+                        Drain Overflow
+                    </option>
+
+                    <option value="Flash Flood">
+                        Flash Flood
+                    </option>
+
+                    <option value="Other">
+                        Other
+                    </option>
+
                 </select>
+
             </div>
 
-            <div class="form-group">
-                <label for="severity">Severity *</label>
 
-                <select id="severity" required>
-                    <option value="">Select severity</option>
-                    <option value="Low">Low</option>
-                    <option value="Medium">Medium</option>
-                    <option value="High">High</option>
+            <div class="form-group">
+
+                <label for="severity">
+                    Severity *
+                </label>
+
+                <select
+                    id="severity"
+                    required
+                >
+
+                    <option value="">
+                        Select severity
+                    </option>
+
+                    <option value="Low">
+                        Low
+                    </option>
+
+                    <option value="Medium">
+                        Medium
+                    </option>
+
+                    <option value="High">
+                        High
+                    </option>
+
                 </select>
+
             </div>
 
+
             <div class="form-group">
+
                 <label for="waterDepth">
                     Estimated Water Depth (cm)
                 </label>
@@ -357,263 +464,959 @@
                     type="number"
                     id="waterDepth"
                     min="0"
+                    max="500"
                     step="0.1"
                     placeholder="Example: 25"
                 >
+
             </div>
 
+
             <div class="form-group">
-                <label for="roadStatus">Road Status</label>
+
+                <label for="roadStatus">
+                    Road Status
+                </label>
 
                 <select id="roadStatus">
-                    <option value="">Select road status</option>
-                    <option value="Open">Open</option>
+
+                    <option value="">
+                        Select road status
+                    </option>
+
+                    <option value="Open">
+                        Open
+                    </option>
+
                     <option value="Passable with caution">
                         Passable with caution
                     </option>
+
                     <option value="Partially blocked">
                         Partially blocked
                     </option>
-                    <option value="Closed">Closed</option>
+
+                    <option value="Closed">
+                        Closed
+                    </option>
+
                     <option value="Not applicable">
                         Not applicable
                     </option>
+
                 </select>
+
             </div>
 
+
             <div class="form-group">
-                <label for="description">Description</label>
+
+                <label for="description">
+                    Description
+                </label>
 
                 <textarea
                     id="description"
                     maxlength="500"
                     placeholder="Describe the flooding situation..."
                 ></textarea>
+
             </div>
 
-            <button id="submitBtn" type="submit">
+
+            <button
+                id="submitBtn"
+                type="submit"
+                disabled
+            >
                 Submit Flood Report
             </button>
 
-            <div id="message" class="message"></div>
+
+            <div
+                id="message"
+                class="message"
+            ></div>
 
         </form>
 
+
         <div class="status-box">
+
             Public submissions are stored as
             <strong>Pending</strong>.
+
             Only verified reports are displayed publicly.
+
         </div>
 
     </div>
+
 </div>
 
+
 <!-- Leaflet JavaScript -->
+
 <script
     src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
 </script>
 
+
+<!-- Turf.js for point-in-polygon -->
+
+<script
+    src="https://cdn.jsdelivr.net/npm/@turf/turf@7/turf.min.js">
+</script>
+
+
 <script>
-    /*
-     * ---------------------------------------------------------
-     * SUPABASE CONFIGURATION
-     * ---------------------------------------------------------
-     *
-     * The publishable key is intended for client-side use.
-     * Database security is enforced using your Supabase RLS
-     * policies.
-     */
+
+    /* =========================================================
+       SUPABASE CONFIGURATION
+    ========================================================= */
 
     const SUPABASE_URL =
         "https://esknramtgjeuxwaupxlu.supabase.co";
 
+
     const SUPABASE_KEY =
         "sb_publishable_AfGQ5b4mzR3rVRBdOwGV-g_ESk8zeNM";
 
-    const TABLE_NAME = "waterlogging_reports";
+
+    const TABLE_NAME =
+        "waterlogging_reports";
 
 
-    /*
-     * ---------------------------------------------------------
-     * MAP
-     * ---------------------------------------------------------
-     */
+    /* =========================================================
+       MAP
+    ========================================================= */
 
-    // Approximate centre of Western Province, Sri Lanka.
-    const map = L.map("map").setView(
-        [6.9271, 79.8612],
-        10
-    );
+    const map =
+        L.map(
+            "map"
+        ).setView(
 
-    L.tileLayer(
-        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-        {
-            maxZoom: 19,
-            attribution:
-                '&copy; OpenStreetMap contributors'
-        }
-    ).addTo(map);
+            [
+                6.9271,
+                79.8612
+            ],
 
+            10
 
-    /*
-     * ---------------------------------------------------------
-     * REPORT LOCATION
-     * ---------------------------------------------------------
-     */
-
-    let selectedLatitude = null;
-    let selectedLongitude = null;
-    let selectedMarker = null;
-
-
-    function setSelectedLocation(latitude, longitude) {
-
-        selectedLatitude = Number(latitude);
-        selectedLongitude = Number(longitude);
-
-        document.getElementById("latDisplay").textContent =
-            selectedLatitude.toFixed(6);
-
-        document.getElementById("lngDisplay").textContent =
-            selectedLongitude.toFixed(6);
-
-
-        if (selectedMarker) {
-            map.removeLayer(selectedMarker);
-        }
-
-
-        selectedMarker = L.marker([
-            selectedLatitude,
-            selectedLongitude
-        ])
-        .addTo(map)
-        .bindPopup(
-            "<strong>Report location</strong><br>" +
-            "Complete the form and submit your report."
-        )
-        .openPopup();
-    }
-
-
-    map.on("click", function (event) {
-
-        setSelectedLocation(
-            event.latlng.lat,
-            event.latlng.lng
         );
 
-    });
+
+    L.tileLayer(
+
+        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+
+        {
+
+            maxZoom:
+                19,
+
+            attribution:
+                "&copy; OpenStreetMap contributors"
+
+        }
+
+    ).addTo(
+        map
+    );
 
 
-    /*
-     * ---------------------------------------------------------
-     * GEOLOCATION
-     * ---------------------------------------------------------
-     */
+    /* =========================================================
+       WESTERN PROVINCE BOUNDARY
+    ========================================================= */
 
-    document
-        .getElementById("locateBtn")
-        .addEventListener("click", function () {
+    let westernProvinceData =
+        null;
 
-            if (!navigator.geolocation) {
 
-                showMessage(
-                    "Geolocation is not supported by this browser.",
-                    "error"
+    let westernProvinceLayer =
+        null;
+
+
+    const boundaryStatus =
+        document.getElementById(
+            "boundaryStatus"
+        );
+
+
+    const submitButton =
+        document.getElementById(
+            "submitBtn"
+        );
+
+
+    fetch(
+        "data/western_province.geojson"
+    )
+
+    .then(
+        function(response) {
+
+            if (
+                !response.ok
+            ) {
+
+                throw new Error(
+                    "Could not load Western Province GeoJSON."
                 );
 
-                return;
             }
 
 
-            showMessage(
-                "Finding your current location...",
-                "loading"
+            return response.json();
+
+        }
+    )
+
+    .then(
+        function(data) {
+
+            westernProvinceData =
+                data;
+
+
+            westernProvinceLayer =
+                L.geoJSON(
+
+                    data,
+
+                    {
+
+                        style: {
+
+                            color:
+                                "#0057b8",
+
+                            weight:
+                                3,
+
+                            opacity:
+                                1,
+
+                            fillColor:
+                                "#4da6ff",
+
+                            fillOpacity:
+                                0.05
+
+                        },
+
+                        interactive:
+                            false
+
+                    }
+
+                ).addTo(
+                    map
+                );
+
+
+            /*
+             * Fit map to the Western Province boundary.
+             */
+
+            const bounds =
+                westernProvinceLayer.getBounds();
+
+
+            if (
+                bounds.isValid()
+            ) {
+
+                map.fitBounds(
+
+                    bounds,
+
+                    {
+
+                        padding:
+                            [
+                                25,
+                                25
+                            ]
+
+                    }
+
+                );
+
+            }
+
+
+            boundaryStatus.textContent =
+                "✓ Reporting is restricted to Western Province.";
+
+
+            boundaryStatus.classList.add(
+                "boundary-ready"
             );
 
 
-            navigator.geolocation.getCurrentPosition(
-
-                function (position) {
-
-                    const latitude =
-                        position.coords.latitude;
-
-                    const longitude =
-                        position.coords.longitude;
+            submitButton.disabled =
+                false;
 
 
-                    setSelectedLocation(
-                        latitude,
-                        longitude
-                    );
+            console.log(
+                "Western Province boundary loaded."
+            );
+
+        }
+    )
+
+    .catch(
+        function(error) {
+
+            console.error(
+                "Boundary loading error:",
+                error
+            );
 
 
-                    map.setView(
-                        [latitude, longitude],
-                        15
-                    );
+            boundaryStatus.textContent =
+                "Boundary could not be loaded. Reporting is disabled.";
 
 
-                    hideMessage();
-                },
+            showMessage(
 
-                function (error) {
+                "Western Province boundary could not be loaded. " +
+                "Please check data/western_province.geojson.",
 
-                    let errorMessage =
-                        "Unable to obtain your location.";
+                "error"
+
+            );
 
 
-                    if (error.code === 1) {
-                        errorMessage =
-                            "Location permission was denied.";
+            submitButton.disabled =
+                true;
+
+        }
+    );
+
+
+    /* =========================================================
+       CHECK WHETHER LOCATION IS INSIDE WESTERN PROVINCE
+    ========================================================= */
+
+    function isInsideWesternProvince(
+        latitude,
+        longitude
+    ) {
+
+        if (
+            !westernProvinceData
+        ) {
+
+            return false;
+
+        }
+
+
+        const point =
+            turf.point(
+
+                [
+                    Number(longitude),
+                    Number(latitude)
+                ]
+
+            );
+
+
+        let features =
+            [];
+
+
+        if (
+            westernProvinceData.type ===
+            "FeatureCollection"
+        ) {
+
+            features =
+                westernProvinceData.features || [];
+
+        }
+
+        else if (
+            westernProvinceData.type ===
+            "Feature"
+        ) {
+
+            features =
+                [
+                    westernProvinceData
+                ];
+
+        }
+
+        else if (
+            westernProvinceData.type ===
+            "Polygon" ||
+            westernProvinceData.type ===
+            "MultiPolygon"
+        ) {
+
+            features =
+                [
+
+                    {
+                        type:
+                            "Feature",
+
+                        properties:
+                            {},
+
+                        geometry:
+                            westernProvinceData
                     }
 
-                    else if (error.code === 2) {
-                        errorMessage =
-                            "Your current location is unavailable.";
-                    }
+                ];
 
-                    else if (error.code === 3) {
-                        errorMessage =
-                            "Location request timed out.";
-                    }
+        }
 
 
-                    showMessage(
-                        errorMessage +
-                        " You can still click the map manually.",
-                        "error"
-                    );
-                },
+        for (
+            const feature of features
+        ) {
 
-                {
-                    enableHighAccuracy: true,
-                    timeout: 10000,
-                    maximumAge: 30000
+            if (
+                !feature ||
+                !feature.geometry
+            ) {
+
+                continue;
+
+            }
+
+
+            const geometryType =
+                feature.geometry.type;
+
+
+            if (
+                geometryType !==
+                "Polygon" &&
+
+                geometryType !==
+                "MultiPolygon"
+            ) {
+
+                continue;
+
+            }
+
+
+            try {
+
+                if (
+
+                    turf.booleanPointInPolygon(
+
+                        point,
+
+                        feature,
+
+                        {
+                            ignoreBoundary:
+                                false
+                        }
+
+                    )
+
+                ) {
+
+                    return true;
+
                 }
 
+            }
+
+            catch(error) {
+
+                console.error(
+                    "Point-in-polygon error:",
+                    error
+                );
+
+            }
+
+        }
+
+
+        return false;
+
+    }
+
+
+    /* =========================================================
+       SELECTED LOCATION
+    ========================================================= */
+
+    let selectedLatitude =
+        null;
+
+
+    let selectedLongitude =
+        null;
+
+
+    let selectedMarker =
+        null;
+
+
+    function clearSelectedLocation() {
+
+        selectedLatitude =
+            null;
+
+
+        selectedLongitude =
+            null;
+
+
+        document.getElementById(
+            "latDisplay"
+        ).textContent =
+            "Not selected";
+
+
+        document.getElementById(
+            "lngDisplay"
+        ).textContent =
+            "Not selected";
+
+
+        if (
+            selectedMarker
+        ) {
+
+            map.removeLayer(
+                selectedMarker
             );
 
-        });
+
+            selectedMarker =
+                null;
+
+        }
+
+    }
 
 
-    /*
-     * ---------------------------------------------------------
-     * MESSAGE HELPERS
-     * ---------------------------------------------------------
-     */
+    function setSelectedLocation(
+        latitude,
+        longitude
+    ) {
 
-    function showMessage(text, type) {
+        const lat =
+            Number(
+                latitude
+            );
+
+
+        const lng =
+            Number(
+                longitude
+            );
+
+
+        if (
+            !Number.isFinite(lat) ||
+            !Number.isFinite(lng)
+        ) {
+
+            showMessage(
+                "Invalid coordinates.",
+                "error"
+            );
+
+            return false;
+
+        }
+
+
+        /*
+         * Boundary must finish loading first.
+         */
+
+        if (
+            !westernProvinceData
+        ) {
+
+            showMessage(
+
+                "Please wait until the Western Province boundary finishes loading.",
+
+                "error"
+
+            );
+
+            return false;
+
+        }
+
+
+        /*
+         * Reject locations outside Western Province.
+         */
+
+        if (
+            !isInsideWesternProvince(
+                lat,
+                lng
+            )
+        ) {
+
+            clearSelectedLocation();
+
+
+            showMessage(
+
+                "That location is outside Western Province. " +
+                "Please click a location inside the blue Western Province boundary.",
+
+                "error"
+
+            );
+
+
+            return false;
+
+        }
+
+
+        selectedLatitude =
+            lat;
+
+
+        selectedLongitude =
+            lng;
+
+
+        document.getElementById(
+            "latDisplay"
+        ).textContent =
+            selectedLatitude.toFixed(
+                6
+            );
+
+
+        document.getElementById(
+            "lngDisplay"
+        ).textContent =
+            selectedLongitude.toFixed(
+                6
+            );
+
+
+        if (
+            selectedMarker
+        ) {
+
+            map.removeLayer(
+                selectedMarker
+            );
+
+        }
+
+
+        selectedMarker =
+            L.marker(
+
+                [
+                    selectedLatitude,
+                    selectedLongitude
+                ]
+
+            )
+
+            .addTo(
+                map
+            )
+
+            .bindPopup(
+
+                "<strong>Valid report location</strong><br>" +
+                "This point is inside Western Province."
+
+            )
+
+            .openPopup();
+
+
+        showMessage(
+
+            "Valid location selected inside Western Province.",
+
+            "success"
+
+        );
+
+
+        return true;
+
+    }
+
+
+    /* =========================================================
+       MAP CLICK
+    ========================================================= */
+
+    map.on(
+
+        "click",
+
+        function(event) {
+
+            setSelectedLocation(
+
+                event.latlng.lat,
+
+                event.latlng.lng
+
+            );
+
+        }
+
+    );
+
+
+    /* =========================================================
+       CURRENT GPS LOCATION
+    ========================================================= */
+
+    document
+
+        .getElementById(
+            "locateBtn"
+        )
+
+        .addEventListener(
+
+            "click",
+
+            function() {
+
+
+                if (
+                    !westernProvinceData
+                ) {
+
+                    showMessage(
+
+                        "Please wait until the Western Province boundary finishes loading.",
+
+                        "error"
+
+                    );
+
+                    return;
+
+                }
+
+
+                if (
+                    !navigator.geolocation
+                ) {
+
+                    showMessage(
+
+                        "Geolocation is not supported by this browser.",
+
+                        "error"
+
+                    );
+
+                    return;
+
+                }
+
+
+                showMessage(
+
+                    "Finding your current location...",
+
+                    "loading"
+
+                );
+
+
+                navigator.geolocation.getCurrentPosition(
+
+                    function(position) {
+
+
+                        const latitude =
+                            position.coords.latitude;
+
+
+                        const longitude =
+                            position.coords.longitude;
+
+
+                        /*
+                         * Do NOT automatically accept GPS coordinates.
+                         * They must pass Western Province validation.
+                         */
+
+                        const accepted =
+                            setSelectedLocation(
+
+                                latitude,
+
+                                longitude
+
+                            );
+
+
+                        if (
+                            accepted
+                        ) {
+
+                            map.setView(
+
+                                [
+                                    latitude,
+                                    longitude
+                                ],
+
+                                15
+
+                            );
+
+                        }
+
+                        else {
+
+                            /*
+                             * GPS location is outside.
+                             * Keep the map on Western Province.
+                             */
+
+                            if (
+                                westernProvinceLayer
+                            ) {
+
+                                map.fitBounds(
+
+                                    westernProvinceLayer.getBounds(),
+
+                                    {
+                                        padding:
+                                            [
+                                                25,
+                                                25
+                                            ]
+                                    }
+
+                                );
+
+                            }
+
+
+                            showMessage(
+
+                                "Your current GPS location is outside Western Province. " +
+                                "Please click the affected location inside Western Province manually.",
+
+                                "error"
+
+                            );
+
+                        }
+
+                    },
+
+
+                    function(error) {
+
+
+                        let errorMessage =
+                            "Unable to obtain your location.";
+
+
+                        if (
+                            error.code === 1
+                        ) {
+
+                            errorMessage =
+                                "Location permission was denied.";
+
+                        }
+
+                        else if (
+                            error.code === 2
+                        ) {
+
+                            errorMessage =
+                                "Your current location is unavailable.";
+
+                        }
+
+                        else if (
+                            error.code === 3
+                        ) {
+
+                            errorMessage =
+                                "Location request timed out.";
+
+                        }
+
+
+                        showMessage(
+
+                            errorMessage +
+                            " You can click the map manually.",
+
+                            "error"
+
+                        );
+
+                    },
+
+
+                    {
+                        enableHighAccuracy:
+                            true,
+
+                        timeout:
+                            10000,
+
+                        maximumAge:
+                            30000
+                    }
+
+                );
+
+            }
+
+        );
+
+
+    /* =========================================================
+       MESSAGE HELPERS
+    ========================================================= */
+
+    function showMessage(
+        text,
+        type
+    ) {
 
         const message =
-            document.getElementById("message");
+            document.getElementById(
+                "message"
+            );
 
-        message.textContent = text;
+
+        message.textContent =
+            text;
+
 
         message.className =
-            "message " + type;
+            "message " +
+            type;
 
     }
 
@@ -621,115 +1424,222 @@
     function hideMessage() {
 
         const message =
-            document.getElementById("message");
+            document.getElementById(
+                "message"
+            );
 
-        message.textContent = "";
-        message.className = "message";
+
+        message.textContent =
+            "";
+
+
+        message.className =
+            "message";
 
     }
 
 
-    /*
-     * ---------------------------------------------------------
-     * HTML ESCAPING
-     * ---------------------------------------------------------
-     */
+    /* =========================================================
+       HTML ESCAPING
+    ========================================================= */
 
     function escapeHtml(value) {
 
-        if (value === null || value === undefined) {
+        if (
+            value === null ||
+            value === undefined
+        ) {
+
             return "";
+
         }
+
 
         return String(value)
-            .replaceAll("&", "&amp;")
-            .replaceAll("<", "&lt;")
-            .replaceAll(">", "&gt;")
-            .replaceAll('"', "&quot;")
-            .replaceAll("'", "&#039;");
+
+            .replaceAll(
+                "&",
+                "&amp;"
+            )
+
+            .replaceAll(
+                "<",
+                "&lt;"
+            )
+
+            .replaceAll(
+                ">",
+                "&gt;"
+            )
+
+            .replaceAll(
+                '"',
+                "&quot;"
+            )
+
+            .replaceAll(
+                "'",
+                "&#039;"
+            );
+
     }
 
 
-    /*
-     * ---------------------------------------------------------
-     * REPORT MARKER COLOUR
-     * ---------------------------------------------------------
-     */
+    /* =========================================================
+       VERIFIED REPORT MARKERS
+    ========================================================= */
 
-    function getSeverityColor(severity) {
+    function getSeverityColor(
+        severity
+    ) {
 
         const value =
-            String(severity || "").toLowerCase();
+            String(
+                severity || ""
+            ).toLowerCase();
 
-        if (value === "high") {
+
+        if (
+            value ===
+            "high"
+        ) {
+
             return "#dc3545";
+
         }
 
-        if (value === "medium") {
+
+        if (
+            value ===
+            "medium" ||
+            value ===
+            "moderate"
+        ) {
+
             return "#f39c12";
+
         }
+
 
         return "#28a745";
+
     }
 
 
-    /*
-     * ---------------------------------------------------------
-     * VERIFIED REPORT LAYER
-     * ---------------------------------------------------------
-     */
-
     const verifiedReportsLayer =
-        L.layerGroup().addTo(map);
+        L.layerGroup().addTo(
+            map
+        );
 
 
-    function addVerifiedMarker(report) {
+    function addVerifiedMarker(
+        report
+    ) {
 
         const latitude =
-            Number(report.latitude);
+            Number(
+                report.latitude
+            );
+
 
         const longitude =
-            Number(report.longitude);
+            Number(
+                report.longitude
+            );
 
 
         if (
             !Number.isFinite(latitude) ||
             !Number.isFinite(longitude)
         ) {
+
             return;
+
+        }
+
+
+        /*
+         * Extra protection:
+         * do not display any verified database row
+         * that is outside Western Province.
+         */
+
+        if (
+            westernProvinceData &&
+            !isInsideWesternProvince(
+                latitude,
+                longitude
+            )
+        ) {
+
+            console.warn(
+                "Verified report outside Western Province ignored:",
+                report.id
+            );
+
+            return;
+
         }
 
 
         const colour =
-            getSeverityColor(report.severity);
+            getSeverityColor(
+                report.severity
+            );
 
 
-        const marker = L.circleMarker(
-            [latitude, longitude],
-            {
-                radius: 8,
-                color: colour,
-                fillColor: colour,
-                fillOpacity: 0.8,
-                weight: 2
-            }
-        );
+        const marker =
+            L.circleMarker(
+
+                [
+                    latitude,
+                    longitude
+                ],
+
+                {
+                    radius:
+                        8,
+
+                    color:
+                        colour,
+
+                    fillColor:
+                        colour,
+
+                    fillOpacity:
+                        0.8,
+
+                    weight:
+                        2
+                }
+
+            );
 
 
         let popup =
             "<strong>" +
+
             escapeHtml(
+
                 report.incident_type ||
                 "Flood Report"
+
             ) +
+
             "</strong>";
 
 
-        if (report.severity) {
+        if (
+            report.severity
+        ) {
 
             popup +=
+
                 "<br><strong>Severity:</strong> " +
-                escapeHtml(report.severity);
+
+                escapeHtml(
+                    report.severity
+                );
 
         }
 
@@ -740,84 +1650,134 @@
         ) {
 
             popup +=
+
                 "<br><strong>Water depth:</strong> " +
-                escapeHtml(report.water_depth_cm) +
+
+                escapeHtml(
+                    report.water_depth_cm
+                ) +
+
                 " cm";
 
         }
 
 
-        if (report.road_status) {
+        if (
+            report.road_status
+        ) {
 
             popup +=
+
                 "<br><strong>Road status:</strong> " +
-                escapeHtml(report.road_status);
+
+                escapeHtml(
+                    report.road_status
+                );
 
         }
 
 
-        if (report.description) {
+        if (
+            report.description
+        ) {
 
             popup +=
+
                 "<br><strong>Description:</strong> " +
-                escapeHtml(report.description);
+
+                escapeHtml(
+                    report.description
+                );
 
         }
 
 
         marker
-            .bindPopup(popup)
-            .addTo(verifiedReportsLayer);
+
+            .bindPopup(
+                popup
+            )
+
+            .addTo(
+                verifiedReportsLayer
+            );
 
     }
 
 
-    /*
-     * ---------------------------------------------------------
-     * LOAD VERIFIED REPORTS FROM SUPABASE
-     * ---------------------------------------------------------
-     */
+    /* =========================================================
+       LOAD VERIFIED REPORTS
+    ========================================================= */
 
     async function loadVerifiedReports() {
 
         try {
 
             const endpoint =
+
                 SUPABASE_URL +
+
                 "/rest/v1/" +
+
                 TABLE_NAME +
+
                 "?select=id,created_at,latitude,longitude," +
+
                 "incident_type,severity,water_depth_cm," +
+
                 "road_status,description,status" +
+
                 "&status=eq.Verified" +
+
                 "&order=created_at.desc";
 
 
-            const response = await fetch(
-                endpoint,
-                {
-                    method: "GET",
+            const response =
+                await fetch(
 
-                    headers: {
-                        "apikey": SUPABASE_KEY,
-                        "Authorization":
-                            "Bearer " + SUPABASE_KEY
+                    endpoint,
+
+                    {
+
+                        method:
+                            "GET",
+
+                        headers: {
+
+                            "apikey":
+                                SUPABASE_KEY,
+
+                            "Authorization":
+                                "Bearer " +
+                                SUPABASE_KEY
+
+                        }
+
                     }
-                }
-            );
+
+                );
 
 
-            if (!response.ok) {
+            if (
+                !response.ok
+            ) {
 
                 const errorText =
                     await response.text();
 
+
                 throw new Error(
+
                     "Could not load reports. " +
+
                     response.status +
+
                     " " +
+
                     errorText
+
                 );
+
             }
 
 
@@ -828,25 +1788,37 @@
             verifiedReportsLayer.clearLayers();
 
 
-            reports.forEach(function (report) {
+            reports.forEach(
 
-                addVerifiedMarker(report);
+                function(report) {
 
-            });
+                    addVerifiedMarker(
+                        report
+                    );
+
+                }
+
+            );
 
 
             console.log(
+
                 "Verified reports loaded:",
+
                 reports.length
+
             );
 
         }
 
-        catch (error) {
+        catch(error) {
 
             console.error(
+
                 "Error loading verified reports:",
+
                 error
+
             );
 
         }
@@ -854,20 +1826,50 @@
     }
 
 
-    /*
-     * ---------------------------------------------------------
-     * SUBMIT REPORT
-     * ---------------------------------------------------------
-     */
+    /* =========================================================
+       SUBMIT REPORT
+    ========================================================= */
 
     document
-        .getElementById("reportForm")
+
+        .getElementById(
+            "reportForm"
+        )
+
         .addEventListener(
+
             "submit",
-            async function (event) {
+
+            async function(event) {
+
 
                 event.preventDefault();
 
+
+                /*
+                 * Boundary must exist.
+                 */
+
+                if (
+                    !westernProvinceData
+                ) {
+
+                    showMessage(
+
+                        "Western Province boundary is not ready. Please wait.",
+
+                        "error"
+
+                    );
+
+                    return;
+
+                }
+
+
+                /*
+                 * A location must be selected.
+                 */
 
                 if (
                     selectedLatitude === null ||
@@ -875,96 +1877,159 @@
                 ) {
 
                     showMessage(
-                        "Please select the flood location on the map first.",
+
+                        "Please select a flood location inside Western Province first.",
+
                         "error"
+
                     );
 
                     return;
+
+                }
+
+
+                /*
+                 * Most important:
+                 * validate again immediately before database insert.
+                 */
+
+                if (
+                    !isInsideWesternProvince(
+
+                        selectedLatitude,
+
+                        selectedLongitude
+
+                    )
+                ) {
+
+                    clearSelectedLocation();
+
+
+                    showMessage(
+
+                        "The selected location is outside Western Province. " +
+                        "The report was not submitted.",
+
+                        "error"
+
+                    );
+
+                    return;
+
                 }
 
 
                 const incidentType =
                     document
-                        .getElementById("incidentType")
+                        .getElementById(
+                            "incidentType"
+                        )
                         .value;
 
 
                 const severity =
                     document
-                        .getElementById("severity")
+                        .getElementById(
+                            "severity"
+                        )
                         .value;
 
 
                 const waterDepthValue =
                     document
-                        .getElementById("waterDepth")
+                        .getElementById(
+                            "waterDepth"
+                        )
                         .value;
 
 
                 const roadStatus =
                     document
-                        .getElementById("roadStatus")
+                        .getElementById(
+                            "roadStatus"
+                        )
                         .value;
 
 
                 const description =
                     document
-                        .getElementById("description")
+                        .getElementById(
+                            "description"
+                        )
                         .value
                         .trim();
 
 
-                if (!incidentType) {
+                if (
+                    !incidentType
+                ) {
 
                     showMessage(
+
                         "Please select an incident type.",
+
                         "error"
+
                     );
 
                     return;
+
                 }
 
 
-                if (!severity) {
+                if (
+                    !severity
+                ) {
 
                     showMessage(
+
                         "Please select the severity.",
+
                         "error"
+
                     );
 
                     return;
+
                 }
 
 
                 const waterDepth =
+
                     waterDepthValue === ""
-                        ? null
-                        : Number(waterDepthValue);
+
+                    ? null
+
+                    : Number(
+                        waterDepthValue
+                    );
 
 
                 if (
                     waterDepth !== null &&
                     (
-                        !Number.isFinite(waterDepth) ||
-                        waterDepth < 0
+                        !Number.isFinite(
+                            waterDepth
+                        ) ||
+                        waterDepth < 0 ||
+                        waterDepth > 500
                     )
                 ) {
 
                     showMessage(
-                        "Please enter a valid water depth.",
+
+                        "Please enter a valid water depth between 0 and 500 cm.",
+
                         "error"
+
                     );
 
                     return;
+
                 }
 
-
-                /*
-                 * IMPORTANT:
-                 *
-                 * status is deliberately fixed to Pending.
-                 * Users cannot choose Verified themselves.
-                 */
 
                 const report = {
 
@@ -991,22 +2056,24 @@
 
                     status:
                         "Pending"
+
                 };
 
 
-                const submitButton =
-                    document
-                        .getElementById("submitBtn");
+                submitButton.disabled =
+                    true;
 
 
-                submitButton.disabled = true;
                 submitButton.textContent =
                     "Submitting...";
 
 
                 showMessage(
+
                     "Submitting your flood report...",
+
                     "loading"
+
                 );
 
 
@@ -1014,11 +2081,15 @@
 
                     const response =
                         await fetch(
+
                             SUPABASE_URL +
                             "/rest/v1/" +
                             TABLE_NAME,
+
                             {
-                                method: "POST",
+
+                                method:
+                                    "POST",
 
                                 headers: {
 
@@ -1034,87 +2105,90 @@
 
                                     "Prefer":
                                         "return=minimal"
+
                                 },
 
                                 body:
-                                    JSON.stringify(report)
+                                    JSON.stringify(
+                                        report
+                                    )
+
                             }
+
                         );
 
 
-                    if (!response.ok) {
+                    if (
+                        !response.ok
+                    ) {
 
                         const errorText =
                             await response.text();
 
+
                         throw new Error(
+
                             "Supabase returned " +
+
                             response.status +
+
                             ": " +
+
                             errorText
+
                         );
+
                     }
 
 
-                    showMessage(
-                        "Report submitted successfully. " +
-                        "It is now pending verification.",
-                        "success"
-                    );
-
-
                     document
-                        .getElementById("reportForm")
+                        .getElementById(
+                            "reportForm"
+                        )
                         .reset();
 
 
-                    if (selectedMarker) {
-
-                        map.removeLayer(
-                            selectedMarker
-                        );
-
-                        selectedMarker = null;
-                    }
+                    clearSelectedLocation();
 
 
-                    selectedLatitude = null;
-                    selectedLongitude = null;
+                    showMessage(
 
+                        "Report submitted successfully. " +
+                        "It has been saved as Pending Verification.",
 
-                    document
-                        .getElementById("latDisplay")
-                        .textContent =
-                        "Not selected";
+                        "success"
 
-
-                    document
-                        .getElementById("lngDisplay")
-                        .textContent =
-                        "Not selected";
-
+                    );
 
                 }
 
-                catch (error) {
+                catch(error) {
 
                     console.error(
+
                         "Submission error:",
+
                         error
+
                     );
 
 
                     showMessage(
+
                         "Report could not be submitted. " +
                         error.message,
+
                         "error"
+
                     );
 
                 }
 
                 finally {
 
-                    submitButton.disabled = false;
+                    submitButton.disabled =
+                        false;
+
 
                     submitButton.textContent =
                         "Submit Flood Report";
@@ -1122,18 +2196,28 @@
                 }
 
             }
+
         );
 
 
+    /* =========================================================
+       INITIAL LOAD
+    ========================================================= */
+
     /*
-     * ---------------------------------------------------------
-     * INITIAL DATABASE LOAD
-     * ---------------------------------------------------------
+     * Load verified reports after giving the boundary request
+     * a moment to begin.
      */
 
     loadVerifiedReports();
 
+
+    console.log(
+        "Western Province Flood Web Map loaded."
+    );
+
 </script>
 
 </body>
+
 </html>
