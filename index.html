@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
 
     <meta
@@ -13,185 +14,340 @@
         Western Province Flood Web Map
     </title>
 
-
     <!-- Leaflet CSS -->
     <link
         rel="stylesheet"
         href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
     >
 
-
     <style>
-
-        /* ==================================================
-           GENERAL PAGE
-        ================================================== */
 
         html,
         body {
             margin: 0;
             padding: 0;
-            height: 100%;
             width: 100%;
+            height: 100%;
             font-family: Arial, Helvetica, sans-serif;
         }
-
 
         #map {
             width: 100%;
             height: 100vh;
         }
 
-
-        /* ==================================================
+        /* ===============================
            MAP TITLE
-        ================================================== */
+        =============================== */
 
         .map-title {
             position: absolute;
-
             top: 10px;
             left: 50%;
-
             transform: translateX(-50%);
-
             z-index: 1000;
 
-            background: rgba(255,255,255,0.95);
-
+            background: rgba(255,255,255,0.96);
             padding: 10px 18px;
-
             border-radius: 7px;
 
             box-shadow:
                 0 2px 8px rgba(0,0,0,0.30);
 
             text-align: center;
-
             font-size: 17px;
-
             font-weight: bold;
-
             max-width: 65%;
-
             line-height: 1.25;
         }
-
 
         .map-subtitle {
             font-size: 14px;
             font-weight: normal;
         }
 
-
-        /* ==================================================
+        /* ===============================
            LEGEND
-        ================================================== */
+        =============================== */
 
         .legend {
             background: rgba(255,255,255,0.96);
-
             padding: 10px 12px;
-
             border-radius: 6px;
 
             box-shadow:
                 0 1px 6px rgba(0,0,0,0.35);
 
-            line-height: 21px;
-
             font-size: 13px;
+            line-height: 21px;
         }
-
 
         .legend-title {
             font-weight: bold;
-
             margin-bottom: 5px;
         }
-
 
         .legend-row {
             display: flex;
-
             align-items: center;
-
             margin-top: 3px;
         }
 
-
         .legend-color {
             width: 18px;
-
             height: 18px;
-
             margin-right: 8px;
-
             border: 1px solid rgba(0,0,0,0.2);
         }
 
+        /* ===============================
+           REPORT BUTTON
+        =============================== */
 
-        /* ==================================================
-           LEAFLET LAYER CONTROL
-        ================================================== */
+        .report-control {
+            background: #d7191c;
+            color: white;
 
-        .leaflet-control-layers {
+            padding: 9px 12px;
+
+            border-radius: 5px;
+
             font-size: 13px;
-
-            border-radius: 6px;
-        }
-
-
-        /* ==================================================
-           POPUPS
-        ================================================== */
-
-        .popup-title {
             font-weight: bold;
 
-            font-size: 14px;
+            cursor: pointer;
 
+            box-shadow:
+                0 1px 5px rgba(0,0,0,0.4);
+
+            border: 2px solid white;
+        }
+
+        .report-control:hover {
+            background: #a80000;
+        }
+
+        /* ===============================
+           REPORT MODAL
+        =============================== */
+
+        .modal-overlay {
+            display: none;
+
+            position: fixed;
+
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 100%;
+
+            background:
+                rgba(0,0,0,0.55);
+
+            z-index: 3000;
+
+            justify-content: center;
+            align-items: center;
+        }
+
+        .report-modal {
+            background: white;
+
+            width: 420px;
+            max-width: 90%;
+
+            max-height: 90vh;
+            overflow-y: auto;
+
+            border-radius: 8px;
+
+            box-shadow:
+                0 4px 20px rgba(0,0,0,0.35);
+
+            padding: 20px;
+        }
+
+        .report-modal h2 {
+            margin-top: 0;
+            margin-bottom: 5px;
+            color: #222;
+        }
+
+        .report-modal p {
+            font-size: 13px;
+            color: #555;
+            margin-top: 5px;
+        }
+
+        .form-group {
+            margin-bottom: 13px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            font-size: 13px;
             margin-bottom: 5px;
         }
 
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
 
-        /* ==================================================
-           MOBILE RESPONSIVE DESIGN
-        ================================================== */
+            width: 100%;
+
+            box-sizing: border-box;
+
+            padding: 8px;
+
+            border: 1px solid #bbb;
+
+            border-radius: 4px;
+
+            font-size: 14px;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 70px;
+        }
+
+        .coordinate-box {
+            background: #f3f3f3;
+
+            padding: 9px;
+
+            border-radius: 4px;
+
+            font-size: 12px;
+
+            border: 1px solid #ddd;
+        }
+
+        .form-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 18px;
+        }
+
+        .submit-button {
+            flex: 1;
+
+            border: none;
+
+            background: #198754;
+
+            color: white;
+
+            padding: 10px;
+
+            font-weight: bold;
+
+            border-radius: 5px;
+
+            cursor: pointer;
+        }
+
+        .submit-button:hover {
+            background: #146c43;
+        }
+
+        .cancel-button {
+            flex: 1;
+
+            border: none;
+
+            background: #666;
+
+            color: white;
+
+            padding: 10px;
+
+            font-weight: bold;
+
+            border-radius: 5px;
+
+            cursor: pointer;
+        }
+
+        .cancel-button:hover {
+            background: #444;
+        }
+
+        .instruction-box {
+            display: none;
+
+            position: absolute;
+
+            top: 85px;
+            left: 50%;
+
+            transform: translateX(-50%);
+
+            z-index: 2000;
+
+            background: #fff3cd;
+
+            color: #664d03;
+
+            border: 1px solid #ffecb5;
+
+            border-radius: 5px;
+
+            padding: 10px 14px;
+
+            font-size: 14px;
+
+            font-weight: bold;
+
+            box-shadow:
+                0 2px 8px rgba(0,0,0,0.25);
+        }
+
+        .popup-title {
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 6px;
+        }
+
+        .pending-label {
+            display: inline-block;
+
+            background: #ffc107;
+
+            color: #222;
+
+            padding: 2px 5px;
+
+            border-radius: 3px;
+
+            font-size: 11px;
+
+            font-weight: bold;
+        }
 
         @media (max-width: 768px) {
 
             .map-title {
-                font-size: 13px;
-
-                padding: 7px 10px;
-
-                max-width: 65%;
+                font-size: 12px;
+                padding: 7px 9px;
+                max-width: 60%;
             }
-
 
             .map-subtitle {
-                font-size: 11px;
+                font-size: 10px;
             }
-
 
             .legend {
                 font-size: 11px;
-
                 padding: 7px;
             }
-
-
-            .legend-color {
-                width: 14px;
-
-                height: 14px;
-            }
-
 
             .leaflet-control-layers {
                 font-size: 11px;
             }
+
         }
 
     </style>
@@ -199,13 +355,10 @@
 </head>
 
 
-
 <body>
 
 
-    <!-- ==================================================
-         MAP TITLE
-    =================================================== -->
+    <!-- MAP TITLE -->
 
     <div class="map-title">
 
@@ -221,69 +374,297 @@
     </div>
 
 
+    <!-- MAP CLICK INSTRUCTION -->
 
-    <!-- ==================================================
-         MAP CONTAINER
-    =================================================== -->
+    <div
+        id="instructionBox"
+        class="instruction-box"
+    >
+        Click a location on the map to report waterlogging.
+    </div>
+
+
+    <!-- MAP -->
 
     <div id="map"></div>
 
 
+    <!-- REPORT FORM MODAL -->
 
-    <!-- ==================================================
-         LEAFLET JAVASCRIPT
-    =================================================== -->
+    <div
+        id="reportModalOverlay"
+        class="modal-overlay"
+    >
+
+        <div class="report-modal">
+
+            <h2>
+                Report Waterlogging
+            </h2>
+
+            <p>
+                Submit an observation about flooding or
+                waterlogging at the selected location.
+            </p>
+
+
+            <form id="reportForm">
+
+
+                <div class="form-group">
+
+                    <label>
+                        Selected Location
+                    </label>
+
+                    <div class="coordinate-box">
+
+                        Latitude:
+                        <span id="selectedLatitude">
+                            -
+                        </span>
+
+                        <br>
+
+                        Longitude:
+                        <span id="selectedLongitude">
+                            -
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="incidentType">
+                        Incident Type *
+                    </label>
+
+                    <select
+                        id="incidentType"
+                        required
+                    >
+
+                        <option value="">
+                            Select incident type
+                        </option>
+
+                        <option value="Waterlogging">
+                            Waterlogging
+                        </option>
+
+                        <option value="Road Flooding">
+                            Road Flooding
+                        </option>
+
+                        <option value="River Flooding">
+                            River Flooding
+                        </option>
+
+                        <option value="Drain Overflow">
+                            Drain Overflow
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="severity">
+                        Severity *
+                    </label>
+
+                    <select
+                        id="severity"
+                        required
+                    >
+
+                        <option value="">
+                            Select severity
+                        </option>
+
+                        <option value="Low">
+                            Low
+                        </option>
+
+                        <option value="Moderate">
+                            Moderate
+                        </option>
+
+                        <option value="High">
+                            High
+                        </option>
+
+                        <option value="Severe">
+                            Severe
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="waterDepth">
+                        Estimated Water Depth (cm)
+                    </label>
+
+                    <input
+                        type="number"
+                        id="waterDepth"
+                        min="0"
+                        max="500"
+                        placeholder="Example: 30"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="roadStatus">
+                        Road Status
+                    </label>
+
+                    <select id="roadStatus">
+
+                        <option value="Unknown">
+                            Unknown
+                        </option>
+
+                        <option value="Open">
+                            Open
+                        </option>
+
+                        <option value="Partially Blocked">
+                            Partially Blocked
+                        </option>
+
+                        <option value="Impassable">
+                            Impassable
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="description">
+                        Description
+                    </label>
+
+                    <textarea
+                        id="description"
+                        maxlength="500"
+                        placeholder="Briefly describe the situation..."
+                    ></textarea>
+
+                </div>
+
+
+                <div class="form-buttons">
+
+                    <button
+                        type="button"
+                        class="cancel-button"
+                        id="cancelReportButton"
+                    >
+                        Cancel
+                    </button>
+
+                    <button
+                        type="submit"
+                        class="submit-button"
+                    >
+                        Submit Report
+                    </button>
+
+                </div>
+
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- LEAFLET JS -->
 
     <script
         src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
     </script>
 
 
-
     <script>
 
 
-        /* ==================================================
-           1. CREATE MAP
-        ================================================== */
+        /* =========================================
+           CREATE MAP
+        ========================================= */
 
         const map = L.map(
-            'map',
-            {
-                zoomControl: true
-            }
-        ).setView(
-            [6.90, 79.95],
-            9
+            'map'
         );
 
 
+        const floodBounds = [
 
-        /* ==================================================
-           2. BASE MAP
-        ================================================== */
+            [
+                6.324768420900316,
+                79.81675029847408
+            ],
 
-        const osm = L.tileLayer(
+            [
+                7.330522213000532,
+                80.38107195995796
+            ]
 
-            'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+        ];
 
+
+        map.fitBounds(
+            floodBounds,
             {
-                maxZoom: 19,
-
-                attribution:
-                    '&copy; OpenStreetMap contributors'
+                padding: [20,20]
             }
-
         );
+
+
+        /* =========================================
+           BASE MAP
+        ========================================= */
+
+        const osm =
+            L.tileLayer(
+
+                'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+
+                {
+
+                    maxZoom: 19,
+
+                    attribution:
+                        '&copy; OpenStreetMap contributors'
+
+                }
+
+            );
 
 
         osm.addTo(map);
 
 
-
-        /* ==================================================
-           3. CREATE EMPTY LAYER GROUPS
-        ================================================== */
+        /* =========================================
+           LAYER GROUPS
+        ========================================= */
 
         const districtLayer =
             L.layerGroup();
@@ -321,25 +702,13 @@
             L.layerGroup();
 
 
+        const publicReportLayer =
+            L.layerGroup();
 
-        /* ==================================================
-           4. FLOOD SUSCEPTIBILITY IMAGE
-        ================================================== */
 
-        const floodBounds = [
-
-            [
-                6.324768420900316,
-                79.81675029847408
-            ],
-
-            [
-                7.330522213000532,
-                80.38107195995796
-            ]
-
-        ];
-
+        /* =========================================
+           FLOOD SUSCEPTIBILITY
+        ========================================= */
 
         const floodLayer =
             L.imageOverlay(
@@ -349,21 +718,15 @@
                 floodBounds,
 
                 {
-                    opacity: 0.65,
-
-                    interactive: false
+                    opacity: 0.65
                 }
 
             );
 
 
-
-        /* ==================================================
-           5. WESTERN PROVINCE BOUNDARY
-        ================================================== */
-
-        let provinceLayer;
-
+        /* =========================================
+           WESTERN PROVINCE
+        ========================================= */
 
         fetch(
             'data/western_province.geojson'
@@ -376,59 +739,34 @@
         .then(
             data => {
 
-                provinceLayer =
-                    L.geoJSON(
+                L.geoJSON(
 
-                        data,
+                    data,
 
-                        {
-                            style: {
+                    {
 
-                                color:
-                                    '#222222',
+                        style: {
 
-                                weight:
-                                    3,
+                            color: '#222222',
 
-                                opacity:
-                                    1,
+                            weight: 3,
 
-                                fillOpacity:
-                                    0
-                            }
+                            fillOpacity: 0
+
                         }
 
-                    );
-
-
-                provinceLayer.addTo(map);
-
-
-                map.fitBounds(
-                    provinceLayer.getBounds(),
-                    {
-                        padding:
-                            [20,20]
                     }
-                );
+
+                ).addTo(map);
 
             }
 
-        )
-
-        .catch(
-            error =>
-                console.error(
-                    'Province layer error:',
-                    error
-                )
         );
 
 
-
-        /* ==================================================
-           6. DISTRICT BOUNDARIES
-        ================================================== */
+        /* =========================================
+           DISTRICTS
+        ========================================= */
 
         fetch(
             'data/districts.geojson'
@@ -441,89 +779,67 @@
         .then(
             data => {
 
-                const geojson =
-                    L.geoJSON(
+                L.geoJSON(
 
-                        data,
+                    data,
 
-                        {
+                    {
 
-                            style: {
+                        style: {
 
-                                color:
-                                    '#0057b8',
+                            color: '#0057b8',
 
-                                weight:
-                                    2,
+                            weight: 2,
 
-                                opacity:
-                                    1,
+                            fillOpacity: 0
 
-                                fillOpacity:
-                                    0
-
-                            },
+                        },
 
 
-                            onEachFeature:
-                                function(
-                                    feature,
-                                    layer
-                                ) {
+                        onEachFeature:
+                            function(
+                                feature,
+                                layer
+                            ) {
 
-                                    const p =
-                                        feature.properties || {};
-
-
-                                    const name =
-
-                                        p.ADM2_EN ||
-
-                                        p.name ||
-
-                                        p.NAME ||
-
-                                        "District";
+                                const p =
+                                    feature.properties || {};
 
 
-                                    layer.bindPopup(
+                                const name =
 
-                                        `<div class="popup-title">
-                                            District
-                                        </div>
+                                    p.ADM2_EN ||
 
-                                        ${name}`
+                                    p.name ||
 
-                                    );
+                                    p.NAME ||
 
-                                }
-
-                        }
-
-                    );
+                                    "District";
 
 
-                geojson.addTo(
+                                layer.bindPopup(
+
+                                    "<b>District:</b> "
+                                    + name
+
+                                );
+
+                            }
+
+                    }
+
+                ).addTo(
                     districtLayer
                 );
 
             }
 
-        )
-
-        .catch(
-            error =>
-                console.error(
-                    'District layer error:',
-                    error
-                )
         );
 
 
-
-        /* ==================================================
-           7. DSD BOUNDARIES
-        ================================================== */
+        /* =========================================
+           DSD
+        ========================================= */
 
         fetch(
             'data/dsd.geojson'
@@ -536,89 +852,36 @@
         .then(
             data => {
 
-                const geojson =
-                    L.geoJSON(
+                L.geoJSON(
 
-                        data,
+                    data,
 
-                        {
+                    {
 
-                            style: {
+                        style: {
 
-                                color:
-                                    '#666666',
+                            color: '#666666',
 
-                                weight:
-                                    1.2,
+                            weight: 1.2,
 
-                                opacity:
-                                    0.9,
-
-                                fillOpacity:
-                                    0
-
-                            },
-
-
-                            onEachFeature:
-                                function(
-                                    feature,
-                                    layer
-                                ) {
-
-                                    const p =
-                                        feature.properties || {};
-
-
-                                    const name =
-
-                                        p.ADM3_EN ||
-
-                                        p.name ||
-
-                                        p.NAME ||
-
-                                        "DSD";
-
-
-                                    layer.bindPopup(
-
-                                        `<div class="popup-title">
-                                            Divisional Secretariat Division
-                                        </div>
-
-                                        ${name}`
-
-                                    );
-
-                                }
+                            fillOpacity: 0
 
                         }
 
-                    );
+                    }
 
-
-                geojson.addTo(
+                ).addTo(
                     dsdLayer
                 );
 
             }
 
-        )
-
-        .catch(
-            error =>
-                console.error(
-                    'DSD layer error:',
-                    error
-                )
         );
 
 
-
-        /* ==================================================
-           8. GND BOUNDARIES
-        ================================================== */
+        /* =========================================
+           GND
+        ========================================= */
 
         fetch(
             'data/gnd.geojson'
@@ -631,89 +894,36 @@
         .then(
             data => {
 
-                const geojson =
-                    L.geoJSON(
+                L.geoJSON(
 
-                        data,
+                    data,
 
-                        {
+                    {
 
-                            style: {
+                        style: {
 
-                                color:
-                                    '#999999',
+                            color: '#999999',
 
-                                weight:
-                                    0.6,
+                            weight: 0.6,
 
-                                opacity:
-                                    0.7,
-
-                                fillOpacity:
-                                    0
-
-                            },
-
-
-                            onEachFeature:
-                                function(
-                                    feature,
-                                    layer
-                                ) {
-
-                                    const p =
-                                        feature.properties || {};
-
-
-                                    const name =
-
-                                        p.ADM4_EN ||
-
-                                        p.name ||
-
-                                        p.NAME ||
-
-                                        "Grama Niladhari Division";
-
-
-                                    layer.bindPopup(
-
-                                        `<div class="popup-title">
-                                            GND
-                                        </div>
-
-                                        ${name}`
-
-                                    );
-
-                                }
+                            fillOpacity: 0
 
                         }
 
-                    );
+                    }
 
-
-                geojson.addTo(
+                ).addTo(
                     gndLayer
                 );
 
             }
 
-        )
-
-        .catch(
-            error =>
-                console.error(
-                    'GND layer error:',
-                    error
-                )
         );
 
 
-
-        /* ==================================================
-           9. RIVERS
-        ================================================== */
+        /* =========================================
+           RIVERS
+        ========================================= */
 
         fetch(
             'data/rivers.geojson'
@@ -726,84 +936,34 @@
         .then(
             data => {
 
-                const geojson =
-                    L.geoJSON(
+                L.geoJSON(
 
-                        data,
+                    data,
 
-                        {
+                    {
 
-                            style: {
+                        style: {
 
-                                color:
-                                    '#0066cc',
+                            color: '#0066cc',
 
-                                weight:
-                                    2.5,
-
-                                opacity:
-                                    0.9
-
-                            },
-
-
-                            onEachFeature:
-                                function(
-                                    feature,
-                                    layer
-                                ) {
-
-                                    const p =
-                                        feature.properties || {};
-
-
-                                    const name =
-
-                                        p.NAME ||
-
-                                        p.name ||
-
-                                        "River";
-
-
-                                    layer.bindPopup(
-
-                                        `<div class="popup-title">
-                                            River
-                                        </div>
-
-                                        ${name}`
-
-                                    );
-
-                                }
+                            weight: 2.5
 
                         }
 
-                    );
+                    }
 
-
-                geojson.addTo(
+                ).addTo(
                     riverLayer
                 );
 
             }
 
-        )
-
-        .catch(
-            error =>
-                console.error(
-                    'River layer error:',
-                    error
-                )
         );
 
 
-
-        /* ==================================================
-           10. WATERWAYS
-        ================================================== */
+        /* =========================================
+           WATERWAYS
+        ========================================= */
 
         fetch(
             'data/waterways.geojson'
@@ -816,84 +976,34 @@
         .then(
             data => {
 
-                const geojson =
-                    L.geoJSON(
+                L.geoJSON(
 
-                        data,
+                    data,
 
-                        {
+                    {
 
-                            style: {
+                        style: {
 
-                                color:
-                                    '#00a6ff',
+                            color: '#00a6ff',
 
-                                weight:
-                                    1.5,
-
-                                opacity:
-                                    0.85
-
-                            },
-
-
-                            onEachFeature:
-                                function(
-                                    feature,
-                                    layer
-                                ) {
-
-                                    const p =
-                                        feature.properties || {};
-
-
-                                    const name =
-
-                                        p.name ||
-
-                                        p.NAME ||
-
-                                        "Waterway";
-
-
-                                    layer.bindPopup(
-
-                                        `<div class="popup-title">
-                                            Waterway
-                                        </div>
-
-                                        ${name}`
-
-                                    );
-
-                                }
+                            weight: 1.5
 
                         }
 
-                    );
+                    }
 
-
-                geojson.addTo(
+                ).addTo(
                     waterwayLayer
                 );
 
             }
 
-        )
-
-        .catch(
-            error =>
-                console.error(
-                    'Waterway layer error:',
-                    error
-                )
         );
 
 
-
-        /* ==================================================
-           11. MAJOR ROADS
-        ================================================== */
+        /* =========================================
+           MAJOR ROADS
+        ========================================= */
 
         fetch(
             'data/major_roads.geojson'
@@ -906,149 +1016,34 @@
         .then(
             data => {
 
-                const geojson =
-                    L.geoJSON(
+                L.geoJSON(
 
-                        data,
+                    data,
 
-                        {
+                    {
 
-                            style:
-                                function(feature) {
+                        style: {
 
-                                    const highway =
-                                        feature.properties
-                                        ?.highway;
+                            color: '#555555',
 
-
-                                    let width = 1.5;
-
-
-                                    if (
-                                        highway ===
-                                        'motorway'
-                                    ) {
-
-                                        width = 3;
-
-                                    }
-
-
-                                    else if (
-                                        highway ===
-                                        'trunk'
-                                    ) {
-
-                                        width = 2.7;
-
-                                    }
-
-
-                                    else if (
-                                        highway ===
-                                        'primary'
-                                    ) {
-
-                                        width = 2.4;
-
-                                    }
-
-
-                                    else if (
-                                        highway ===
-                                        'secondary'
-                                    ) {
-
-                                        width = 2;
-
-                                    }
-
-
-                                    return {
-
-                                        color:
-                                            '#555555',
-
-                                        weight:
-                                            width,
-
-                                        opacity:
-                                            0.85
-                                    };
-
-                                },
-
-
-                            onEachFeature:
-                                function(
-                                    feature,
-                                    layer
-                                ) {
-
-                                    const p =
-                                        feature.properties || {};
-
-
-                                    const name =
-
-                                        p.name ||
-
-                                        p.ref ||
-
-                                        "Major Road";
-
-
-                                    const type =
-
-                                        p.highway ||
-
-                                        "Unknown";
-
-
-                                    layer.bindPopup(
-
-                                        `<div class="popup-title">
-                                            Major Road
-                                        </div>
-
-                                        <b>Name:</b>
-                                        ${name}
-
-                                        <br>
-
-                                        <b>Road type:</b>
-                                        ${type}`
-
-                                    );
-
-                                }
+                            weight: 1.7
 
                         }
 
-                    );
+                    }
 
-
-                geojson.addTo(
+                ).addTo(
                     roadLayer
                 );
 
             }
 
-        )
-
-        .catch(
-            error =>
-                console.error(
-                    'Road layer error:',
-                    error
-                )
         );
 
 
-
-        /* ==================================================
-           12. HOSPITALS
-        ================================================== */
+        /* =========================================
+           HOSPITALS
+        ========================================= */
 
         fetch(
             'data/hospitals.geojson'
@@ -1061,109 +1056,57 @@
         .then(
             data => {
 
-                const geojson =
-                    L.geoJSON(
+                L.geoJSON(
 
-                        data,
+                    data,
 
-                        {
+                    {
 
-                            pointToLayer:
-                                function(
-                                    feature,
-                                    latlng
-                                ) {
+                        pointToLayer:
+                            function(
+                                feature,
+                                latlng
+                            ) {
 
-                                    return L.circleMarker(
+                                return L.circleMarker(
 
-                                        latlng,
+                                    latlng,
 
-                                        {
+                                    {
 
-                                            radius:
-                                                5,
+                                        radius: 5,
 
-                                            fillColor:
-                                                '#d7191c',
+                                        fillColor:
+                                            '#d7191c',
 
-                                            color:
-                                                '#ffffff',
+                                        color:
+                                            '#ffffff',
 
-                                            weight:
-                                                1,
+                                        weight: 1,
 
-                                            opacity:
-                                                1,
+                                        fillOpacity:
+                                            0.9
 
-                                            fillOpacity:
-                                                0.90
+                                    }
 
-                                        }
+                                );
 
-                                    );
+                            }
 
-                                },
+                    }
 
-
-                            onEachFeature:
-                                function(
-                                    feature,
-                                    layer
-                                ) {
-
-                                    const p =
-                                        feature.properties || {};
-
-
-                                    const name =
-
-                                        p.hospital_n ||
-
-                                        p.name ||
-
-                                        p.NAME ||
-
-                                        "Hospital";
-
-
-                                    layer.bindPopup(
-
-                                        `<div class="popup-title">
-                                            Hospital
-                                        </div>
-
-                                        ${name}`
-
-                                    );
-
-                                }
-
-                        }
-
-                    );
-
-
-                geojson.addTo(
+                ).addTo(
                     hospitalLayer
                 );
 
             }
 
-        )
-
-        .catch(
-            error =>
-                console.error(
-                    'Hospital layer error:',
-                    error
-                )
         );
 
 
-
-        /* ==================================================
-           13. SCHOOLS
-        ================================================== */
+        /* =========================================
+           SCHOOLS
+        ========================================= */
 
         fetch(
             'data/schools.geojson'
@@ -1176,109 +1119,57 @@
         .then(
             data => {
 
-                const geojson =
-                    L.geoJSON(
+                L.geoJSON(
 
-                        data,
+                    data,
 
-                        {
+                    {
 
-                            pointToLayer:
-                                function(
-                                    feature,
-                                    latlng
-                                ) {
+                        pointToLayer:
+                            function(
+                                feature,
+                                latlng
+                            ) {
 
-                                    return L.circleMarker(
+                                return L.circleMarker(
 
-                                        latlng,
+                                    latlng,
 
-                                        {
+                                    {
 
-                                            radius:
-                                                4,
+                                        radius: 4,
 
-                                            fillColor:
-                                                '#7b2cbf',
+                                        fillColor:
+                                            '#7b2cbf',
 
-                                            color:
-                                                '#ffffff',
+                                        color:
+                                            '#ffffff',
 
-                                            weight:
-                                                1,
+                                        weight: 1,
 
-                                            opacity:
-                                                1,
+                                        fillOpacity:
+                                            0.85
 
-                                            fillOpacity:
-                                                0.85
+                                    }
 
-                                        }
+                                );
 
-                                    );
+                            }
 
-                                },
+                    }
 
-
-                            onEachFeature:
-                                function(
-                                    feature,
-                                    layer
-                                ) {
-
-                                    const p =
-                                        feature.properties || {};
-
-
-                                    const name =
-
-                                        p.school_nam ||
-
-                                        p.name ||
-
-                                        p.NAME ||
-
-                                        "School";
-
-
-                                    layer.bindPopup(
-
-                                        `<div class="popup-title">
-                                            School
-                                        </div>
-
-                                        ${name}`
-
-                                    );
-
-                                }
-
-                        }
-
-                    );
-
-
-                geojson.addTo(
+                ).addTo(
                     schoolLayer
                 );
 
             }
 
-        )
-
-        .catch(
-            error =>
-                console.error(
-                    'School layer error:',
-                    error
-                )
         );
 
 
-
-        /* ==================================================
-           14. HISTORICAL WATERLOGGING HOTSPOTS
-        ================================================== */
+        /* =========================================
+           HISTORICAL HOTSPOTS
+        ========================================= */
 
         fetch(
             'data/historical_hotspots.geojson'
@@ -1291,224 +1182,132 @@
         .then(
             data => {
 
-                const geojson =
-                    L.geoJSON(
+                L.geoJSON(
 
-                        data,
+                    data,
 
-                        {
+                    {
 
-                            pointToLayer:
-                                function(
-                                    feature,
-                                    latlng
-                                ) {
+                        pointToLayer:
+                            function(
+                                feature,
+                                latlng
+                            ) {
 
-                                    return L.circleMarker(
+                                return L.circleMarker(
 
-                                        latlng,
+                                    latlng,
 
-                                        {
+                                    {
 
-                                            radius:
-                                                8,
+                                        radius: 8,
 
-                                            fillColor:
-                                                '#ff0000',
+                                        fillColor:
+                                            '#ff0000',
 
-                                            color:
-                                                '#7a0000',
+                                        color:
+                                            '#7a0000',
 
-                                            weight:
-                                                2,
+                                        weight: 2,
 
-                                            opacity:
-                                                1,
+                                        fillOpacity:
+                                            0.9
 
-                                            fillOpacity:
-                                                0.90
+                                    }
 
-                                        }
+                                );
 
-                                    );
+                            },
 
-                                },
 
+                        onEachFeature:
+                            function(
+                                feature,
+                                layer
+                            ) {
 
-                            onEachFeature:
-                                function(
-                                    feature,
-                                    layer
-                                ) {
+                                const p =
+                                    feature.properties || {};
 
-                                    const p =
-                                        feature.properties || {};
 
+                                const popup = `
 
-                                    const location =
+                                    <div class="popup-title">
 
-                                        p.location ||
+                                        Historical
+                                        Waterlogging Hotspot
 
-                                        "Unknown";
+                                    </div>
 
 
-                                    const district =
+                                    <b>Location:</b>
 
-                                        p.district ||
+                                    ${p.location || "Unknown"}
 
-                                        "Unknown";
+                                    <br>
 
 
-                                    const severity =
+                                    <b>District:</b>
 
-                                        p.severity ||
+                                    ${p.district || "Unknown"}
 
-                                        "Unknown";
+                                    <br>
 
 
-                                    const context =
+                                    <b>Severity:</b>
 
-                                        p.context ||
+                                    ${p.severity || "Unknown"}
 
-                                        "Not available";
+                                    <br>
 
 
-                                    const evidence =
+                                    <b>Context:</b>
 
-                                        p.ev_grade ||
+                                    ${p.context || "Not available"}
 
-                                        "Unknown";
+                                    <br>
 
 
-                                    const source =
+                                    <b>Evidence Grade:</b>
 
-                                        p.source ||
+                                    ${p.ev_grade || "Unknown"}
 
-                                        "Not available";
+                                `;
 
 
-                                    const popup = `
+                                layer.bindPopup(
+                                    popup
+                                );
 
-                                        <div class="popup-title">
+                            }
 
-                                            Historical
-                                            Waterlogging Hotspot
+                    }
 
-                                        </div>
-
-
-                                        <b>Location:</b>
-
-                                        ${location}
-
-                                        <br>
-
-
-                                        <b>District:</b>
-
-                                        ${district}
-
-                                        <br>
-
-
-                                        <b>Severity:</b>
-
-                                        ${severity}
-
-                                        <br>
-
-
-                                        <b>Context:</b>
-
-                                        ${context}
-
-                                        <br>
-
-
-                                        <b>Evidence grade:</b>
-
-                                        ${evidence}
-
-                                        <br>
-
-
-                                        <b>Source:</b>
-
-                                        ${source}
-
-                                    `;
-
-
-                                    layer.bindPopup(
-                                        popup
-                                    );
-
-                                }
-
-                        }
-
-                    );
-
-
-                geojson.addTo(
+                ).addTo(
                     hotspotLayer
                 );
 
             }
 
-        )
-
-        .catch(
-            error =>
-                console.error(
-                    'Historical hotspot error:',
-                    error
-                )
         );
 
 
-
-        /* ==================================================
-           15. DEFAULT MAP LAYERS
-           
-           ONLY THESE LAYERS ARE ON
-           WHEN WEBSITE FIRST OPENS
-        ================================================== */
-
+        /* =========================================
+           DEFAULT LAYERS
+        ========================================= */
 
         floodLayer.addTo(map);
 
-
         districtLayer.addTo(map);
-
 
         hotspotLayer.addTo(map);
 
+        publicReportLayer.addTo(map);
 
 
-        /*
-        IMPORTANT:
-
-        These layers are deliberately NOT
-        added to the map by default:
-
-        DSD
-        GND
-        Rivers
-        Waterways
-        Roads
-        Hospitals
-        Schools
-
-        Users can switch them on using
-        the layer control.
-        */
-
-
-
-        /* ==================================================
-           16. LAYER CONTROL
-        ================================================== */
+        /* =========================================
+           LAYER CONTROL
+        ========================================= */
 
         const baseMaps = {
 
@@ -1523,38 +1322,32 @@
             "Flood Susceptibility":
                 floodLayer,
 
-
             "District Boundaries":
                 districtLayer,
-
 
             "Historical Hotspots":
                 hotspotLayer,
 
+            "Current Session Reports":
+                publicReportLayer,
 
             "DSD Boundaries":
                 dsdLayer,
 
-
             "GND Boundaries":
                 gndLayer,
-
 
             "Rivers":
                 riverLayer,
 
-
             "Waterways":
                 waterwayLayer,
-
 
             "Major Roads":
                 roadLayer,
 
-
             "Hospitals":
                 hospitalLayer,
-
 
             "Schools":
                 schoolLayer
@@ -1562,33 +1355,26 @@
         };
 
 
-        const layerControl =
-            L.control.layers(
+        L.control.layers(
 
-                baseMaps,
+            baseMaps,
 
-                overlays,
+            overlays,
 
-                {
+            {
 
-                    collapsed:
-                        false,
+                collapsed: false,
 
-                    position:
-                        'topright'
+                position: 'topright'
 
-                }
+            }
 
-            );
+        ).addTo(map);
 
 
-        layerControl.addTo(map);
-
-
-
-        /* ==================================================
-           17. FLOOD SUSCEPTIBILITY LEGEND
-        ================================================== */
+        /* =========================================
+           LEGEND
+        ========================================= */
 
         const legend =
             L.control(
@@ -1603,7 +1389,6 @@
 
         legend.onAdd =
             function() {
-
 
                 const div =
                     L.DomUtil.create(
@@ -1621,70 +1406,55 @@
                         Flood Susceptibility
                     </div>
 
-
                     <div class="legend-row">
 
                         <span
                             class="legend-color"
-                            style="
-                                background:#008000;
-                            ">
+                            style="background:#008000">
                         </span>
 
                         Very Low
 
                     </div>
 
-
                     <div class="legend-row">
 
                         <span
                             class="legend-color"
-                            style="
-                                background:#adff2f;
-                            ">
+                            style="background:#adff2f">
                         </span>
 
                         Low
 
                     </div>
 
-
                     <div class="legend-row">
 
                         <span
                             class="legend-color"
-                            style="
-                                background:#ffff00;
-                            ">
+                            style="background:#ffff00">
                         </span>
 
                         Moderate
 
                     </div>
 
-
                     <div class="legend-row">
 
                         <span
                             class="legend-color"
-                            style="
-                                background:#ffa500;
-                            ">
+                            style="background:#ffa500">
                         </span>
 
                         High
 
                     </div>
 
-
                     <div class="legend-row">
 
                         <span
                             class="legend-color"
-                            style="
-                                background:#ff0000;
-                            ">
+                            style="background:#ff0000">
                         </span>
 
                         Very High
@@ -1702,10 +1472,9 @@
         legend.addTo(map);
 
 
-
-        /* ==================================================
-           18. SCALE BAR
-        ================================================== */
+        /* =========================================
+           SCALE BAR
+        ========================================= */
 
         L.control.scale(
 
@@ -1718,21 +1487,480 @@
                     true,
 
                 imperial:
-                    false,
-
-                maxWidth:
-                    150
+                    false
 
             }
 
         ).addTo(map);
 
 
+        /* =========================================
+           REPORT WATERLOGGING BUTTON
+        ========================================= */
 
-        /* ==================================================
-           19. PREVENT MAP TITLE FROM
-               BLOCKING MAP INTERACTION
-        ================================================== */
+        const reportControl =
+            L.control(
+
+                {
+                    position:
+                        'topleft'
+                }
+
+            );
+
+
+        reportControl.onAdd =
+            function() {
+
+                const div =
+                    L.DomUtil.create(
+
+                        'div',
+
+                        'report-control'
+
+                    );
+
+
+                div.innerHTML =
+                    '⚠ Report Waterlogging';
+
+
+                div.title =
+                    'Submit a new waterlogging report';
+
+
+                L.DomEvent.disableClickPropagation(
+                    div
+                );
+
+
+                div.onclick =
+                    function() {
+
+                        startReportMode();
+
+                    };
+
+
+                return div;
+
+            };
+
+
+        reportControl.addTo(map);
+
+
+        /* =========================================
+           REPORTING VARIABLES
+        ========================================= */
+
+        let reportMode = false;
+
+        let selectedLat = null;
+
+        let selectedLng = null;
+
+        let temporaryMarker = null;
+
+
+        const instructionBox =
+            document.getElementById(
+                'instructionBox'
+            );
+
+
+        const modalOverlay =
+            document.getElementById(
+                'reportModalOverlay'
+            );
+
+
+        const reportForm =
+            document.getElementById(
+                'reportForm'
+            );
+
+
+        const cancelButton =
+            document.getElementById(
+                'cancelReportButton'
+            );
+
+
+        /* =========================================
+           START REPORT MODE
+        ========================================= */
+
+        function startReportMode() {
+
+            reportMode = true;
+
+            instructionBox.style.display =
+                'block';
+
+
+            map.getContainer().style.cursor =
+                'crosshair';
+
+        }
+
+
+        /* =========================================
+           CLICK MAP TO SELECT LOCATION
+        ========================================= */
+
+        map.on(
+
+            'click',
+
+            function(e) {
+
+                if (!reportMode) {
+
+                    return;
+
+                }
+
+
+                selectedLat =
+                    e.latlng.lat;
+
+
+                selectedLng =
+                    e.latlng.lng;
+
+
+                if (temporaryMarker) {
+
+                    map.removeLayer(
+                        temporaryMarker
+                    );
+
+                }
+
+
+                temporaryMarker =
+                    L.marker(
+
+                        [
+                            selectedLat,
+                            selectedLng
+                        ]
+
+                    ).addTo(map);
+
+
+                document.getElementById(
+                    'selectedLatitude'
+                ).textContent =
+
+                    selectedLat.toFixed(6);
+
+
+                document.getElementById(
+                    'selectedLongitude'
+                ).textContent =
+
+                    selectedLng.toFixed(6);
+
+
+                instructionBox.style.display =
+                    'none';
+
+
+                map.getContainer().style.cursor =
+                    '';
+
+
+                reportMode = false;
+
+
+                modalOverlay.style.display =
+                    'flex';
+
+            }
+
+        );
+
+
+        /* =========================================
+           CANCEL REPORT
+        ========================================= */
+
+        cancelButton.addEventListener(
+
+            'click',
+
+            function() {
+
+                closeReportForm();
+
+            }
+
+        );
+
+
+        function closeReportForm() {
+
+            modalOverlay.style.display =
+                'none';
+
+
+            instructionBox.style.display =
+                'none';
+
+
+            reportMode = false;
+
+
+            map.getContainer().style.cursor =
+                '';
+
+
+            if (temporaryMarker) {
+
+                map.removeLayer(
+                    temporaryMarker
+                );
+
+                temporaryMarker = null;
+
+            }
+
+
+            reportForm.reset();
+
+        }
+
+
+        /* =========================================
+           SUBMIT REPORT
+        ========================================= */
+
+        reportForm.addEventListener(
+
+            'submit',
+
+            function(event) {
+
+                event.preventDefault();
+
+
+                if (
+                    selectedLat === null ||
+                    selectedLng === null
+                ) {
+
+                    alert(
+                        'Please select a location on the map.'
+                    );
+
+                    return;
+
+                }
+
+
+                const incidentType =
+                    document.getElementById(
+                        'incidentType'
+                    ).value;
+
+
+                const severity =
+                    document.getElementById(
+                        'severity'
+                    ).value;
+
+
+                const waterDepth =
+                    document.getElementById(
+                        'waterDepth'
+                    ).value;
+
+
+                const roadStatus =
+                    document.getElementById(
+                        'roadStatus'
+                    ).value;
+
+
+                const description =
+                    document.getElementById(
+                        'description'
+                    ).value;
+
+
+                const reportTime =
+                    new Date();
+
+
+                const reportMarker =
+                    L.circleMarker(
+
+                        [
+                            selectedLat,
+                            selectedLng
+                        ],
+
+                        {
+
+                            radius: 9,
+
+                            fillColor:
+                                '#0066ff',
+
+                            color:
+                                '#ffffff',
+
+                            weight: 2,
+
+                            fillOpacity:
+                                0.95
+
+                        }
+
+                    );
+
+
+                const popup = `
+
+                    <div class="popup-title">
+
+                        Public Waterlogging Report
+
+                    </div>
+
+
+                    <span class="pending-label">
+
+                        Pending Verification
+
+                    </span>
+
+
+                    <br><br>
+
+
+                    <b>Incident Type:</b>
+
+                    ${incidentType}
+
+
+                    <br>
+
+
+                    <b>Severity:</b>
+
+                    ${severity}
+
+
+                    <br>
+
+
+                    <b>Water Depth:</b>
+
+                    ${
+                        waterDepth
+                        ? waterDepth + " cm"
+                        : "Not provided"
+                    }
+
+
+                    <br>
+
+
+                    <b>Road Status:</b>
+
+                    ${roadStatus}
+
+
+                    <br>
+
+
+                    <b>Description:</b>
+
+                    ${
+                        description ||
+                        "Not provided"
+                    }
+
+
+                    <br>
+
+
+                    <b>Latitude:</b>
+
+                    ${selectedLat.toFixed(6)}
+
+
+                    <br>
+
+
+                    <b>Longitude:</b>
+
+                    ${selectedLng.toFixed(6)}
+
+
+                    <br>
+
+
+                    <b>Report Time:</b>
+
+                    ${reportTime.toLocaleString()}
+
+                `;
+
+
+                reportMarker.bindPopup(
+                    popup
+                );
+
+
+                reportMarker.addTo(
+                    publicReportLayer
+                );
+
+
+                if (temporaryMarker) {
+
+                    map.removeLayer(
+                        temporaryMarker
+                    );
+
+                    temporaryMarker =
+                        null;
+
+                }
+
+
+                modalOverlay.style.display =
+                    'none';
+
+
+                reportForm.reset();
+
+
+                reportMarker.openPopup();
+
+
+                alert(
+                    'Report submitted successfully. This test report is marked as Pending Verification.'
+                );
+
+
+                selectedLat = null;
+
+                selectedLng = null;
+
+            }
+
+        );
+
+
+        /* =========================================
+           PREVENT TITLE INTERACTION ISSUES
+        ========================================= */
 
         const title =
             document.querySelector(
@@ -1745,13 +1973,8 @@
         );
 
 
-
-        /* ==================================================
-           20. DEBUG MESSAGE
-        ================================================== */
-
         console.log(
-            'Western Province Flood Web Map loaded successfully.'
+            'Flood web map and reporting interface loaded.'
         );
 
 
