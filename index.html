@@ -34,7 +34,6 @@ body {
     font-family: Arial, Helvetica, sans-serif;
     background: #eef2f5;
     overflow: hidden;
-
     display: flex;
     flex-direction: column;
 }
@@ -77,21 +76,15 @@ header {
 
 .header-title p {
     margin: 5px 0 0;
-
     font-size: 12px;
-
     opacity: 0.86;
 }
 
 .header-badge {
     background: rgba(255,255,255,0.12);
-
     border: 1px solid rgba(255,255,255,0.22);
-
     border-radius: 20px;
-
     padding: 8px 14px;
-
     font-size: 12px;
 }
 
@@ -102,7 +95,6 @@ header {
 
 #mobileToolbar {
     display: none;
-
     flex: 0 0 auto;
 
     background: white;
@@ -110,7 +102,6 @@ header {
     border-bottom: 1px solid #d7dee3;
 
     padding: 7px 9px;
-
     gap: 7px;
 
     z-index: 2900;
@@ -126,7 +117,6 @@ header {
     border: 1px solid #ccd6dd;
 
     background: #f7f9fa;
-
     color: #073b4c;
 
     border-radius: 7px;
@@ -136,7 +126,6 @@ header {
     padding: 8px 4px;
 
     font-size: 12px;
-
     font-weight: bold;
 
     cursor: pointer;
@@ -146,13 +135,12 @@ header {
 
 .mobile-toolbar-button.active {
     background: #073b4c;
-
     color: white;
 }
 
 
 /* =====================================================
-   MAIN APPLICATION
+   MAIN
 ===================================================== */
 
 #app {
@@ -232,12 +220,11 @@ header {
     border: none;
 
     background: #0d6efd;
-
     color: white;
 
     border-radius: 7px;
 
-    padding: 10px;
+    padding: 11px 10px;
 
     cursor: pointer;
 
@@ -315,13 +302,11 @@ header {
 
 .opacity-row label {
     font-size: 11px;
-
     color: #66747d;
 }
 
 .opacity-row input {
     width: 100%;
-
     margin-top: 5px;
 }
 
@@ -339,7 +324,7 @@ select {
 
 
 /* =====================================================
-   COLLAPSIBLE GROUPS
+   COLLAPSIBLE LAYERS
 ===================================================== */
 
 .layer-group-button {
@@ -352,7 +337,6 @@ select {
     color: #073b4c;
 
     font-size: 12px;
-
     font-weight: bold;
 
     padding: 9px 10px;
@@ -434,7 +418,6 @@ select {
     position: relative;
 
     min-width: 0;
-
     min-height: 0;
 }
 
@@ -444,7 +427,6 @@ select {
     inset: 0;
 
     width: 100%;
-
     height: 100%;
 }
 
@@ -459,7 +441,6 @@ select {
     position: absolute;
 
     top: 14px;
-
     left: 50%;
 
     transform: translateX(-50%);
@@ -467,7 +448,6 @@ select {
     z-index: 1500;
 
     background: #fff3cd;
-
     color: #664d03;
 
     border: 1px solid #ffecb5;
@@ -477,7 +457,6 @@ select {
     padding: 9px 15px;
 
     font-size: 12px;
-
     font-weight: bold;
 
     box-shadow: 0 2px 8px rgba(0,0,0,0.18);
@@ -496,7 +475,6 @@ select {
     position: absolute;
 
     bottom: 24px;
-
     left: 12px;
 
     z-index: 1000;
@@ -536,7 +514,6 @@ select {
 
 .legend-color {
     width: 17px;
-
     height: 12px;
 
     border: 1px solid #777;
@@ -634,7 +611,7 @@ select {
 
     font-size: 11px;
 
-    line-height: 1.45;
+    line-height: 1.5;
 }
 
 
@@ -667,7 +644,6 @@ select {
     color: #073b4c;
 
     font-size: 15px;
-
     font-weight: bold;
 
     margin-bottom: 9px;
@@ -693,6 +669,8 @@ select {
     color: #6e7a81;
 
     font-size: 10px;
+
+    line-height: 1.45;
 }
 
 .risk-badge {
@@ -703,10 +681,27 @@ select {
     border-radius: 12px;
 
     font-size: 11px;
-
     font-weight: bold;
 
     border: 1px solid rgba(0,0,0,0.18);
+}
+
+.nearby-summary {
+    background: #eef6ff;
+
+    border: 1px solid #cbdff5;
+
+    border-radius: 7px;
+
+    padding: 8px;
+
+    margin-top: 6px;
+}
+
+.nearby-number {
+    color: #073b4c;
+
+    font-weight: bold;
 }
 
 
@@ -726,7 +721,6 @@ select {
     z-index: 5000;
 
     align-items: center;
-
     justify-content: center;
 
     padding: 15px;
@@ -861,7 +855,6 @@ select {
     position: fixed;
 
     right: 18px;
-
     top: 88px;
 
     z-index: 7000;
@@ -942,13 +935,11 @@ select {
         align-items: flex-start;
     }
 
-
     .header-title h1 {
         font-size: 18px;
 
         line-height: 1.22;
     }
-
 
     .header-title p {
         font-size: 11px;
@@ -958,23 +949,19 @@ select {
         margin-top: 6px;
     }
 
-
     .header-badge {
         display: none;
     }
 
-
     #mobileToolbar {
         display: flex;
     }
-
 
     .mobile-toolbar-button {
         padding: 8px 3px;
 
         font-size: 11px;
     }
-
 
     #app {
         display: block;
@@ -988,31 +975,25 @@ select {
         overflow: hidden;
     }
 
-
     #map-wrapper {
         position: absolute;
 
         inset: 0;
 
         width: 100%;
-
         height: 100%;
 
         margin: 0;
     }
 
-
     .sidebar-left {
         position: absolute;
 
         top: 0;
-
         bottom: 0;
-
         left: 0;
 
         width: min(88vw,360px);
-
         height: 100%;
 
         z-index: 2200;
@@ -1028,11 +1009,9 @@ select {
         border-right: none;
     }
 
-
     .sidebar-left.mobile-open {
         transform: translateX(0);
     }
-
 
     .sidebar-right {
         display: block;
@@ -1040,13 +1019,10 @@ select {
         position: absolute;
 
         top: 0;
-
         bottom: 0;
-
         right: 0;
 
         width: min(88vw,360px);
-
         height: 100%;
 
         z-index: 2200;
@@ -1062,26 +1038,21 @@ select {
         border-left: none;
     }
 
-
     .sidebar-right.mobile-open {
         transform: translateX(0);
     }
-
 
     .sidebar-title {
         font-size: 18px;
     }
 
-
     .sidebar-subtitle {
         font-size: 12px;
     }
 
-
     .location-button {
         min-height: 44px;
     }
-
 
     .mode-button {
         min-height: 43px;
@@ -1089,13 +1060,11 @@ select {
         font-size: 13px;
     }
 
-
     .layer-option {
         font-size: 13px;
 
         min-height: 36px;
     }
-
 
     select {
         min-height: 42px;
@@ -1103,11 +1072,9 @@ select {
         font-size: 14px;
     }
 
-
     input[type="range"] {
         height: 32px;
     }
-
 
     .report-button {
         min-height: 47px;
@@ -1115,20 +1082,13 @@ select {
         font-size: 14px;
     }
 
-
-    /* =============================================
-       MOBILE LEGEND — COLLAPSIBLE
-    ============================================== */
-
     .legend {
         display: none;
 
         left: 10px;
-
         bottom: 10px;
 
         min-width: 140px;
-
         max-width: 180px;
 
         max-height: 52%;
@@ -1142,16 +1102,13 @@ select {
         z-index: 1900;
     }
 
-
     .legend.mobile-legend-open {
         display: block;
     }
 
-
     .legend-title {
         font-size: 11px;
     }
-
 
     .legend-item {
         margin: 4px 0;
@@ -1159,13 +1116,11 @@ select {
         gap: 6px;
     }
 
-
     .legend-color {
         width: 15px;
 
         height: 11px;
     }
-
 
     #reportInstruction {
         top: 10px;
@@ -1179,28 +1134,23 @@ select {
         font-size: 11px;
     }
 
-
     .leaflet-control-zoom {
         margin-top: 10px !important;
 
         margin-left: 10px !important;
     }
 
-
     .leaflet-control-attribution {
         font-size: 9px;
     }
-
 
     .leaflet-popup {
         max-width: 90vw !important;
     }
 
-
     .leaflet-popup-content-wrapper {
         max-width: 90vw;
     }
-
 
     .leaflet-popup-content {
         width: auto !important;
@@ -1212,14 +1162,12 @@ select {
         font-size: 12px;
     }
 
-
     .modal-overlay {
         padding:
             max(8px,env(safe-area-inset-top))
             8px
             max(8px,env(safe-area-inset-bottom));
     }
-
 
     .modal {
         width: 100%;
@@ -1231,11 +1179,9 @@ select {
         padding: 16px;
     }
 
-
     .modal h2 {
         font-size: 21px;
     }
-
 
     .form-group input,
     .form-group select,
@@ -1245,11 +1191,9 @@ select {
         font-size: 16px;
     }
 
-
     .form-group textarea {
         min-height: 90px;
     }
-
 
     .modal-buttons {
         display: grid;
@@ -1259,14 +1203,12 @@ select {
         gap: 8px;
     }
 
-
     .secondary-button,
     .primary-button {
         min-height: 44px;
 
         font-size: 14px;
     }
-
 
     #messageBox {
         top: auto;
@@ -1278,14 +1220,12 @@ select {
             );
 
         left: 12px;
-
         right: 12px;
 
         max-width: none;
 
         font-size: 12px;
     }
-
 }
 
 </style>
@@ -1319,9 +1259,7 @@ select {
 </header>
 
 
-<!-- =====================================================
-     MOBILE TOOLBAR
-===================================================== -->
+<!-- MOBILE TOOLBAR -->
 
 <div id="mobileToolbar">
 
@@ -1379,7 +1317,7 @@ select {
         class="location-button"
         type="button"
     >
-        📍 Use My Location
+        📍 Situation Near Me
     </button>
 
 
@@ -1919,6 +1857,11 @@ select {
 
         <br><br>
 
+        📍 <b>Situation Near Me</b> uses your current location
+        to summarize flood susceptibility and nearby verified information.
+
+        <br><br>
+
         🌧 In <b>Flood Risk</b> mode, click a location inside
         Western Province.
 
@@ -1980,7 +1923,6 @@ select {
     <p class="modal-subtitle">
 
         Submit a community observation.
-
         Reports remain Pending until verification.
 
     </p>
@@ -2186,7 +2128,6 @@ select {
     </form>
 
 </div>
-
 </div>
 
 
@@ -2264,6 +2205,8 @@ let allHistoricalFeatures = [];
 
 let allVerifiedReports = [];
 
+let verifiedReportsLoaded = false;
+
 let reportingMode = false;
 
 let selectedLatitude = null;
@@ -2271,6 +2214,8 @@ let selectedLatitude = null;
 let selectedLongitude = null;
 
 let selectedMarker = null;
+
+let currentLocationMarker = null;
 
 
 /* ============================================================
@@ -2281,43 +2226,33 @@ const westernProvinceLayer =
     L.layerGroup()
     .addTo(map);
 
-
 const districtLayer =
     L.layerGroup();
-
 
 const dsdLayer =
     L.layerGroup();
 
-
 const gndLayer =
     L.layerGroup();
-
 
 const riverLayer =
     L.layerGroup();
 
-
 const waterwayLayer =
     L.layerGroup();
-
 
 const roadLayer =
     L.layerGroup();
 
-
 const hospitalLayer =
     L.layerGroup();
-
 
 const schoolLayer =
     L.layerGroup();
 
-
 const historicalHotspotLayer =
     L.layerGroup()
     .addTo(map);
-
 
 const verifiedReportLayer =
     L.layerGroup()
@@ -2373,7 +2308,8 @@ const rasterContext =
     );
 
 
-let rasterLoaded = false;
+let rasterLoaded =
+    false;
 
 
 rasterImage.onload =
@@ -2385,16 +2321,14 @@ rasterImage.onload =
         rasterCanvas.height =
             rasterImage.naturalHeight;
 
-
         rasterContext.drawImage(
             rasterImage,
             0,
             0
         );
 
-
-        rasterLoaded = true;
-
+        rasterLoaded =
+            true;
     };
 
 
@@ -2449,7 +2383,6 @@ function escapeHtml(value) {
     ) {
 
         return "";
-
     }
 
 
@@ -2479,11 +2412,11 @@ function escapeHtml(value) {
             "'",
             "&#039;"
         );
-
 }
 
 
-let messageTimer = null;
+let messageTimer =
+    null;
 
 
 function showMessage(
@@ -2516,7 +2449,6 @@ function showMessage(
         clearTimeout(
             messageTimer
         );
-
     }
 
 
@@ -2533,7 +2465,6 @@ function showMessage(
             },
             5000
         );
-
 }
 
 
@@ -2565,17 +2496,13 @@ function distanceKm(
             {
                 units:"kilometers"
             }
-
         );
-
     }
 
     catch(error) {
 
         return null;
-
     }
-
 }
 
 
@@ -2587,7 +2514,6 @@ function formatDistance(km) {
     ) {
 
         return "Unknown distance";
-
     }
 
 
@@ -2601,7 +2527,6 @@ function formatDistance(km) {
             ) +
             " m"
         );
-
     }
 
 
@@ -2609,7 +2534,171 @@ function formatDistance(km) {
         km.toFixed(1) +
         " km"
     );
+}
 
+
+/* ============================================================
+   NEW — RELATIVE REPORT TIME
+============================================================ */
+
+function formatRelativeTime(
+    dateValue
+) {
+
+    if (
+        !dateValue
+    ) {
+
+        return "Time unavailable";
+    }
+
+
+    const time =
+        new Date(
+            dateValue
+        ).getTime();
+
+
+    if (
+        !Number.isFinite(
+            time
+        )
+    ) {
+
+        return "Time unavailable";
+    }
+
+
+    let seconds =
+        Math.floor(
+            (
+                Date.now() -
+                time
+            ) /
+            1000
+        );
+
+
+    if (
+        seconds < 0
+    ) {
+
+        seconds =
+            0;
+    }
+
+
+    if (
+        seconds < 60
+    ) {
+
+        return "Reported just now";
+    }
+
+
+    const minutes =
+        Math.floor(
+            seconds / 60
+        );
+
+
+    if (
+        minutes < 60
+    ) {
+
+        return (
+            "Reported " +
+            minutes +
+            (
+                minutes === 1
+                ? " minute ago"
+                : " minutes ago"
+            )
+        );
+    }
+
+
+    const hours =
+        Math.floor(
+            minutes / 60
+        );
+
+
+    if (
+        hours < 24
+    ) {
+
+        return (
+            "Reported " +
+            hours +
+            (
+                hours === 1
+                ? " hour ago"
+                : " hours ago"
+            )
+        );
+    }
+
+
+    const days =
+        Math.floor(
+            hours / 24
+        );
+
+
+    if (
+        days < 30
+    ) {
+
+        return (
+            "Reported " +
+            days +
+            (
+                days === 1
+                ? " day ago"
+                : " days ago"
+            )
+        );
+    }
+
+
+    const months =
+        Math.floor(
+            days / 30
+        );
+
+
+    if (
+        months < 12
+    ) {
+
+        return (
+            "Reported " +
+            months +
+            (
+                months === 1
+                ? " month ago"
+                : " months ago"
+            )
+        );
+    }
+
+
+    const years =
+        Math.floor(
+            days / 365
+        );
+
+
+    return (
+        "Reported " +
+        years +
+        (
+            years === 1
+            ? " year ago"
+            : " years ago"
+        )
+    );
 }
 
 
@@ -2627,21 +2716,17 @@ function getFloodRiskAtLocation(
     ) {
 
         return null;
-
     }
 
 
     const south =
         floodBounds[0][0];
 
-
     const west =
         floodBounds[0][1];
 
-
     const north =
         floodBounds[1][0];
-
 
     const east =
         floodBounds[1][1];
@@ -2655,7 +2740,6 @@ function getFloodRiskAtLocation(
     ) {
 
         return null;
-
     }
 
 
@@ -2727,14 +2811,11 @@ function getFloodRiskAtLocation(
     const r =
         pixel[0];
 
-
     const g =
         pixel[1];
 
-
     const b =
         pixel[2];
-
 
     const a =
         pixel[3];
@@ -2745,7 +2826,6 @@ function getFloodRiskAtLocation(
     ) {
 
         return null;
-
     }
 
 
@@ -2756,7 +2836,6 @@ function getFloodRiskAtLocation(
     ) {
 
         return null;
-
     }
 
 
@@ -2775,11 +2854,9 @@ function getFloodRiskAtLocation(
                 r -
                 item.rgb[0];
 
-
             const dg =
                 g -
                 item.rgb[1];
-
 
             const db =
                 b -
@@ -2787,9 +2864,9 @@ function getFloodRiskAtLocation(
 
 
             const difference =
-                dr*dr +
-                dg*dg +
-                db*db;
+                dr * dr +
+                dg * dg +
+                db * db;
 
 
             if (
@@ -2800,10 +2877,8 @@ function getFloodRiskAtLocation(
                 nearestDifference =
                     difference;
 
-
                 nearestClass =
                     item;
-
             }
 
         }
@@ -2811,7 +2886,6 @@ function getFloodRiskAtLocation(
 
 
     return nearestClass;
-
 }
 
 
@@ -2833,12 +2907,10 @@ fetch(
             throw new Error(
                 "Western Province GeoJSON could not be loaded."
             );
-
         }
 
 
         return response.json();
-
     }
 )
 
@@ -2858,20 +2930,14 @@ fetch(
                 data,
                 {
 
-                    style: {
-
+                    style:{
                         color:"#005b96",
-
                         weight:3,
-
                         fillColor:"#4da6ff",
-
                         fillOpacity:0.04
-
                     },
 
                     interactive:false
-
                 }
             );
 
@@ -2895,7 +2961,6 @@ fetch(
                     padding:[20,20]
                 }
             );
-
         }
 
 
@@ -2906,7 +2971,6 @@ fetch(
 
 
         loadVerifiedReports();
-
     }
 )
 
@@ -2922,7 +2986,6 @@ fetch(
             "boundaryStatus"
         ).textContent =
             "Boundary unavailable. Reporting is disabled.";
-
     }
 );
 
@@ -2941,7 +3004,6 @@ function isInsideWesternProvince(
     ) {
 
         return false;
-
     }
 
 
@@ -2959,9 +3021,9 @@ function isInsideWesternProvince(
         westernProvinceData.type ===
         "FeatureCollection"
 
-            ? westernProvinceData.features
+        ? westernProvinceData.features
 
-            : [westernProvinceData];
+        : [westernProvinceData];
 
 
     for (
@@ -2974,7 +3036,6 @@ function isInsideWesternProvince(
         ) {
 
             continue;
-
         }
 
 
@@ -2988,7 +3049,6 @@ function isInsideWesternProvince(
         ) {
 
             continue;
-
         }
 
 
@@ -3002,9 +3062,7 @@ function isInsideWesternProvince(
             ) {
 
                 return true;
-
             }
-
         }
 
         catch(error) {
@@ -3012,14 +3070,11 @@ function isInsideWesternProvince(
             console.error(
                 error
             );
-
         }
-
     }
 
 
     return false;
-
 }
 
 
@@ -3039,8 +3094,21 @@ function loadPolygonLayer(
     )
 
     .then(
-        response =>
-            response.json()
+        response => {
+
+            if (
+                !response.ok
+            ) {
+
+                throw new Error(
+                    file +
+                    " could not be loaded."
+                );
+            }
+
+
+            return response.json();
+        }
     )
 
     .then(
@@ -3053,7 +3121,6 @@ function loadPolygonLayer(
                 assignFunction(
                     data
                 );
-
             }
 
 
@@ -3066,7 +3133,6 @@ function loadPolygonLayer(
             .addTo(
                 destinationLayer
             );
-
         }
     )
 
@@ -3077,10 +3143,8 @@ function loadPolygonLayer(
                 file,
                 error
             );
-
         }
     );
-
 }
 
 
@@ -3100,9 +3164,7 @@ loadPolygonLayer(
 
         districtData =
             data;
-
     }
-
 );
 
 
@@ -3122,9 +3184,7 @@ loadPolygonLayer(
 
         dsdData =
             data;
-
     }
-
 );
 
 
@@ -3144,9 +3204,7 @@ loadPolygonLayer(
 
         gndData =
             data;
-
     }
-
 );
 
 
@@ -3178,7 +3236,6 @@ fetch(
         .addTo(
             riverLayer
         );
-
     }
 )
 
@@ -3219,7 +3276,6 @@ fetch(
         .addTo(
             waterwayLayer
         );
-
     }
 )
 
@@ -3260,7 +3316,6 @@ fetch(
         .addTo(
             roadLayer
         );
-
     }
 )
 
@@ -3317,10 +3372,8 @@ fetch(
                                 fillColor:"#d7191c",
 
                                 fillOpacity:0.95
-
                             }
                         );
-
                     },
 
 
@@ -3394,14 +3447,12 @@ fetch(
                                 )}
 
                             `;
-
                         }
 
 
                         layer.bindPopup(
                             popup
                         );
-
                     }
 
             }
@@ -3409,7 +3460,16 @@ fetch(
         .addTo(
             hospitalLayer
         );
+    }
+)
 
+.catch(
+    error => {
+
+        console.error(
+            "Health facility loading error:",
+            error
+        );
     }
 );
 
@@ -3453,11 +3513,10 @@ fetch(
                                 fillColor:"#7b2cbf",
 
                                 fillOpacity:0.9
-
                             }
                         );
-
                     },
+
 
                 onEachFeature:
                     function(
@@ -3492,9 +3551,7 @@ fetch(
                             escapeHtml(
                                 schoolName
                             )
-
                         );
-
                     }
 
             }
@@ -3502,7 +3559,16 @@ fetch(
         .addTo(
             schoolLayer
         );
+    }
+)
 
+.catch(
+    error => {
+
+        console.error(
+            "School loading error:",
+            error
+        );
     }
 );
 
@@ -3529,7 +3595,16 @@ fetch(
 
 
         renderHistoricalHotspots();
+    }
+)
 
+.catch(
+    error => {
+
+        console.error(
+            "Historical hotspot loading error:",
+            error
+        );
     }
 );
 
@@ -3558,14 +3633,12 @@ function hotspotSeverity(
         p.ev_grade ||
 
         ""
-
     );
-
 }
 
 
 /* ============================================================
-   RENDER HOTSPOTS
+   RENDER HISTORICAL HOTSPOTS
 ============================================================ */
 
 function renderHistoricalHotspots() {
@@ -3590,7 +3663,6 @@ function renderHistoricalHotspots() {
             ) {
 
                 return;
-
             }
 
 
@@ -3609,7 +3681,6 @@ function renderHistoricalHotspots() {
             ) {
 
                 return;
-
             }
 
 
@@ -3666,7 +3737,6 @@ function renderHistoricalHotspots() {
                         fillColor:"#d7191c",
 
                         fillOpacity:0.9
-
                     }
                 );
 
@@ -3723,10 +3793,8 @@ function renderHistoricalHotspots() {
             marker.addTo(
                 historicalHotspotLayer
             );
-
         }
     );
-
 }
 
 
@@ -3745,7 +3813,6 @@ function findContainingFeature(
     ) {
 
         return null;
-
     }
 
 
@@ -3778,7 +3845,6 @@ function findContainingFeature(
         ) {
 
             continue;
-
         }
 
 
@@ -3792,7 +3858,6 @@ function findContainingFeature(
         ) {
 
             continue;
-
         }
 
 
@@ -3806,9 +3871,7 @@ function findContainingFeature(
             ) {
 
                 return feature;
-
             }
-
         }
 
         catch(error) {
@@ -3817,20 +3880,17 @@ function findContainingFeature(
                 "Polygon lookup error:",
                 error
             );
-
         }
-
     }
 
 
     return null;
-
 }
 
 
 /* ============================================================
    ADMINISTRATIVE NAME
-   CORRECT WORKING VERSION
+   KEEP WORKING PROPERTY NAMES
 ============================================================ */
 
 function getAdministrativeName(
@@ -3843,7 +3903,6 @@ function getAdministrativeName(
     ) {
 
         return "Not available";
-
     }
 
 
@@ -3875,9 +3934,7 @@ function getAdministrativeName(
             p.name ||
 
             "Not available"
-
         );
-
     }
 
 
@@ -3908,9 +3965,7 @@ function getAdministrativeName(
             p.name ||
 
             "Not available"
-
         );
-
     }
 
 
@@ -3939,9 +3994,7 @@ function getAdministrativeName(
             p.name ||
 
             "Not available"
-
         );
-
     }
 
 
@@ -3952,9 +4005,7 @@ function getAdministrativeName(
         p.name ||
 
         "Not available"
-
     );
-
 }
 
 
@@ -3986,7 +4037,6 @@ function findNearestHistoricalHotspot(
             ) {
 
                 return;
-
             }
 
 
@@ -4000,7 +4050,6 @@ function findNearestHistoricalHotspot(
             ) {
 
                 return;
-
             }
 
 
@@ -4022,7 +4071,6 @@ function findNearestHistoricalHotspot(
             ) {
 
                 return;
-
             }
 
 
@@ -4044,10 +4092,8 @@ function findNearestHistoricalHotspot(
                 nearestDistance =
                     distance;
 
-
                 nearest =
                     feature;
-
             }
 
         }
@@ -4059,7 +4105,6 @@ function findNearestHistoricalHotspot(
     ) {
 
         return null;
-
     }
 
 
@@ -4070,9 +4115,7 @@ function findNearestHistoricalHotspot(
 
         distance:
             nearestDistance
-
     };
-
 }
 
 
@@ -4104,7 +4147,6 @@ function findNearestHospital(
             ) {
 
                 return;
-
             }
 
 
@@ -4118,7 +4160,6 @@ function findNearestHospital(
             ) {
 
                 return;
-
             }
 
 
@@ -4140,7 +4181,6 @@ function findNearestHospital(
             ) {
 
                 return;
-
             }
 
 
@@ -4162,10 +4202,8 @@ function findNearestHospital(
                 nearestDistance =
                     distance;
 
-
                 nearest =
                     feature;
-
             }
 
         }
@@ -4177,7 +4215,6 @@ function findNearestHospital(
     ) {
 
         return null;
-
     }
 
 
@@ -4188,9 +4225,7 @@ function findNearestHospital(
 
         distance:
             nearestDistance
-
     };
-
 }
 
 
@@ -4198,14 +4233,14 @@ function findNearestHospital(
    VERIFIED REPORTS WITHIN RADIUS
 ============================================================ */
 
-function countNearbyVerifiedReports(
+function getNearbyVerifiedReports(
     latitude,
     longitude,
     radiusKm=5
 ) {
 
-    let count =
-        0;
+    const results =
+        [];
 
 
     allVerifiedReports.forEach(
@@ -4229,7 +4264,6 @@ function countNearbyVerifiedReports(
             ) {
 
                 return;
-
             }
 
 
@@ -4247,21 +4281,166 @@ function countNearbyVerifiedReports(
                 distance <= radiusKm
             ) {
 
-                count++;
-
+                results.push(
+                    {
+                        report:report,
+                        distance:distance
+                    }
+                );
             }
 
         }
     );
 
 
-    return count;
+    return results;
+}
 
+
+function countNearbyVerifiedReports(
+    latitude,
+    longitude,
+    radiusKm=5
+) {
+
+    return getNearbyVerifiedReports(
+        latitude,
+        longitude,
+        radiusKm
+    ).length;
 }
 
 
 /* ============================================================
-   FLOOD INFORMATION POPUP
+   NEW — NEARBY VERIFIED REPORT SUMMARY
+============================================================ */
+
+function getNearbyVerifiedReportSummary(
+    latitude,
+    longitude,
+    radiusKm=5
+) {
+
+    const nearby =
+        getNearbyVerifiedReports(
+            latitude,
+            longitude,
+            radiusKm
+        );
+
+
+    const nearest =
+        nearby.length
+
+        ? nearby.reduce(
+            (
+                currentNearest,
+                item
+            ) => {
+
+                if (
+                    !currentNearest ||
+                    item.distance <
+                    currentNearest.distance
+                ) {
+
+                    return item;
+                }
+
+
+                return currentNearest;
+            },
+            null
+        )
+
+        : null;
+
+
+    const latest =
+        nearby.length
+
+        ? nearby.reduce(
+            (
+                currentLatest,
+                item
+            ) => {
+
+                if (
+                    !currentLatest
+                ) {
+
+                    return item;
+                }
+
+
+                const currentTime =
+                    new Date(
+                        currentLatest.report.created_at ||
+                        0
+                    ).getTime();
+
+
+                const itemTime =
+                    new Date(
+                        item.report.created_at ||
+                        0
+                    ).getTime();
+
+
+                return (
+                    itemTime >
+                    currentTime
+                )
+
+                ? item
+
+                : currentLatest;
+            },
+            null
+        )
+
+        : null;
+
+
+    const highSevere =
+        nearby.filter(
+            item => {
+
+                const severity =
+                    String(
+                        item.report.severity ||
+                        ""
+                    )
+                    .toLowerCase();
+
+
+                return (
+                    severity === "high" ||
+                    severity === "severe"
+                );
+            }
+        ).length;
+
+
+    return {
+
+        count:
+            nearby.length,
+
+        highSevere:
+            highSevere,
+
+        nearest:
+            nearest,
+
+        latest:
+            latest
+    };
+}
+
+
+/* ============================================================
+   NORMAL FLOOD INFORMATION POPUP
 ============================================================ */
 
 function showFloodRiskPopup(
@@ -4278,9 +4457,7 @@ function showFloodRiskPopup(
             "info"
         );
 
-
         return;
-
     }
 
 
@@ -4314,7 +4491,6 @@ function showFloodRiskPopup(
 
 
         return;
-
     }
 
 
@@ -4366,7 +4542,6 @@ function showFloodRiskPopup(
             </span>
 
         `;
-
     }
 
 
@@ -4461,7 +4636,6 @@ function showFloodRiskPopup(
             ) +
 
             ")";
-
     }
 
 
@@ -4547,7 +4721,6 @@ function showFloodRiskPopup(
             }
 
         `;
-
     }
 
 
@@ -4680,7 +4853,615 @@ function showFloodRiskPopup(
     )
 
     .openOn(map);
+}
 
+
+/* ============================================================
+   NEW — SITUATION NEAR ME
+============================================================ */
+
+function showSituationNearMe(
+    latitude,
+    longitude
+) {
+
+    if (
+        !westernProvinceData
+    ) {
+
+        showMessage(
+            "Western Province boundary is still loading.",
+            "info"
+        );
+
+        return;
+    }
+
+
+    if (
+        !isInsideWesternProvince(
+            latitude,
+            longitude
+        )
+    ) {
+
+        showMessage(
+            "Your current location is outside Western Province.",
+            "info"
+        );
+
+
+        L.popup()
+
+        .setLatLng(
+            [
+                latitude,
+                longitude
+            ]
+        )
+
+        .setContent(`
+
+            <div class="risk-popup-title">
+                📍 Situation Near You
+            </div>
+
+            Your location is outside the Western Province study area.
+
+        `)
+
+        .openOn(map);
+
+
+        return;
+    }
+
+
+    const risk =
+        getFloodRiskAtLocation(
+            latitude,
+            longitude
+        );
+
+
+    let riskHtml = `
+
+        <span
+            class="risk-badge"
+            style="background:#dddddd"
+        >
+            No classification
+        </span>
+
+    `;
+
+
+    if (
+        risk
+    ) {
+
+        const riskTextColour =
+
+            risk.name ===
+            "Very High"
+
+            ? "white"
+
+            : "#202020";
+
+
+        riskHtml = `
+
+            <span
+                class="risk-badge"
+                style="
+                    background:${risk.colour};
+                    color:${riskTextColour};
+                "
+            >
+                ${escapeHtml(
+                    risk.name
+                )}
+            </span>
+
+        `;
+    }
+
+
+    const districtFeature =
+        findContainingFeature(
+            districtData,
+            latitude,
+            longitude
+        );
+
+
+    const dsdFeature =
+        findContainingFeature(
+            dsdData,
+            latitude,
+            longitude
+        );
+
+
+    const gndFeature =
+        findContainingFeature(
+            gndData,
+            latitude,
+            longitude
+        );
+
+
+    const districtName =
+        getAdministrativeName(
+            districtFeature,
+            "district"
+        );
+
+
+    const dsdName =
+        getAdministrativeName(
+            dsdFeature,
+            "dsd"
+        );
+
+
+    const gndName =
+        getAdministrativeName(
+            gndFeature,
+            "gnd"
+        );
+
+
+    const reportSummary =
+        getNearbyVerifiedReportSummary(
+            latitude,
+            longitude,
+            5
+        );
+
+
+    let nearestVerifiedHtml =
+        "No verified report within 5 km";
+
+
+    if (
+        reportSummary.nearest
+    ) {
+
+        const item =
+            reportSummary.nearest;
+
+
+        const report =
+            item.report;
+
+
+        nearestVerifiedHtml = `
+
+            <b>
+                ${escapeHtml(
+                    report.incident_type ||
+                    "Flood report"
+                )}
+            </b>
+
+            •
+
+            ${escapeHtml(
+                report.severity ||
+                "Not specified"
+            )}
+
+            <br>
+
+            ${formatDistance(
+                item.distance
+            )}
+            away
+
+            ${
+                report.created_at
+
+                ? `<br>
+                   ${escapeHtml(
+                       formatRelativeTime(
+                           report.created_at
+                       )
+                   )}`
+
+                : ""
+            }
+
+        `;
+    }
+
+
+    let latestVerifiedHtml =
+        "No verified report within 5 km";
+
+
+    if (
+        reportSummary.latest
+    ) {
+
+        const item =
+            reportSummary.latest;
+
+
+        const report =
+            item.report;
+
+
+        latestVerifiedHtml = `
+
+            <b>
+                ${escapeHtml(
+                    report.incident_type ||
+                    "Flood report"
+                )}
+            </b>
+
+            •
+
+            ${escapeHtml(
+                report.severity ||
+                "Not specified"
+            )}
+
+            ${
+                report.created_at
+
+                ? `<br>
+                   ${escapeHtml(
+                       formatRelativeTime(
+                           report.created_at
+                       )
+                   )}`
+
+                : ""
+            }
+
+            <br>
+
+            ${formatDistance(
+                item.distance
+            )}
+            away
+
+        `;
+    }
+
+
+    const nearestHotspot =
+        findNearestHistoricalHotspot(
+            latitude,
+            longitude
+        );
+
+
+    let hotspotHtml =
+        "Not available";
+
+
+    if (
+        nearestHotspot
+    ) {
+
+        const p =
+            nearestHotspot
+                .feature
+                .properties ||
+            {};
+
+
+        const name =
+
+            p.location ||
+
+            p.name ||
+
+            p.NAME ||
+
+            "Historical hotspot";
+
+
+        hotspotHtml =
+
+            escapeHtml(
+                name
+            ) +
+
+            " • " +
+
+            formatDistance(
+                nearestHotspot.distance
+            );
+    }
+
+
+    const nearestHospital =
+        findNearestHospital(
+            latitude,
+            longitude
+        );
+
+
+    let hospitalHtml =
+        "Not available";
+
+
+    if (
+        nearestHospital
+    ) {
+
+        const p =
+            nearestHospital
+                .feature
+                .properties ||
+            {};
+
+
+        const facilityName =
+            p.hospital_n ||
+            "Unnamed Health Facility";
+
+
+        const facilityCategory =
+            p.hospital_c ||
+            "Health Facility";
+
+
+        const facilityDistrict =
+            p.district_n ||
+            "";
+
+
+        hospitalHtml = `
+
+            <b>
+                ${escapeHtml(
+                    facilityName
+                )}
+            </b>
+
+            <br>
+
+            ${escapeHtml(
+                facilityCategory
+            )}
+
+            •
+
+            ${formatDistance(
+                nearestHospital.distance
+            )}
+
+            ${
+                facilityDistrict
+
+                ? `<br>
+                   <span style="color:#6d7880">
+
+                       ${escapeHtml(
+                           facilityDistrict
+                       )}
+                       District
+
+                   </span>`
+
+                : ""
+            }
+
+        `;
+    }
+
+
+    let reportStatusHtml;
+
+
+    if (
+        !verifiedReportsLoaded
+    ) {
+
+        reportStatusHtml = `
+
+            <div class="nearby-summary">
+
+                Verified community report information
+                is still loading.
+
+            </div>
+
+        `;
+    }
+
+    else {
+
+        reportStatusHtml = `
+
+            <div class="nearby-summary">
+
+                <b>
+                    Verified reports within 5 km:
+                </b>
+
+                <span class="nearby-number">
+                    ${reportSummary.count}
+                </span>
+
+                <br>
+
+                <b>
+                    High / Severe nearby:
+                </b>
+
+                <span class="nearby-number">
+                    ${reportSummary.highSevere}
+                </span>
+
+            </div>
+
+
+            <br>
+
+            <b>
+                📍 Nearest Verified Report
+            </b>
+
+            <br>
+
+            ${nearestVerifiedHtml}
+
+
+            <br><br>
+
+
+            <b>
+                🕒 Latest Nearby Report
+            </b>
+
+            <br>
+
+            ${latestVerifiedHtml}
+
+        `;
+    }
+
+
+    const popup = `
+
+        <div
+            style="
+                min-width:270px;
+                max-width:350px;
+            "
+        >
+
+            <div class="risk-popup-title">
+                📍 Situation Near You
+            </div>
+
+
+            <div>
+
+                <b>
+                    Flood Susceptibility
+                </b>
+
+                <br>
+
+                ${riskHtml}
+
+            </div>
+
+
+            <div class="popup-section">
+
+                <b>District:</b>
+                ${escapeHtml(
+                    districtName
+                )}
+
+                <br>
+
+                <b>DSD:</b>
+                ${escapeHtml(
+                    dsdName
+                )}
+
+                <br>
+
+                <b>GND:</b>
+                ${escapeHtml(
+                    gndName
+                )}
+
+            </div>
+
+
+            <div class="popup-section">
+
+                <b>
+                    👥 Community Situation
+                </b>
+
+                <br>
+
+                ${reportStatusHtml}
+
+            </div>
+
+
+            <div class="popup-section">
+
+                <b>
+                    🔴 Nearest Historical Hotspot
+                </b>
+
+                <br>
+
+                ${hotspotHtml}
+
+
+                <br><br>
+
+
+                <b>
+                    🏥 Nearest Health Facility
+                </b>
+
+                <br>
+
+                ${hospitalHtml}
+
+            </div>
+
+
+            <div class="popup-note">
+
+                Your location:
+
+                ${latitude.toFixed(6)},
+                ${longitude.toFixed(6)}
+
+                <br><br>
+
+                Flood susceptibility shows relative
+                flood-prone conditions and is not a
+                real-time flood warning.
+
+                <br><br>
+
+                Community reports shown here are verified
+                observations and should not be treated as
+                an official emergency warning.
+
+            </div>
+
+        </div>
+
+    `;
+
+
+    L.popup(
+        {
+            maxWidth:380
+        }
+    )
+
+    .setLatLng(
+        [
+            latitude,
+            longitude
+        ]
+    )
+
+    .setContent(
+        popup
+    )
+
+    .openOn(map);
 }
 
 
@@ -4689,6 +5470,10 @@ function showFloodRiskPopup(
 ============================================================ */
 
 async function loadVerifiedReports() {
+
+    verifiedReportsLoaded =
+        false;
+
 
     try {
 
@@ -4703,6 +5488,7 @@ async function loadVerifiedReports() {
             await fetch(
                 url,
                 {
+
                     headers:{
 
                         apikey:
@@ -4711,7 +5497,6 @@ async function loadVerifiedReports() {
                         Authorization:
                             "Bearer " +
                             SUPABASE_KEY
-
                     }
                 }
             );
@@ -4724,7 +5509,6 @@ async function loadVerifiedReports() {
             throw new Error(
                 await response.text()
             );
-
         }
 
 
@@ -4758,34 +5542,37 @@ async function loadVerifiedReports() {
                             lat,
                             lng
                         )
-
                     );
-
                 }
             );
+
+
+        verifiedReportsLoaded =
+            true;
 
 
         renderVerifiedReports();
 
 
         updateReportStatistics();
-
     }
 
     catch(error) {
+
+        verifiedReportsLoaded =
+            false;
+
 
         console.error(
             "Verified report loading error:",
             error
         );
-
     }
-
 }
 
 
 /* ============================================================
-   REPORT SEVERITY COLOR
+   REPORT SEVERITY COLOUR
 ============================================================ */
 
 function severityColour(
@@ -4805,7 +5592,6 @@ function severityColour(
     ) {
 
         return "#8b0000";
-
     }
 
 
@@ -4814,7 +5600,6 @@ function severityColour(
     ) {
 
         return "#d7191c";
-
     }
 
 
@@ -4823,12 +5608,10 @@ function severityColour(
     ) {
 
         return "#ff9800";
-
     }
 
 
     return "#2b8cbe";
-
 }
 
 
@@ -4866,7 +5649,6 @@ function renderVerifiedReports() {
             ) {
 
                 return;
-
             }
 
 
@@ -4879,7 +5661,6 @@ function renderVerifiedReports() {
             ) {
 
                 return;
-
             }
 
 
@@ -4901,7 +5682,6 @@ function renderVerifiedReports() {
             ) {
 
                 return;
-
             }
 
 
@@ -4925,7 +5705,6 @@ function renderVerifiedReports() {
                             ),
 
                         fillOpacity:0.95
-
                     }
                 );
 
@@ -4938,6 +5717,16 @@ function renderVerifiedReports() {
                 ).toLocaleString()
 
                 : "Not available";
+
+
+            const relativeCreated =
+                report.created_at
+
+                ? formatRelativeTime(
+                    report.created_at
+                )
+
+                : "Time unavailable";
 
 
             marker.bindPopup(`
@@ -5011,6 +5800,14 @@ function renderVerifiedReports() {
 
                     <br>
 
+                    <b>
+                        ${escapeHtml(
+                            relativeCreated
+                        )}
+                    </b>
+
+                    <br>
+
                     ${escapeHtml(
                         created
                     )}
@@ -5023,10 +5820,8 @@ function renderVerifiedReports() {
             marker.addTo(
                 verifiedReportLayer
             );
-
         }
     );
-
 }
 
 
@@ -5057,9 +5852,7 @@ function updateReportStatistics() {
                     severity === "high" ||
 
                     severity === "severe"
-
                 );
-
             }
         ).length;
 
@@ -5077,7 +5870,6 @@ function updateReportStatistics() {
                 ) {
 
                     return false;
-
                 }
 
 
@@ -5093,9 +5885,7 @@ function updateReportStatistics() {
 
                     now - time <=
                     24 * 60 * 60 * 1000
-
                 );
-
             }
         ).length;
 
@@ -5116,7 +5906,6 @@ function updateReportStatistics() {
         "recentCount"
     ).textContent =
         recent;
-
 }
 
 
@@ -5171,7 +5960,6 @@ function isMobile() {
     return window.matchMedia(
         "(max-width:700px)"
     ).matches;
-
 }
 
 
@@ -5220,16 +6008,14 @@ function closeMobilePanels() {
         function() {
 
             map.invalidateSize();
-
         },
         250
     );
-
 }
 
 
 /* ============================================================
-   CONTROLS BUTTON
+   MOBILE CONTROL BUTTON
 ============================================================ */
 
 mobileControlsBtn.addEventListener(
@@ -5262,15 +6048,13 @@ mobileControlsBtn.addEventListener(
             mobileControlsBtn.classList.add(
                 "active"
             );
-
         }
-
     }
 );
 
 
 /* ============================================================
-   STATUS BUTTON
+   MOBILE STATUS BUTTON
 ============================================================ */
 
 mobileStatusBtn.addEventListener(
@@ -5303,15 +6087,13 @@ mobileStatusBtn.addEventListener(
             mobileStatusBtn.classList.add(
                 "active"
             );
-
         }
-
     }
 );
 
 
 /* ============================================================
-   LEGEND BUTTON
+   MOBILE LEGEND BUTTON
 ============================================================ */
 
 mobileLegendBtn.addEventListener(
@@ -5371,9 +6153,7 @@ mobileLegendBtn.addEventListener(
             mobileLegendBtn.classList.add(
                 "active"
             );
-
         }
-
     }
 );
 
@@ -5429,7 +6209,6 @@ window.addEventListener(
             mobileLegendBtn.classList.remove(
                 "active"
             );
-
         }
 
 
@@ -5437,11 +6216,9 @@ window.addEventListener(
             function() {
 
                 map.invalidateSize();
-
             },
             100
         );
-
     }
 );
 
@@ -5463,7 +6240,6 @@ function startReportingMode() {
 
 
         return;
-
     }
 
 
@@ -5479,7 +6255,6 @@ function startReportingMode() {
     ) {
 
         closeMobilePanels();
-
     }
 
 
@@ -5498,7 +6273,6 @@ function startReportingMode() {
         "Click the affected location inside Western Province.",
         "info"
     );
-
 }
 
 
@@ -5517,7 +6291,6 @@ function stopReportingMode() {
         "reportInstruction"
     ).style.display =
         "none";
-
 }
 
 
@@ -5564,9 +6337,7 @@ function clearSelectedLocation() {
 
         selectedMarker =
             null;
-
     }
-
 }
 
 
@@ -5593,7 +6364,6 @@ function selectReportLocation(
 
 
         return;
-
     }
 
 
@@ -5616,7 +6386,6 @@ function selectReportLocation(
         map.removeLayer(
             selectedMarker
         );
-
     }
 
 
@@ -5667,7 +6436,6 @@ function selectReportLocation(
         "reportModal"
     ).style.display =
         "flex";
-
 }
 
 
@@ -5691,7 +6459,6 @@ map.on(
             mobileLegendBtn.classList.remove(
                 "active"
             );
-
         }
 
 
@@ -5714,7 +6481,6 @@ map.on(
 
 
             return;
-
         }
 
 
@@ -5722,7 +6488,6 @@ map.on(
             latitude,
             longitude
         );
-
     }
 );
 
@@ -5754,7 +6519,6 @@ document.getElementById(
 
 
             return;
-
         }
 
 
@@ -5772,7 +6536,6 @@ document.getElementById(
 
 
             return;
-
         }
 
 
@@ -5840,7 +6603,6 @@ document.getElementById(
 
             status:
                 "Pending"
-
         };
 
 
@@ -5881,14 +6643,12 @@ document.getElementById(
 
                             Prefer:
                                 "return=minimal"
-
                         },
 
                         body:
                             JSON.stringify(
                                 report
                             )
-
                     }
                 );
 
@@ -5900,7 +6660,6 @@ document.getElementById(
                 throw new Error(
                     await response.text()
                 );
-
             }
 
 
@@ -5922,7 +6681,6 @@ document.getElementById(
                 "Report submitted successfully. It will appear publicly after verification.",
                 "success"
             );
-
         }
 
         catch(error) {
@@ -5937,7 +6695,6 @@ document.getElementById(
                 "The report could not be submitted. Please try again.",
                 "error"
             );
-
         }
 
         finally {
@@ -5948,9 +6705,7 @@ document.getElementById(
 
             button.textContent =
                 "Submit Report";
-
         }
-
     }
 );
 
@@ -5996,13 +6751,12 @@ document.getElementById(
 
 
         stopReportingMode();
-
     }
 );
 
 
 /* ============================================================
-   USE MY LOCATION
+   NEW — SITUATION NEAR ME BUTTON
 ============================================================ */
 
 document.getElementById(
@@ -6024,7 +6778,20 @@ document.getElementById(
 
 
             return;
+        }
 
+
+        if (
+            !westernProvinceData
+        ) {
+
+            showMessage(
+                "Please wait for the Western Province boundary to load.",
+                "info"
+            );
+
+
+            return;
         }
 
 
@@ -6033,13 +6800,38 @@ document.getElementById(
         ) {
 
             closeMobilePanels();
-
         }
+
+
+        const locationButton =
+            document.getElementById(
+                "locationButton"
+            );
+
+
+        const originalText =
+            locationButton.textContent;
+
+
+        locationButton.disabled =
+            true;
+
+
+        locationButton.textContent =
+            "📍 Finding your location...";
 
 
         navigator.geolocation.getCurrentPosition(
 
             function(position) {
+
+                locationButton.disabled =
+                    false;
+
+
+                locationButton.textContent =
+                    originalText;
+
 
                 const latitude =
                     position.coords.latitude;
@@ -6065,74 +6857,112 @@ document.getElementById(
                     )
                 ) {
 
-                    showMessage(
-                        "Your current location is outside Western Province.",
-                        "info"
+                    showSituationNearMe(
+                        latitude,
+                        longitude
                     );
 
 
                     return;
-
                 }
 
 
-                L.circleMarker(
-                    [
-                        latitude,
-                        longitude
-                    ],
-                    {
+                if (
+                    currentLocationMarker
+                ) {
 
-                        radius:8,
-
-                        color:"#ffffff",
-
-                        weight:2,
-
-                        fillColor:"#007bff",
-
-                        fillOpacity:1
-
-                    }
-                )
-
-                .addTo(map)
-
-                .bindPopup(
-                    "Your current location"
-                );
+                    map.removeLayer(
+                        currentLocationMarker
+                    );
+                }
 
 
-                showFloodRiskPopup(
+                currentLocationMarker =
+                    L.circleMarker(
+                        [
+                            latitude,
+                            longitude
+                        ],
+                        {
+
+                            radius:8,
+
+                            color:"#ffffff",
+
+                            weight:2,
+
+                            fillColor:"#007bff",
+
+                            fillOpacity:1
+                        }
+                    )
+                    .addTo(map);
+
+
+                showSituationNearMe(
                     latitude,
                     longitude
                 );
-
             },
 
 
-            function() {
+            function(error) {
+
+                locationButton.disabled =
+                    false;
+
+
+                locationButton.textContent =
+                    originalText;
+
+
+                let message =
+                    "Unable to access your current location.";
+
+
+                if (
+                    error &&
+                    error.code === 1
+                ) {
+
+                    message =
+                        "Location permission was denied. Please allow location access in your browser.";
+                }
+
+
+                else if (
+                    error &&
+                    error.code === 2
+                ) {
+
+                    message =
+                        "Your current location could not be determined.";
+                }
+
+
+                else if (
+                    error &&
+                    error.code === 3
+                ) {
+
+                    message =
+                        "Location request timed out. Please try again.";
+                }
+
 
                 showMessage(
-                    "Unable to access your current location.",
+                    message,
                     "error"
                 );
-
             },
 
 
             {
-
                 enableHighAccuracy:true,
-
                 timeout:10000,
-
                 maximumAge:60000
-
             }
-
         );
-
     }
 );
 
@@ -6167,9 +6997,7 @@ function setupLayerToggle(
                     layer.addTo(
                         map
                     );
-
                 }
-
             }
 
             else {
@@ -6183,14 +7011,10 @@ function setupLayerToggle(
                     map.removeLayer(
                         layer
                     );
-
                 }
-
             }
-
         }
     );
-
 }
 
 
@@ -6213,7 +7037,6 @@ document.getElementById(
             floodOverlay.addTo(
                 map
             );
-
         }
 
         else {
@@ -6221,9 +7044,7 @@ document.getElementById(
             map.removeLayer(
                 floodOverlay
             );
-
         }
-
     }
 );
 
@@ -6327,7 +7148,6 @@ document.getElementById(
         ).textContent =
             event.target.value +
             "%";
-
     }
 );
 
@@ -6400,11 +7220,14 @@ document.querySelectorAll(
 
                 const title =
                     button.textContent
+
                     .trim()
+
                     .replace(
                         /^▶\s*/,
                         ""
                     )
+
                     .replace(
                         /^▼\s*/,
                         ""
@@ -6422,10 +7245,8 @@ document.querySelectorAll(
                     ) +
 
                     title;
-
             }
         );
-
     }
 );
 
@@ -6468,7 +7289,6 @@ function activateModeButton(
             button.classList.remove(
                 "active"
             );
-
         }
     );
 
@@ -6476,7 +7296,6 @@ function activateModeButton(
     active.classList.add(
         "active"
     );
-
 }
 
 
@@ -6536,15 +7355,13 @@ floodModeBtn.addEventListener(
         ) {
 
             closeMobilePanels();
-
         }
-
     }
 );
 
 
 /* ============================================================
-   REPORT MODE
+   VERIFIED REPORT MODE
 ============================================================ */
 
 reportsModeBtn.addEventListener(
@@ -6588,9 +7405,7 @@ reportsModeBtn.addEventListener(
         ) {
 
             closeMobilePanels();
-
         }
-
     }
 );
 
@@ -6617,7 +7432,6 @@ boundaryModeBtn.addEventListener(
             map.removeLayer(
                 floodOverlay
             );
-
         }
 
 
@@ -6630,7 +7444,6 @@ boundaryModeBtn.addEventListener(
             map.removeLayer(
                 historicalHotspotLayer
             );
-
         }
 
 
@@ -6643,7 +7456,6 @@ boundaryModeBtn.addEventListener(
             map.removeLayer(
                 verifiedReportLayer
             );
-
         }
 
 
@@ -6686,9 +7498,7 @@ boundaryModeBtn.addEventListener(
         ) {
 
             closeMobilePanels();
-
         }
-
     }
 );
 
@@ -6759,7 +7569,6 @@ function updateLegend(
 
 
         return;
-
     }
 
 
@@ -6791,7 +7600,6 @@ function updateLegend(
 
 
         return;
-
     }
 
 
@@ -6888,7 +7696,6 @@ function updateLegend(
         </div>
 
     `;
-
 }
 
 
@@ -6911,7 +7718,6 @@ setTimeout(
     function() {
 
         map.invalidateSize();
-
     },
     300
 );
@@ -6920,5 +7726,4 @@ setTimeout(
 
 
 </body>
-
 </html>
