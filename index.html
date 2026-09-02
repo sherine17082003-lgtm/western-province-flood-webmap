@@ -3802,6 +3802,66 @@ function renderHistoricalHotspots() {
    FIND CONTAINING POLYGON
 ============================================================ */
 
+function getGeoJSONFeatures(
+    geojson
+) {
+
+    if (
+        !geojson
+    ) {
+
+        return [];
+    }
+
+
+    if (
+        geojson.type ===
+        "FeatureCollection"
+    ) {
+
+        return Array.isArray(
+            geojson.features
+        )
+            ? geojson.features
+            : [];
+    }
+
+
+    if (
+        geojson.type ===
+        "Feature"
+    ) {
+
+        return [geojson];
+    }
+
+
+    if (
+        geojson.type ===
+        "Polygon" ||
+        geojson.type ===
+        "MultiPolygon"
+    ) {
+
+        return [
+            {
+                type:"Feature",
+                properties:{},
+                geometry:geojson
+            }
+        ];
+    }
+
+
+    return [];
+}
+
+
+/* ============================================================
+   FIND ADMINISTRATIVE POLYGON CONTAINING POINT
+   Supports Polygon and MultiPolygon GeoJSON.
+============================================================ */
+
 function findContainingFeature(
     geojson,
     latitude,
@@ -3816,23 +3876,35 @@ function findContainingFeature(
     }
 
 
+    const lat =
+        Number(latitude);
+
+    const lng =
+        Number(longitude);
+
+
+    if (
+        !Number.isFinite(lat) ||
+        !Number.isFinite(lng)
+    ) {
+
+        return null;
+    }
+
+
     const point =
         turf.point(
             [
-                Number(longitude),
-                Number(latitude)
+                lng,
+                lat
             ]
         );
 
 
     const features =
-
-        geojson.type ===
-        "FeatureCollection"
-
-        ? geojson.features || []
-
-        : [geojson];
+        getGeoJSONFeatures(
+            geojson
+        );
 
 
     for (
@@ -3866,7 +3938,10 @@ function findContainingFeature(
             if (
                 turf.booleanPointInPolygon(
                     point,
-                    feature
+                    feature,
+                    {
+                        ignoreBoundary:false
+                    }
                 )
             ) {
 
@@ -3890,7 +3965,7 @@ function findContainingFeature(
 
 /* ============================================================
    ADMINISTRATIVE NAME
-   KEEP WORKING PROPERTY NAMES
+   Includes official Sri Lankan GND field names.
 ============================================================ */
 
 function getAdministrativeName(
@@ -3911,27 +3986,109 @@ function getAdministrativeName(
         {};
 
 
+    const keys =
+        Object.keys(p);
+
+
+    function firstValue(
+        candidates
+    ) {
+
+        for (
+            const key of candidates
+        ) {
+
+            const value =
+                p[key];
+
+            if (
+                value !== null &&
+                value !== undefined &&
+                String(value).trim() !== ""
+            ) {
+
+                return String(value).trim();
+            }
+        }
+
+
+        return "";
+    }
+
+
+    function findByNormalisedKey(
+        patterns
+    ) {
+
+        for (
+            const key of keys
+        ) {
+
+            const normalised =
+                String(key)
+                    .toLowerCase()
+                    .replace(
+                        /[^a-z0-9]/g,
+                        ""
+                    );
+
+
+            for (
+                const pattern of patterns
+            ) {
+
+                if (
+                    normalised ===
+                    pattern
+                ) {
+
+                    const value =
+                        p[key];
+
+                    if (
+                        value !== null &&
+                        value !== undefined &&
+                        String(value).trim() !== ""
+                    ) {
+
+                        return String(value).trim();
+                    }
+                }
+            }
+        }
+
+
+        return "";
+    }
+
+
     if (
         type === "district"
     ) {
 
         return (
 
-            p.ADM2_EN ||
+            firstValue([
+                "ADM2_EN",
+                "ADM2_NAME",
+                "DISTRICT",
+                "District",
+                "district",
+                "NAME_2",
+                "district_name",
+                "DISTRICT_NAME",
+                "name_2",
+                "NAME",
+                "name"
+            ]) ||
 
-            p.ADM2_NAME ||
-
-            p.DISTRICT ||
-
-            p.District ||
-
-            p.district ||
-
-            p.NAME_2 ||
-
-            p.NAME ||
-
-            p.name ||
+            findByNormalisedKey([
+                "adm2en",
+                "adm2name",
+                "district",
+                "districtname",
+                "name2"
+            ]) ||
 
             "Not available"
         );
@@ -3944,25 +4101,32 @@ function getAdministrativeName(
 
         return (
 
-            p.ADM3_EN ||
+            firstValue([
+                "ADM3_EN",
+                "ADM3_NAME",
+                "DSD",
+                "DSD_NAME",
+                "DSD_N",
+                "ds_name",
+                "DS_NAME",
+                "NAME_3",
+                "ds_division_name",
+                "DS_DIVISION_NAME",
+                "name_3",
+                "NAME",
+                "name"
+            ]) ||
 
-            p.ADM3_NAME ||
-
-            p.DSD ||
-
-            p.DSD_NAME ||
-
-            p.DSD_N ||
-
-            p.ds_name ||
-
-            p.DS_NAME ||
-
-            p.NAME_3 ||
-
-            p.NAME ||
-
-            p.name ||
+            findByNormalisedKey([
+                "adm3en",
+                "adm3name",
+                "dsd",
+                "dsdname",
+                "dsdn",
+                "dsname",
+                "dsdivisionname",
+                "name3"
+            ]) ||
 
             "Not available"
         );
@@ -3973,25 +4137,48 @@ function getAdministrativeName(
         type === "gnd"
     ) {
 
+        /*
+         * Official Sri Lankan NSDI GND layers use
+         * fields such as:
+         *   gnd_name
+         *   gnd_name_gazetted
+         *   gnd_name_census
+         *   gnd_number
+         *   gnd_no_gazetted
+         *   gnd_no_census
+         */
         return (
 
-            p.ADM4_EN ||
+            firstValue([
+                "gnd_name",
+                "GND_Name",
+                "GND_NAME",
+                "GND",
+                "GND_NAME",
+                "GN_NAME",
+                "gn_name",
+                "GN",
+                "ADM4_EN",
+                "ADM4_NAME",
+                "NAME_4",
+                "gnd_name_gazetted",
+                "GND_NAME_GAZETTED",
+                "gnd_name_census",
+                "GND_NAME_CENSUS",
+                "NAME",
+                "name"
+            ]) ||
 
-            p.ADM4_NAME ||
-
-            p.GND ||
-
-            p.GND_NAME ||
-
-            p.GN_NAME ||
-
-            p.GN ||
-
-            p.NAME_4 ||
-
-            p.NAME ||
-
-            p.name ||
+            findByNormalisedKey([
+                "gndname",
+                "gnd",
+                "gnname",
+                "adm4en",
+                "adm4name",
+                "name4",
+                "gndnamegazetted",
+                "gndnamecensus"
+            ]) ||
 
             "Not available"
         );
@@ -3999,11 +4186,10 @@ function getAdministrativeName(
 
 
     return (
-
-        p.NAME ||
-
-        p.name ||
-
+        firstValue([
+            "NAME",
+            "name"
+        ]) ||
         "Not available"
     );
 }
