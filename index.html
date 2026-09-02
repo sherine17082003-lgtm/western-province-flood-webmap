@@ -111,7 +111,6 @@ header {
 
 .mobile-toolbar-button {
     flex: 1;
-
     min-width: 0;
 
     border: 1px solid #ccd6dd;
@@ -140,12 +139,11 @@ header {
 
 
 /* =====================================================
-   MAIN
+   MAIN APPLICATION
 ===================================================== */
 
 #app {
     flex: 1 1 auto;
-
     min-height: 0;
 
     display: grid;
@@ -324,7 +322,7 @@ select {
 
 
 /* =====================================================
-   COLLAPSIBLE LAYERS
+   COLLAPSIBLE
 ===================================================== */
 
 .layer-group-button {
@@ -403,10 +401,6 @@ select {
     cursor: pointer;
 
     font-size: 13px;
-}
-
-.report-button:hover {
-    background: #b81417;
 }
 
 
@@ -1259,8 +1253,6 @@ select {
 </header>
 
 
-<!-- MOBILE TOOLBAR -->
-
 <div id="mobileToolbar">
 
     <button
@@ -1271,7 +1263,6 @@ select {
         ☰ Controls
     </button>
 
-
     <button
         id="mobileStatusBtn"
         class="mobile-toolbar-button"
@@ -1279,7 +1270,6 @@ select {
     >
         📊 Status
     </button>
-
 
     <button
         id="mobileLegendBtn"
@@ -1295,16 +1285,11 @@ select {
 <div id="app">
 
 
-<!-- =====================================================
-     LEFT PANEL
-===================================================== -->
-
 <aside class="sidebar-left">
 
     <h2 class="sidebar-title">
         Explore Flood Risk
     </h2>
-
 
     <p class="sidebar-subtitle">
         Click locations on the map to explore flood-related information
@@ -1327,7 +1312,6 @@ select {
             Map Mode
         </div>
 
-
         <div class="mode-buttons">
 
             <button
@@ -1338,7 +1322,6 @@ select {
                 🌧 Flood Risk
             </button>
 
-
             <button
                 id="reportsModeBtn"
                 class="mode-button"
@@ -1346,7 +1329,6 @@ select {
             >
                 📍 Verified Reports
             </button>
-
 
             <button
                 id="boundaryModeBtn"
@@ -1369,69 +1351,35 @@ select {
 
 
         <label class="layer-option">
-
-            <input
-                id="floodToggle"
-                type="checkbox"
-                checked
-            >
-
+            <input id="floodToggle" type="checkbox" checked>
             Flood Susceptibility
-
         </label>
 
 
         <label class="layer-option">
-
-            <input
-                id="hotspotToggle"
-                type="checkbox"
-                checked
-            >
-
+            <input id="hotspotToggle" type="checkbox" checked>
             Historical Hotspots
-
         </label>
 
 
         <label class="layer-option">
-
-            <input
-                id="boundaryToggle"
-                type="checkbox"
-                checked
-            >
-
+            <input id="boundaryToggle" type="checkbox" checked>
             Western Province Boundary
-
         </label>
 
 
         <label class="layer-option">
-
-            <input
-                id="verifiedToggle"
-                type="checkbox"
-                checked
-            >
-
+            <input id="verifiedToggle" type="checkbox" checked>
             Verified Public Reports
-
         </label>
 
 
         <div class="opacity-row">
 
             <label>
-
                 Flood Layer Opacity:
-
-                <span id="opacityValue">
-                    62%
-                </span>
-
+                <span id="opacityValue">62%</span>
             </label>
-
 
             <input
                 id="floodOpacity"
@@ -1451,7 +1399,6 @@ select {
         <div class="section-title">
             Historical Hotspot Filter
         </div>
-
 
         <select id="hotspotSeverityFilter">
 
@@ -1493,25 +1440,11 @@ select {
 
         <select id="reportSeverityFilter">
 
-            <option value="All">
-                All Severities
-            </option>
-
-            <option value="Low">
-                Low
-            </option>
-
-            <option value="Moderate">
-                Moderate
-            </option>
-
-            <option value="High">
-                High
-            </option>
-
-            <option value="Severe">
-                Severe
-            </option>
+            <option value="All">All Severities</option>
+            <option value="Low">Low</option>
+            <option value="Moderate">Moderate</option>
+            <option value="High">High</option>
+            <option value="Severe">Severe</option>
 
         </select>
 
@@ -1521,33 +1454,13 @@ select {
 
         <select id="reportTypeFilter">
 
-            <option value="All">
-                All Incident Types
-            </option>
-
-            <option value="Waterlogging">
-                Waterlogging
-            </option>
-
-            <option value="Road Flooding">
-                Road Flooding
-            </option>
-
-            <option value="River Flooding">
-                River Flooding
-            </option>
-
-            <option value="Drain Overflow">
-                Drain Overflow
-            </option>
-
-            <option value="Flash Flood">
-                Flash Flood
-            </option>
-
-            <option value="Other">
-                Other
-            </option>
+            <option value="All">All Incident Types</option>
+            <option value="Waterlogging">Waterlogging</option>
+            <option value="Road Flooding">Road Flooding</option>
+            <option value="River Flooding">River Flooding</option>
+            <option value="Drain Overflow">Drain Overflow</option>
+            <option value="Flash Flood">Flash Flood</option>
+            <option value="Other">Other</option>
 
         </select>
 
@@ -1570,44 +1483,21 @@ select {
         </button>
 
 
-        <div
-            id="adminLayers"
-            class="layer-group-panel"
-        >
+        <div id="adminLayers" class="layer-group-panel">
 
             <label class="layer-option">
-
-                <input
-                    type="checkbox"
-                    id="districtToggle"
-                >
-
+                <input type="checkbox" id="districtToggle">
                 Districts
-
             </label>
 
-
             <label class="layer-option">
-
-                <input
-                    type="checkbox"
-                    id="dsdToggle"
-                >
-
+                <input type="checkbox" id="dsdToggle">
                 DSD
-
             </label>
 
-
             <label class="layer-option">
-
-                <input
-                    type="checkbox"
-                    id="gndToggle"
-                >
-
+                <input type="checkbox" id="gndToggle">
                 GND
-
             </label>
 
         </div>
@@ -1622,32 +1512,16 @@ select {
         </button>
 
 
-        <div
-            id="waterLayers"
-            class="layer-group-panel"
-        >
+        <div id="waterLayers" class="layer-group-panel">
 
             <label class="layer-option">
-
-                <input
-                    type="checkbox"
-                    id="riverToggle"
-                >
-
+                <input type="checkbox" id="riverToggle">
                 Rivers
-
             </label>
 
-
             <label class="layer-option">
-
-                <input
-                    type="checkbox"
-                    id="waterwayToggle"
-                >
-
+                <input type="checkbox" id="waterwayToggle">
                 Waterways
-
             </label>
 
         </div>
@@ -1662,20 +1536,11 @@ select {
         </button>
 
 
-        <div
-            id="transportLayers"
-            class="layer-group-panel"
-        >
+        <div id="transportLayers" class="layer-group-panel">
 
             <label class="layer-option">
-
-                <input
-                    type="checkbox"
-                    id="roadToggle"
-                >
-
+                <input type="checkbox" id="roadToggle">
                 Major Roads
-
             </label>
 
         </div>
@@ -1690,32 +1555,16 @@ select {
         </button>
 
 
-        <div
-            id="serviceLayers"
-            class="layer-group-panel"
-        >
+        <div id="serviceLayers" class="layer-group-panel">
 
             <label class="layer-option">
-
-                <input
-                    type="checkbox"
-                    id="hospitalToggle"
-                >
-
+                <input type="checkbox" id="hospitalToggle">
                 Health Facilities
-
             </label>
 
-
             <label class="layer-option">
-
-                <input
-                    type="checkbox"
-                    id="schoolToggle"
-                >
-
+                <input type="checkbox" id="schoolToggle">
                 Schools
-
             </label>
 
         </div>
@@ -1723,10 +1572,7 @@ select {
     </div>
 
 
-    <div
-        id="selectionCard"
-        class="selection-card"
-    >
+    <div id="selectionCard" class="selection-card">
 
         <strong>
             Selected Report Location
@@ -1760,31 +1606,18 @@ select {
 </aside>
 
 
-<!-- =====================================================
-     MAP
-===================================================== -->
-
 <main id="map-wrapper">
 
     <div id="reportInstruction">
         ✚ Click a location inside Western Province to report flooding
     </div>
 
-
     <div id="map"></div>
 
-
-    <div
-        id="mapLegend"
-        class="legend"
-    ></div>
+    <div id="mapLegend" class="legend"></div>
 
 </main>
 
-
-<!-- =====================================================
-     RIGHT PANEL
-===================================================== -->
 
 <aside class="sidebar-right">
 
@@ -1799,10 +1632,7 @@ select {
             Verified Reports
         </div>
 
-        <div
-            id="verifiedCount"
-            class="stat-value"
-        >
+        <div id="verifiedCount" class="stat-value">
             0
         </div>
 
@@ -1815,10 +1645,7 @@ select {
             High Severity
         </div>
 
-        <div
-            id="highCount"
-            class="stat-value"
-        >
+        <div id="highCount" class="stat-value">
             0
         </div>
 
@@ -1831,20 +1658,14 @@ select {
             Reports Last 24h
         </div>
 
-        <div
-            id="recentCount"
-            class="stat-value"
-        >
+        <div id="recentCount" class="stat-value">
             0
         </div>
 
     </div>
 
 
-    <div
-        id="boundaryStatus"
-        class="status-message"
-    >
+    <div id="boundaryStatus" class="status-message">
         Loading Western Province boundary...
     </div>
 
@@ -1862,6 +1683,11 @@ select {
 
         <br><br>
 
+        The blue dashed circle represents the
+        <b>5 km nearby-information area</b>.
+
+        <br><br>
+
         🌧 In <b>Flood Risk</b> mode, click a location inside
         Western Province.
 
@@ -1869,20 +1695,11 @@ select {
 
         The popup can show:
 
-        <br>
-        • Flood susceptibility
-
-        <br>
-        • District, DSD and GND
-
-        <br>
-        • Nearest historical hotspot
-
-        <br>
-        • Verified reports within 5 km
-
-        <br>
-        • Nearest health facility
+        <br>• Flood susceptibility
+        <br>• District, DSD and GND
+        <br>• Nearest historical hotspot
+        <br>• Verified reports within 5 km
+        <br>• Nearest health facility
 
         <br><br>
 
@@ -1900,18 +1717,10 @@ select {
 
 <div id="mobileBackdrop"></div>
 
-
 </div>
 
 
-<!-- =====================================================
-     REPORT MODAL
-===================================================== -->
-
-<div
-    id="reportModal"
-    class="modal-overlay"
->
+<div id="reportModal" class="modal-overlay">
 
 <div class="modal">
 
@@ -1921,10 +1730,8 @@ select {
 
 
     <p class="modal-subtitle">
-
         Submit a community observation.
         Reports remain Pending until verification.
-
     </p>
 
 
@@ -1956,11 +1763,7 @@ select {
                 Incident Type *
             </label>
 
-
-            <select
-                id="incidentType"
-                required
-            >
+            <select id="incidentType" required>
 
                 <option value="">
                     Select incident type
@@ -2001,11 +1804,7 @@ select {
                 Severity *
             </label>
 
-
-            <select
-                id="severity"
-                required
-            >
+            <select id="severity" required>
 
                 <option value="">
                     Select severity
@@ -2038,7 +1837,6 @@ select {
                 Approximate Water Depth (cm)
             </label>
 
-
             <input
                 id="waterDepth"
                 type="number"
@@ -2055,7 +1853,6 @@ select {
             <label for="roadStatus">
                 Road Status
             </label>
-
 
             <select id="roadStatus">
 
@@ -2094,7 +1891,6 @@ select {
                 Description
             </label>
 
-
             <textarea
                 id="description"
                 maxlength="500"
@@ -2113,7 +1909,6 @@ select {
             >
                 Cancel
             </button>
-
 
             <button
                 id="submitReportBtn"
@@ -2134,13 +1929,9 @@ select {
 <div id="messageBox"></div>
 
 
-<script
-    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-<script
-    src="https://cdn.jsdelivr.net/npm/@turf/turf@6/turf.min.js"
-></script>
+<script src="https://cdn.jsdelivr.net/npm/@turf/turf@6/turf.min.js"></script>
 
 
 <script>
@@ -2216,6 +2007,10 @@ let selectedLongitude = null;
 let selectedMarker = null;
 
 let currentLocationMarker = null;
+
+/* NEW: 5 KM SEARCH RADIUS */
+
+let currentLocationRadius = null;
 
 
 /* ============================================================
@@ -2538,7 +2333,7 @@ function formatDistance(km) {
 
 
 /* ============================================================
-   NEW — RELATIVE REPORT TIME
+   RELATIVE REPORT AGE
 ============================================================ */
 
 function formatRelativeTime(
@@ -3079,7 +2874,7 @@ function isInsideWesternProvince(
 
 
 /* ============================================================
-   ADMINISTRATIVE LAYERS
+   POLYGON LOADER
 ============================================================ */
 
 function loadPolygonLayer(
@@ -3609,10 +3404,6 @@ fetch(
 );
 
 
-/* ============================================================
-   HOTSPOT SEVERITY
-============================================================ */
-
 function hotspotSeverity(
     feature
 ) {
@@ -3636,10 +3427,6 @@ function hotspotSeverity(
     );
 }
 
-
-/* ============================================================
-   RENDER HISTORICAL HOTSPOTS
-============================================================ */
 
 function renderHistoricalHotspots() {
 
@@ -3799,7 +3586,7 @@ function renderHistoricalHotspots() {
 
 
 /* ============================================================
-   FIND CONTAINING POLYGON
+   POLYGON LOOKUP
 ============================================================ */
 
 function findContainingFeature(
@@ -3889,8 +3676,7 @@ function findContainingFeature(
 
 
 /* ============================================================
-   ADMINISTRATIVE NAME
-   KEEP WORKING PROPERTY NAMES
+   ADMINISTRATIVE NAMES
 ============================================================ */
 
 function getAdministrativeName(
@@ -4010,7 +3796,7 @@ function getAdministrativeName(
 
 
 /* ============================================================
-   NEAREST HISTORICAL HOTSPOT
+   NEAREST HOTSPOT
 ============================================================ */
 
 function findNearestHistoricalHotspot(
@@ -4042,15 +3828,6 @@ function findNearestHistoricalHotspot(
 
             const coordinates =
                 feature.geometry.coordinates;
-
-
-            if (
-                !coordinates ||
-                coordinates.length < 2
-            ) {
-
-                return;
-            }
 
 
             const lng =
@@ -4154,15 +3931,6 @@ function findNearestHospital(
                 feature.geometry.coordinates;
 
 
-            if (
-                !coordinates ||
-                coordinates.length < 2
-            ) {
-
-                return;
-            }
-
-
             const lng =
                 Number(
                     coordinates[0]
@@ -4230,7 +3998,7 @@ function findNearestHospital(
 
 
 /* ============================================================
-   VERIFIED REPORTS WITHIN RADIUS
+   NEARBY VERIFIED REPORTS
 ============================================================ */
 
 function getNearbyVerifiedReports(
@@ -4310,10 +4078,6 @@ function countNearbyVerifiedReports(
     ).length;
 }
 
-
-/* ============================================================
-   NEW — NEARBY VERIFIED REPORT SUMMARY
-============================================================ */
 
 function getNearbyVerifiedReportSummary(
     latitude,
@@ -4440,7 +4204,7 @@ function getNearbyVerifiedReportSummary(
 
 
 /* ============================================================
-   NORMAL FLOOD INFORMATION POPUP
+   NORMAL LOCATION POPUP
 ============================================================ */
 
 function showFloodRiskPopup(
@@ -4857,7 +4621,7 @@ function showFloodRiskPopup(
 
 
 /* ============================================================
-   NEW — SITUATION NEAR ME
+   SITUATION NEAR ME
 ============================================================ */
 
 function showSituationNearMe(
@@ -5427,6 +5191,11 @@ function showSituationNearMe(
 
                 <br><br>
 
+                The blue dashed circle represents a
+                5 km nearby-information area.
+
+                <br><br>
+
                 Flood susceptibility shows relative
                 flood-prone conditions and is not a
                 real-time flood warning.
@@ -5571,10 +5340,6 @@ async function loadVerifiedReports() {
 }
 
 
-/* ============================================================
-   REPORT SEVERITY COLOUR
-============================================================ */
-
 function severityColour(
     severity
 ) {
@@ -5614,10 +5379,6 @@ function severityColour(
     return "#2b8cbe";
 }
 
-
-/* ============================================================
-   RENDER VERIFIED REPORTS
-============================================================ */
 
 function renderVerifiedReports() {
 
@@ -5825,10 +5586,6 @@ function renderVerifiedReports() {
 }
 
 
-/* ============================================================
-   STATISTICS
-============================================================ */
-
 function updateReportStatistics() {
 
     const total =
@@ -5910,7 +5667,7 @@ function updateReportStatistics() {
 
 
 /* ============================================================
-   MOBILE CONTROLS
+   MOBILE
 ============================================================ */
 
 const mobileControlsBtn =
@@ -5963,10 +5720,6 @@ function isMobile() {
 }
 
 
-/* ============================================================
-   CLOSE MOBILE PANELS
-============================================================ */
-
 function closeMobilePanels() {
 
     leftSidebar.classList.remove(
@@ -6014,10 +5767,6 @@ function closeMobilePanels() {
 }
 
 
-/* ============================================================
-   MOBILE CONTROL BUTTON
-============================================================ */
-
 mobileControlsBtn.addEventListener(
     "click",
     function() {
@@ -6053,10 +5802,6 @@ mobileControlsBtn.addEventListener(
 );
 
 
-/* ============================================================
-   MOBILE STATUS BUTTON
-============================================================ */
-
 mobileStatusBtn.addEventListener(
     "click",
     function() {
@@ -6091,10 +5836,6 @@ mobileStatusBtn.addEventListener(
     }
 );
 
-
-/* ============================================================
-   MOBILE LEGEND BUTTON
-============================================================ */
 
 mobileLegendBtn.addEventListener(
     "click",
@@ -6163,10 +5904,6 @@ mobileBackdrop.addEventListener(
     closeMobilePanels
 );
 
-
-/* ============================================================
-   WINDOW RESIZE
-============================================================ */
 
 window.addEventListener(
     "resize",
@@ -6294,10 +6031,6 @@ function stopReportingMode() {
 }
 
 
-/* ============================================================
-   SELECTED REPORT LOCATION
-============================================================ */
-
 function clearSelectedLocation() {
 
     selectedLatitude =
@@ -6340,10 +6073,6 @@ function clearSelectedLocation() {
     }
 }
 
-
-/* ============================================================
-   SELECT REPORT LOCATION
-============================================================ */
 
 function selectReportLocation(
     latitude,
@@ -6710,10 +6439,6 @@ document.getElementById(
 );
 
 
-/* ============================================================
-   REPORT BUTTON
-============================================================ */
-
 document.getElementById(
     "startReportBtn"
 )
@@ -6723,10 +6448,6 @@ document.getElementById(
     startReportingMode
 );
 
-
-/* ============================================================
-   CANCEL REPORT
-============================================================ */
 
 document.getElementById(
     "cancelReportBtn"
@@ -6756,7 +6477,7 @@ document.getElementById(
 
 
 /* ============================================================
-   NEW — SITUATION NEAR ME BUTTON
+   SITUATION NEAR ME BUTTON
 ============================================================ */
 
 document.getElementById(
@@ -6867,6 +6588,10 @@ document.getElementById(
                 }
 
 
+                /*
+                 * Remove previous location marker
+                 */
+
                 if (
                     currentLocationMarker
                 ) {
@@ -6874,8 +6599,77 @@ document.getElementById(
                     map.removeLayer(
                         currentLocationMarker
                     );
+
+
+                    currentLocationMarker =
+                        null;
                 }
 
+
+                /*
+                 * NEW:
+                 * Remove previous 5 km radius
+                 */
+
+                if (
+                    currentLocationRadius
+                ) {
+
+                    map.removeLayer(
+                        currentLocationRadius
+                    );
+
+
+                    currentLocationRadius =
+                        null;
+                }
+
+
+                /*
+                 * NEW:
+                 * Draw 5 km search radius
+                 */
+
+                currentLocationRadius =
+                    L.circle(
+                        [
+                            latitude,
+                            longitude
+                        ],
+                        {
+
+                            radius:5000,
+
+                            color:"#007bff",
+
+                            weight:2,
+
+                            opacity:0.75,
+
+                            fillColor:"#007bff",
+
+                            fillOpacity:0.07,
+
+                            dashArray:"6,6",
+
+                            interactive:false
+                        }
+                    )
+                    .addTo(map);
+
+
+                /*
+                 * Keep the circle underneath
+                 * markers and popups.
+                 */
+
+                currentLocationRadius
+                    .bringToBack();
+
+
+                /*
+                 * Current location marker
+                 */
 
                 currentLocationMarker =
                     L.circleMarker(
@@ -6898,6 +6692,10 @@ document.getElementById(
                     )
                     .addTo(map);
 
+
+                /*
+                 * Situation Near Me popup
+                 */
 
                 showSituationNearMe(
                     latitude,
@@ -7050,7 +6848,7 @@ document.getElementById(
 
 
 /* ============================================================
-   OTHER LAYER TOGGLES
+   LAYER TOGGLES
 ============================================================ */
 
 setupLayerToggle(
@@ -7252,7 +7050,7 @@ document.querySelectorAll(
 
 
 /* ============================================================
-   MAP MODE BUTTONS
+   MAP MODES
 ============================================================ */
 
 const floodModeBtn =
@@ -7298,10 +7096,6 @@ function activateModeButton(
     );
 }
 
-
-/* ============================================================
-   FLOOD MODE
-============================================================ */
 
 floodModeBtn.addEventListener(
     "click",
@@ -7360,10 +7154,6 @@ floodModeBtn.addEventListener(
 );
 
 
-/* ============================================================
-   VERIFIED REPORT MODE
-============================================================ */
-
 reportsModeBtn.addEventListener(
     "click",
     function() {
@@ -7409,10 +7199,6 @@ reportsModeBtn.addEventListener(
     }
 );
 
-
-/* ============================================================
-   BOUNDARY MODE
-============================================================ */
 
 boundaryModeBtn.addEventListener(
     "click",
@@ -7504,7 +7290,7 @@ boundaryModeBtn.addEventListener(
 
 
 /* ============================================================
-   LEGEND CONTENT
+   LEGEND
 ============================================================ */
 
 function updateLegend(
@@ -7695,12 +7481,39 @@ function updateLegend(
 
         </div>
 
+
+        ${
+            currentLocationRadius
+
+            ? `
+
+                <div class="legend-item">
+
+                    <span
+                        style="
+                            width:18px;
+                            height:10px;
+                            border:2px dashed #007bff;
+                            border-radius:50%;
+                            display:inline-block;
+                        "
+                    ></span>
+
+                    5 km Nearby Area
+
+                </div>
+
+              `
+
+            : ""
+        }
+
     `;
 }
 
 
 /* ============================================================
-   INITIAL STATE
+   INITIAL
 ============================================================ */
 
 updateLegend(
